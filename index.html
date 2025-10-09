@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Tracking Times</title>
+</head>
+<body>
+...
+</body>
+</html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TheVann Track Duration — v6</title>
+  <meta name="description" content="Track work time, rounded by custom rule. Add/edit/delete, day-off, CSV export, print — dark & light themes." />
+  <style>
+    /* ---------- Variables ---------- */
+    :root{
+      --bg:#0f1720;--card:#0b1220;--muted:#9aa6b2;--text:#ecf0f1;--accent:#06b6d4;--accent-2:#7dd3fc;--success:#16a34a;--danger:#ef4444;--glass:rgba(255,255,255,0.03);
+      --radius:12px;--shadow:0 10px 30px rgba(2,6,23,0.6);
+      --table-border: rgba(255,255,255,0.04);
+    }
+    /* Light theme overrides */
+    body.light-mode{ --bg:#f8fafc; --card:#ffffff; --muted:#4b5563; --text:#0b1220; --accent:#0ea5a3; --accent-2:#bae6fd; --glass:rgba(2,6,23,0.03); --shadow:0 8px 20px rgba(2,6,23,0.08); --table-border: rgba(2,6,23,0.06); }
+
+    /* ---------- Base ---------- */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto, 'Helvetica Neue',Arial;padding:28px}
+    .wrap{max-width:1100px;margin:0 auto}
+    .card{background:linear-gradient(180deg, var(--card), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--glass)}
+
+    /* header */
+    header.app-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    h1.title{margin:0;font-size:20px;letter-spacing:0.2px}
+    .subtitle{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* controls */
+    .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+    .inputs{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:10px;border-radius:8px;color:var(--text)}
+    input::placeholder{color:var(--muted)}
+    button.btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022;}
+    button.ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* table */
+    .table-wrap{overflow:auto;margin-top:18px;border-radius:10px}
+    table{width:100%;border-collapse:collapse;min-width:720px}
+    th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--table-border)}
+    th{font-size:12px;color:var(--muted);text-transform:uppercase}
+    tbody tr:hover{background:rgba(255,255,255,0.01)}
+    .actions{display:flex;gap:8px}
+    .chip{padding:6px 10px;border-radius:8px;font-weight:600}
+    .chip.edit{background:var(--success);color:#fff}
+    .chip.del{background:var(--danger);color:#fff}
+    .day-off{opacity:0.85;font-style:italic;color:var(--muted)}
+
+    /* footer total */
+    .footer{display:flex;justify-content:flex-end;margin-top:14px}
+    .total-card{background:var(--glass);padding:12px 16px;border-radius:10px;color:var(--text);font-weight:700}
+
+    /* theme toggle */
+    .tog{display:flex;gap:8px;align-items:center}
+    .toggle{background:var(--glass);padding:6px;border-radius:999px;display:inline-flex;align-items:center}
+
+    /* print styles: clean, desktop-like */
+    @media print{
+      @page{size:A4 landscape;margin:12mm}
+      body,html{background:#fff;color:#000}
+      .card{background:#fff;box-shadow:none;border:none}
+      .controls,.inputs,button,[class*="chip"]{display:none}
+      .table-wrap{overflow:visible}
+      table{min-width:unset}
+      th,td{border:1px solid #ccc;padding:8px}
+      th{background:#f2f2f2;color:#000}
+      td.actions{display:none}
+      .total-card{background:transparent;color:#000}
+    }
+
+    /* responsive tweaks */
+    @media(max-width:820px){.inputs{flex-direction:column;align-items:flex-start}table{min-width:600px}}
+
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <header class="app-head">
+        <div>
+          <h1 class="title">TheVann Track Duration</h1>
+          <div class="subtitle">Clean tracker — auto rounding, day-off, CSV export, print-ready</div>
+        </div>
+        <div class="tog">
+          <div class="small" id="theme-label">Dark</div>
+          <div class="toggle" id="theme-toggle" title="Toggle theme">🌙</div>
+        </div>
+      </header>
+
+      <div class="controls">
+        <div class="inputs">
+          <input id="date-input" type="date" />
+          <input id="start-input" type="time" />
+          <input id="end-input" type="time" />
+          <input id="task-input" type="text" placeholder="Task / notes (optional)" />
+          <div id="preview" class="small">Duration: 00:00 (0.00h)</div>
+        </div>
+
+        <div style="margin-left:auto;display:flex;gap:8px">
+          <button class="btn primary" id="add-btn">Add Entry</button>
+          <button class="btn ghost" id="dayoff-btn">Add Day Off</button>
+          <button class="btn ghost" id="export-btn">Export CSV</button>
+          <button class="btn ghost" id="print-btn">Print</button>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="entries-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Duration (H:M)</th>
+              <th>Rounded (hrs)</th>
+              <th>Task</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="entries-body"></tbody>
+        </table>
+      </div>
+
+      <div class="footer"><div class="total-card">Total Rounded Hours: <span id="total">0.00</span></div></div>
+    </div>
+  </div>
+
+  <script>
+    // V6 — polished UI + features
+    (function(){
+      const STORAGE = 'vann_v6_entries';
+      const THEME = 'vann_v6_theme';
+
+      const dateEl = document.getElementById('date-input');
+      const startEl = document.getElementById('start-input');
+      const endEl = document.getElementById('end-input');
+      const taskEl = document.getElementById('task-input');
+      const previewEl = document.getElementById('preview');
+      const addBtn = document.getElementById('add-btn');
+      const dayOffBtn = document.getElementById('dayoff-btn');
+      const exportBtn = document.getElementById('export-btn');
+      const printBtn = document.getElementById('print-btn');
+      const entriesBody = document.getElementById('entries-body');
+      const totalEl = document.getElementById('total');
+      const toggle = document.getElementById('theme-toggle');
+      const themeLabel = document.getElementById('theme-label');
+
+      let entries = [];
+      let editId = null;
+
+      // helpers
+      function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(isNaN(h)||isNaN(m)) return null; return h*60+m; }
+      function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
+      function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; let M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
+
+      function save(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
+      function load(){ const raw=localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; render(); }
+
+      // preview update
+      function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent='Duration: 00:00 (0.00h)'; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent='Duration: 00:00 (0.00h)'} }
+      [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
+
+      // render
+      function render(){ entriesBody.innerHTML=''; let total=0; const sorted=[...entries].sort((a,b)=> (a.date<b.date)?1:(a.date>b.date)?-1:(b.id-b.id)); for(const row of sorted){ const tr=document.createElement('tr'); if(row.isDayOff) tr.classList.add('day-off'); const start= row.isDayOff? 'Day Off' : row.start; const end = row.isDayOff? 'Day Off' : row.end; const duration = row.isDayOff? 'Day Off' : row.duration; const rounded = row.isDayOff? 0 : row.rounded; tr.innerHTML = `\n        <td>${row.date}</td>\n        <td>${start}</td>\n        <td>${end}</td>\n        <td>${duration}</td>\n        <td>${rounded.toFixed(2)}</td>\n        <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>\n        <td class=\"actions\">${row.isDayOff? `<button class=\"chip del\" data-id=\"${row.id}\">Del</button>` : `<button class=\"chip edit\" data-id=\"${row.id}\">Edit</button><button class=\"chip del\" data-id=\"${row.id}\">Delete</button>`}</td>\n      `; entriesBody.appendChild(tr); total += rounded; } totalEl.textContent = total.toFixed(2); }
+
+      // add/update
+      addBtn.addEventListener('click', ()=>{
+        const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
+        if(!date || !s || !e) return alert('Please fill Date, Start and End.');
+        const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null) return alert('Invalid time'); let diff=eM - sM; if(diff<0) diff+=24*60; const formatted = fmtHM(diff); const rounded = computeRounded(diff);
+        if(editId){ const idx = entries.findIndex(x=>x.id===editId); if(idx>-1){ entries[idx]= { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId=null; addBtn.textContent = 'Add Entry'; } } else { entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }); }
+        formReset(); save();
+      });
+
+      function formReset(){ dateEl.valueAsDate = new Date(); startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent='Duration: 00:00 (0.00h)'; }
+
+      // day off
+      dayOffBtn.addEventListener('click', ()=>{ const date=dateEl.value; if(!date) return alert('Pick a date'); const exists=entries.some(x=>x.date===date && x.isDayOff); if(exists && !confirm('Day off exists for this date; add another?')) return; entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task:'DAY OFF', isDayOff:true }); formReset(); save(); });
+
+      // delegation for edit/delete
+      entriesBody.addEventListener('click', (ev)=>{
+        const idStr=ev.target.getAttribute('data-id'); if(!idStr) return; const id=Number(idStr);
+        if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); save(); }
+        if(ev.target.classList.contains('edit')){ const idx=entries.findIndex(x=>x.id===id); if(idx===-1) return; const row=entries[idx]; if(row.isDayOff) return alert('Cannot edit Day Off'); dateEl.value=row.date; startEl.value=row.start; endEl.value=row.end; taskEl.value=row.task; editId = id; addBtn.textContent='Save'; window.scrollTo({top:0,behavior:'smooth'}); }
+      });
+
+      // export csv
+      exportBtn.addEventListener('click', ()=>{
+        if(entries.length===0) return alert('No data'); const header=['Date','Start','End','Duration','Rounded Hours','Task']; const rows = entries.map(r=> [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`]); let csv = header.join(',') + '\n'; rows.forEach(r=> csv+= r.join(',') + '\n'); csv += `\nTotal Rounded Hours,,, ,${totalEl.textContent}\n`; const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`VannTrack_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove(); });
+
+      // print
+      printBtn.addEventListener('click', ()=> window.print());
+
+      // theme toggle
+      function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeLabel.textContent='Light'; toggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeLabel.textContent='Dark'; toggle.textContent='🌙'; } }
+      toggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
+
+      // init
+      formReset(); load(); applyTheme();
+
+    })();
+  </script>
+</body>
+</html>
