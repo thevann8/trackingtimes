@@ -1,19 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <title>Tracking Times</title>
-</head>
-<body>
-...
-</body>
-</html>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TheVann Track Duration — v6</title>
+  <title>TheVann Track Duration — v6 (Auth)</title>
   <meta name="description" content="Track work time, rounded by custom rule. Add/edit/delete, day-off, CSV export, print — dark & light themes." />
   <style>
     /* ---------- Variables ---------- */
@@ -22,41 +12,28 @@
       --radius:12px;--shadow:0 10px 30px rgba(2,6,23,0.6);
       --table-border: rgba(255,255,255,0.04);
     }
-    /* Light theme overrides */
     body.light-mode{ --bg:#f8fafc; --card:#ffffff; --muted:#4b5563; --text:#0b1220; --accent:#0ea5a3; --accent-2:#bae6fd; --glass:rgba(2,6,23,0.03); --shadow:0 8px 20px rgba(2,6,23,0.08); --table-border: rgba(2,6,23,0.06); }
 
-    /* ---------- Base ---------- */
     *{box-sizing:border-box}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto, 'Helvetica Neue',Arial;padding:28px}
     .wrap{max-width:1100px;margin:0 auto}
-<!-- Authentication UI (paste inside your card area) -->
-<div id="auth-ui" style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
-  <input id="auth-email" type="email" placeholder="Email" style="padding:8px;border-radius:6px" />
-  <input id="auth-pass" type="password" placeholder="Password" style="padding:8px;border-radius:6px" />
-  <button id="signup-btn" class="btn ghost">Sign Up</button>
-  <button id="signin-btn" class="btn ghost">Sign In</button>
-  <button id="signout-btn" class="btn ghost" style="display:none;">Sign Out</button>
-  <div id="user-info" class="small" style="margin-left:8px"></div>
-</div>
     .card{background:linear-gradient(180deg, var(--card), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--glass)}
-
-    /* header */
     header.app-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
     h1.title{margin:0;font-size:20px;letter-spacing:0.2px}
     .subtitle{color:var(--muted);font-size:13px;margin-top:6px}
 
-    /* controls */
     .controls{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
     .inputs{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:10px;border-radius:8px;color:var(--text)}
+    input[type=date],input[type=time],input[type=text], input[type=email], input[type=password] {
+      background:transparent;border:1px solid var(--table-border);padding:10px;border-radius:8px;color:var(--text)
+    }
     input::placeholder{color:var(--muted)}
     button.btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
     button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022;}
     button.ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
     .small{font-size:13px;color:var(--muted)}
 
-    /* table */
     .table-wrap{overflow:auto;margin-top:18px;border-radius:10px}
     table{width:100%;border-collapse:collapse;min-width:720px}
     th,td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--table-border)}
@@ -68,15 +45,11 @@
     .chip.del{background:var(--danger);color:#fff}
     .day-off{opacity:0.85;font-style:italic;color:var(--muted)}
 
-    /* footer total */
     .footer{display:flex;justify-content:flex-end;margin-top:14px}
     .total-card{background:var(--glass);padding:12px 16px;border-radius:10px;color:var(--text);font-weight:700}
-
-    /* theme toggle */
     .tog{display:flex;gap:8px;align-items:center}
     .toggle{background:var(--glass);padding:6px;border-radius:999px;display:inline-flex;align-items:center}
 
-    /* print styles: clean, desktop-like */
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
@@ -90,9 +63,7 @@
       .total-card{background:transparent;color:#000}
     }
 
-    /* responsive tweaks */
     @media(max-width:820px){.inputs{flex-direction:column;align-items:flex-start}table{min-width:600px}}
-
   </style>
 </head>
 <body>
@@ -108,6 +79,16 @@
           <div class="toggle" id="theme-toggle" title="Toggle theme">🌙</div>
         </div>
       </header>
+
+      <!-- ===== Authentication UI (visible when page loads) ===== -->
+      <div id="auth-ui" style="display:flex;gap:8px;align-items:center;margin-top:12px;margin-bottom:6px;">
+        <input id="auth-email" type="email" placeholder="Email" />
+        <input id="auth-pass" type="password" placeholder="Password" />
+        <button id="signup-btn" class="btn ghost">Sign Up</button>
+        <button id="signin-btn" class="btn ghost">Sign In</button>
+        <button id="signout-btn" class="btn ghost" style="display:none;">Sign Out</button>
+        <div id="user-info" class="small" style="margin-left:8px"></div>
+      </div>
 
       <div class="controls">
         <div class="inputs">
@@ -147,188 +128,12 @@
     </div>
   </div>
 
-  <script>
-    // V6 — polished UI + features
-    (function(){
-      const STORAGE = 'vann_v6_entries';
-      const THEME = 'vann_v6_theme';// --- Firebase user sync variables (add inside IIFE) ---
-let currentUser = null;
+  <!-- Firebase (compat) SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
-// Elements for auth UI (add near other element declarations)
-const authEmail = document.getElementById('auth-email');
-const authPass = document.getElementById('auth-pass');
-const signupBtn = document.getElementById('signup-btn');
-const signinBtn = document.getElementById('signin-btn');
-const signoutBtn = document.getElementById('signout-btn');
-const userInfo = document.getElementById('user-info');
-
-// --- Firebase helper functions ---
-function saveToFirebase(uid){
-  // writes the whole entries array under users/{uid}/entries
-  try {
-    fbDB.ref('users/' + uid + '/entries').set(entries);
-  } catch(err) {
-    console.error('saveToFirebase error', err);
-  }
-}
-
-function loadFromFirebase(uid){
-  return fbDB.ref('users/' + uid + '/entries').once('value')
-    .then(snapshot=>{
-      const val = snapshot.val();
-      if(val && Array.isArray(val) && val.length>0){
-        entries = val;
-        save(); // store locally and render
-      } else {
-        // if remote empty but local has data, push local -> remote
-        const localRaw = localStorage.getItem(STORAGE);
-        if(localRaw){
-          const localEntries = JSON.parse(localRaw);
-          if(localEntries && localEntries.length>0){
-            // push local to firebase
-            fbDB.ref('users/' + uid + '/entries').set(localEntries);
-            // keep local as is (save will also ensure UI)
-          }
-        }
-      }
-    }).catch(err=>{
-      console.error('loadFromFirebase error', err);
-    });
-}
-// Signup
-signupBtn.addEventListener('click', ()=>{
-  const email = authEmail.value.trim();
-  const pass = authPass.value.trim();
-  if(!email || !pass) return alert('Enter email and password');
-  fbAuth.createUserWithEmailAndPassword(email, pass)
-    .then(cred=>{
-      // user auto-signed in after signup
-      alert('Account created');
-    })
-    .catch(err=> alert(err.message || err));
-});
-
-// Sign in
-signinBtn.addEventListener('click', ()=>{
-  const email = authEmail.value.trim();
-  const pass = authPass.value.trim();
-  if(!email || !pass) return alert('Enter email and password');
-  fbAuth.signInWithEmailAndPassword(email, pass)
-    .catch(err=> alert(err.message || err));
-});
-
-// Sign out
-signoutBtn.addEventListener('click', ()=>{
-  fbAuth.signOut().catch(err=> console.error(err));
-});
-fbAuth.onAuthStateChanged(user=>{
-  if(user){
-    currentUser = user;
-    userInfo.textContent = user.email || user.phoneNumber || user.uid;
-    signoutBtn.style.display = 'inline-block';
-    signupBtn.style.display = 'none';
-    signinBtn.style.display = 'none';
-    // Load user data from firebase and merge/replace local
-    loadFromFirebase(user.uid).then(()=> {
-      // after loading, ensure we keep local copy too
-      localStorage.setItem(STORAGE, JSON.stringify(entries));
-      render();
-    });
-  } else {
-    // signed out
-    currentUser = null;
-    userInfo.textContent = '';
-    signoutBtn.style.display = 'none';
-    signupBtn.style.display = 'inline-block';
-    signinBtn.style.display = 'inline-block';
-    // keep using local storage entries (no removal) — user data remains local
-  }
-});
-
-
-      const dateEl = document.getElementById('date-input');
-      const startEl = document.getElementById('start-input');
-      const endEl = document.getElementById('end-input');
-      const taskEl = document.getElementById('task-input');
-      const previewEl = document.getElementById('preview');
-      const addBtn = document.getElementById('add-btn');
-      const dayOffBtn = document.getElementById('dayoff-btn');
-      const exportBtn = document.getElementById('export-btn');
-      const printBtn = document.getElementById('print-btn');
-      const entriesBody = document.getElementById('entries-body');
-      const totalEl = document.getElementById('total');
-      const toggle = document.getElementById('theme-toggle');
-      const themeLabel = document.getElementById('theme-label');
-
-      let entries = [];
-      let editId = null;
-
-      // helpers
-      function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(isNaN(h)||isNaN(m)) return null; return h*60+m; }
-      function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
-      function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; let M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
-
-      function save(){ function save(){
-  localStorage.setItem(STORAGE, JSON.stringify(entries));
-  // if user signed in, also write to their firebase path
-  if(currentUser){
-    try { saveToFirebase(currentUser.uid); } catch(e){ console.error(e); }
-  }
-  render();
-}
- }
-      function load(){ const raw=localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; render(); }
-
-      // preview update
-      function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent='Duration: 00:00 (0.00h)'; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent='Duration: 00:00 (0.00h)'} }
-      [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
-
-      // render
-      function render(){ entriesBody.innerHTML=''; let total=0; const sorted=[...entries].sort((a,b)=> (a.date<b.date)?1:(a.date>b.date)?-1:(b.id-b.id)); for(const row of sorted){ const tr=document.createElement('tr'); if(row.isDayOff) tr.classList.add('day-off'); const start= row.isDayOff? 'Day Off' : row.start; const end = row.isDayOff? 'Day Off' : row.end; const duration = row.isDayOff? 'Day Off' : row.duration; const rounded = row.isDayOff? 0 : row.rounded; tr.innerHTML = `\n        <td>${row.date}</td>\n        <td>${start}</td>\n        <td>${end}</td>\n        <td>${duration}</td>\n        <td>${rounded.toFixed(2)}</td>\n        <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>\n        <td class=\"actions\">${row.isDayOff? `<button class=\"chip del\" data-id=\"${row.id}\">Del</button>` : `<button class=\"chip edit\" data-id=\"${row.id}\">Edit</button><button class=\"chip del\" data-id=\"${row.id}\">Delete</button>`}</td>\n      `; entriesBody.appendChild(tr); total += rounded; } totalEl.textContent = total.toFixed(2); }
-
-      // add/update
-      addBtn.addEventListener('click', ()=>{
-        const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
-        if(!date || !s || !e) return alert('Please fill Date, Start and End.');
-        const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null) return alert('Invalid time'); let diff=eM - sM; if(diff<0) diff+=24*60; const formatted = fmtHM(diff); const rounded = computeRounded(diff);
-        if(editId){ const idx = entries.findIndex(x=>x.id===editId); if(idx>-1){ entries[idx]= { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId=null; addBtn.textContent = 'Add Entry'; } } else { entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }); }
-        formReset(); save();
-      });
-
-      function formReset(){ dateEl.valueAsDate = new Date(); startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent='Duration: 00:00 (0.00h)'; }
-
-      // day off
-      dayOffBtn.addEventListener('click', ()=>{ const date=dateEl.value; if(!date) return alert('Pick a date'); const exists=entries.some(x=>x.date===date && x.isDayOff); if(exists && !confirm('Day off exists for this date; add another?')) return; entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task:'DAY OFF', isDayOff:true }); formReset(); save(); });
-
-      // delegation for edit/delete
-      entriesBody.addEventListener('click', (ev)=>{
-        const idStr=ev.target.getAttribute('data-id'); if(!idStr) return; const id=Number(idStr);
-        if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); save(); }
-        if(ev.target.classList.contains('edit')){ const idx=entries.findIndex(x=>x.id===id); if(idx===-1) return; const row=entries[idx]; if(row.isDayOff) return alert('Cannot edit Day Off'); dateEl.value=row.date; startEl.value=row.start; endEl.value=row.end; taskEl.value=row.task; editId = id; addBtn.textContent='Save'; window.scrollTo({top:0,behavior:'smooth'}); }
-      });
-
-      // export csv
-      exportBtn.addEventListener('click', ()=>{
-        if(entries.length===0) return alert('No data'); const header=['Date','Start','End','Duration','Rounded Hours','Task']; const rows = entries.map(r=> [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`]); let csv = header.join(',') + '\n'; rows.forEach(r=> csv+= r.join(',') + '\n'); csv += `\nTotal Rounded Hours,,, ,${totalEl.textContent}\n`; const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`VannTrack_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove(); });
-
-      // print
-      printBtn.addEventListener('click', ()=> window.print());
-
-      // theme toggle
-      function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeLabel.textContent='Light'; toggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeLabel.textContent='Dark'; toggle.textContent='🌙'; } }
-      toggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
-
-      // init
-      formReset(); load(); applyTheme();
-
-    })();
-<!-- Firebase (compat) SDKs for simple usage -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
-<script>
-  // Import the functions you need from the SDKs you need
+  <!-- Initialize Firebase: // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -349,20 +154,243 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-  const firebaseConfig = {
-    apiKey: "AIzaSy...yourKey...",
-    authDomain: "thevanntrackduration.firebaseapp.com",
-    databaseURL: "https://thevanntrackduration-default-rtdb.firebaseio.com",
-    projectId: "thevanntrackduration",
-    storageBucket: "thevanntrackduration.appspot.com",
-    messagingSenderId: "XXXXXXXXXXXX",
-    appId: "X:XXXXXXXX:web:XXXXXXXX"
-  };
+    {};
 
-  // initialize compat SDKs
-  firebase.initializeApp(firebaseConfig);
-  const fbAuth = firebase.auth();
-  const fbDB = firebase.database();
-</script>
+    // If you haven't added your config yet, the page will still run locally without auth.
+    if (firebaseConfig && firebaseConfig.apiKey) {
+      firebase.initializeApp(firebaseConfig);
+      var fbAuth = firebase.auth();
+      var fbDB = firebase.database();
+    } else {
+      console.warn('Firebase config missing — auth/database will be disabled until you paste your config.');
+      var fbAuth = null;
+      var fbDB = null;
+    }
+  </script>
+
+  <!-- App script -->
+  <script>
+    (function(){
+      const STORAGE = 'vann_v6_entries';
+      const THEME = 'vann_v6_theme';
+
+      // DOM elements
+      const dateEl = document.getElementById('date-input');
+      const startEl = document.getElementById('start-input');
+      const endEl = document.getElementById('end-input');
+      const taskEl = document.getElementById('task-input');
+      const previewEl = document.getElementById('preview');
+      const addBtn = document.getElementById('add-btn');
+      const dayOffBtn = document.getElementById('dayoff-btn');
+      const exportBtn = document.getElementById('export-btn');
+      const printBtn = document.getElementById('print-btn');
+      const entriesBody = document.getElementById('entries-body');
+      const totalEl = document.getElementById('total');
+      const toggle = document.getElementById('theme-toggle');
+      const themeLabel = document.getElementById('theme-label');
+
+      // Auth UI elements
+      const authEmail = document.getElementById('auth-email');
+      const authPass = document.getElementById('auth-pass');
+      const signupBtn = document.getElementById('signup-btn');
+      const signinBtn = document.getElementById('signin-btn');
+      const signoutBtn = document.getElementById('signout-btn');
+      const userInfo = document.getElementById('user-info');
+
+      let entries = [];
+      let editId = null;
+      let currentUser = null;
+
+      // ------- Firebase helper functions (only works if fbDB exists) -------
+      function saveToFirebase(uid){
+        if(!fbDB) return;
+        try {
+          fbDB.ref('users/' + uid + '/entries').set(entries);
+        } catch(err) { console.error('saveToFirebase error', err); }
+      }
+
+      function loadFromFirebase(uid){
+        if(!fbDB) return Promise.resolve();
+        return fbDB.ref('users/' + uid + '/entries').once('value')
+        .then(snapshot=>{
+          const val = snapshot.val();
+          if(val && Array.isArray(val) && val.length>0){
+            entries = val;
+            localStorage.setItem(STORAGE, JSON.stringify(entries));
+          } else {
+            // remote empty -> if local has data, push local to firebase
+            const localRaw = localStorage.getItem(STORAGE);
+            if(localRaw){
+              const localEntries = JSON.parse(localRaw);
+              if(localEntries && localEntries.length>0){
+                fbDB.ref('users/' + uid + '/entries').set(localEntries);
+                // keep local
+              }
+            }
+          }
+          render();
+        }).catch(err=>{ console.error('loadFromFirebase error', err); });
+      }
+
+      // ---------- core helpers ----------
+      function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(isNaN(h)||isNaN(m)) return null; return h*60+m; }
+      function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`; }
+      // rounding rule: 1-29 -> 00, 30-39 -> 50, 40-59 -> next hour
+      function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; let M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
+
+      // single save function
+      function save(){
+        localStorage.setItem(STORAGE, JSON.stringify(entries));
+        if(currentUser && fbDB){
+          try { saveToFirebase(currentUser.uid); } catch(e){ console.error(e); }
+        }
+        render();
+      }
+
+      function load(){
+        const raw = localStorage.getItem(STORAGE);
+        entries = raw? JSON.parse(raw): [];
+        render();
+      }
+
+      // preview update
+      function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent='Duration: 00:00 (0.00h)'; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent='Duration: 00:00 (0.00h)'} }
+      [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
+
+      // render table
+      function render(){
+        entriesBody.innerHTML = '';
+        let total = 0;
+        const sorted = [...entries].sort((a,b)=>{
+          if(a.date < b.date) return 1;
+          if(a.date > b.date) return -1;
+          return (b.id - a.id);
+        });
+        for(const row of sorted){
+          const tr = document.createElement('tr');
+          if(row.isDayOff) tr.classList.add('day-off');
+          const start = row.isDayOff? 'Day Off' : row.start;
+          const end = row.isDayOff? 'Day Off' : row.end;
+          const duration = row.isDayOff? 'Day Off' : row.duration;
+          const rounded = row.isDayOff? 0 : row.rounded;
+          tr.innerHTML = `
+            <td>${row.date}</td>
+            <td>${start}</td>
+            <td>${end}</td>
+            <td>${duration}</td>
+            <td>${rounded.toFixed(2)}</td>
+            <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>
+            <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">Del</button>` : `<button class="chip edit" data-id="${row.id}">Edit</button><button class="chip del" data-id="${row.id}">Delete</button>`}</td>
+          `;
+          entriesBody.appendChild(tr);
+          total += rounded;
+        }
+        totalEl.textContent = total.toFixed(2);
+      }
+
+      // add/update
+      addBtn.addEventListener('click', ()=>{
+        const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
+        if(!date || !s || !e) return alert('Please fill Date, Start and End.');
+        const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null) return alert('Invalid time'); let diff=eM - sM; if(diff<0) diff+=24*60; const formatted = fmtHM(diff); const rounded = computeRounded(diff);
+        if(editId){
+          const idx = entries.findIndex(x=>x.id===editId);
+          if(idx>-1){
+            entries[idx]= { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false };
+            editId=null; addBtn.textContent = 'Add Entry';
+          }
+        } else {
+          entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
+        }
+        formReset(); save();
+      });
+
+      function formReset(){ dateEl.valueAsDate = new Date(); startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent='Duration: 00:00 (0.00h)'; }
+
+      // day off
+      dayOffBtn.addEventListener('click', ()=>{
+        const date = dateEl.value;
+        if(!date) return alert('Pick a date');
+        const exists = entries.some(x=>x.date===date && x.isDayOff);
+        if(exists && !confirm('Day off exists for this date; add another?')) return;
+        entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task:'DAY OFF', isDayOff:true });
+        formReset(); save();
+      });
+
+      // delegation for edit/delete
+      entriesBody.addEventListener('click', (ev)=>{
+        const idStr = ev.target.getAttribute('data-id'); if(!idStr) return;
+        const id = Number(idStr);
+        if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); save(); }
+        if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x=>x.id===id); if(idx===-1) return; const row = entries[idx]; if(row.isDayOff) return alert('Cannot edit Day Off'); dateEl.value = row.date; startEl.value = row.start; endEl.value = row.end; taskEl.value = row.task; editId = id; addBtn.textContent = 'Save'; window.scrollTo({top:0,behavior:'smooth'}); }
+      });
+
+      // export csv
+      exportBtn.addEventListener('click', ()=>{
+        if(entries.length===0) return alert('No data');
+        const header=['Date','Start','End','Duration','Rounded Hours','Task'];
+        const rows = entries.map(r=> [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`]);
+        let csv = header.join(',') + '\n'; rows.forEach(r=> csv += r.join(',') + '\n');
+        csv += `\nTotal Rounded Hours,,, ,${totalEl.textContent}\n`;
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(a); a.click(); a.remove();
+      });
+
+      // print
+      printBtn.addEventListener('click', ()=> window.print());
+
+      // theme toggle
+      function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeLabel.textContent='Light'; toggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeLabel.textContent='Dark'; toggle.textContent='🌙'; } }
+      toggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
+
+      // --------------- Authentication handlers ---------------
+      if (typeof fbAuth !== 'undefined' && fbAuth){
+        // signup
+        signupBtn.addEventListener('click', ()=>{
+          const email = authEmail.value.trim(); const pass = authPass.value.trim();
+          if(!email || !pass) return alert('Enter email and password');
+          fbAuth.createUserWithEmailAndPassword(email, pass).then(()=> { alert('Account created'); }).catch(err=> alert(err.message || err));
+        });
+
+        // signin
+        signinBtn.addEventListener('click', ()=>{
+          const email = authEmail.value.trim(); const pass = authPass.value.trim();
+          if(!email || !pass) return alert('Enter email and password');
+          fbAuth.signInWithEmailAndPassword(email, pass).catch(err=> alert(err.message || err));
+        });
+
+        // signout
+        signoutBtn.addEventListener('click', ()=> { fbAuth.signOut().catch(err=> console.error(err)); });
+
+        // auth state observer
+        fbAuth.onAuthStateChanged(user=>{
+          if(user){
+            currentUser = user;
+            userInfo.textContent = user.email || user.uid;
+            signoutBtn.style.display = 'inline-block';
+            signupBtn.style.display = 'none';
+            signinBtn.style.display = 'none';
+            // load user entries from firebase
+            loadFromFirebase(user.uid).then(()=> {
+              localStorage.setItem(STORAGE, JSON.stringify(entries));
+              render();
+            });
+          } else {
+            currentUser = null;
+            userInfo.textContent = '';
+            signoutBtn.style.display = 'none';
+            signupBtn.style.display = 'inline-block';
+            signinBtn.style.display = 'inline-block';
+          }
+        });
+      } else {
+        // No Firebase configured - hide auth elements
+        document.getElementById('auth-ui').style.display = 'none';
+      }
+
+      // init
+      formReset(); load(); applyTheme();
+    })();
+  </script>
 </body>
 </html>
