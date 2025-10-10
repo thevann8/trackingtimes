@@ -30,6 +30,15 @@
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,'Segoe UI',Roboto, 'Helvetica Neue',Arial;padding:28px}
     .wrap{max-width:1100px;margin:0 auto}
+<!-- Authentication UI (paste inside your card area) -->
+<div id="auth-ui" style="display:flex;gap:8px;align-items:center;margin-bottom:12px;">
+  <input id="auth-email" type="email" placeholder="Email" style="padding:8px;border-radius:6px" />
+  <input id="auth-pass" type="password" placeholder="Password" style="padding:8px;border-radius:6px" />
+  <button id="signup-btn" class="btn ghost">Sign Up</button>
+  <button id="signin-btn" class="btn ghost">Sign In</button>
+  <button id="signout-btn" class="btn ghost" style="display:none;">Sign Out</button>
+  <div id="user-info" class="small" style="margin-left:8px"></div>
+</div>
     .card{background:linear-gradient(180deg, var(--card), rgba(255,255,255,0.01));padding:22px;border-radius:var(--radius);box-shadow:var(--shadow);border:1px solid var(--glass)}
 
     /* header */
@@ -142,7 +151,100 @@
     // V6 — polished UI + features
     (function(){
       const STORAGE = 'vann_v6_entries';
-      const THEME = 'vann_v6_theme';
+      const THEME = 'vann_v6_theme';// --- Firebase user sync variables (add inside IIFE) ---
+let currentUser = null;
+
+// Elements for auth UI (add near other element declarations)
+const authEmail = document.getElementById('auth-email');
+const authPass = document.getElementById('auth-pass');
+const signupBtn = document.getElementById('signup-btn');
+const signinBtn = document.getElementById('signin-btn');
+const signoutBtn = document.getElementById('signout-btn');
+const userInfo = document.getElementById('user-info');
+
+// --- Firebase helper functions ---
+function saveToFirebase(uid){
+  // writes the whole entries array under users/{uid}/entries
+  try {
+    fbDB.ref('users/' + uid + '/entries').set(entries);
+  } catch(err) {
+    console.error('saveToFirebase error', err);
+  }
+}
+
+function loadFromFirebase(uid){
+  return fbDB.ref('users/' + uid + '/entries').once('value')
+    .then(snapshot=>{
+      const val = snapshot.val();
+      if(val && Array.isArray(val) && val.length>0){
+        entries = val;
+        save(); // store locally and render
+      } else {
+        // if remote empty but local has data, push local -> remote
+        const localRaw = localStorage.getItem(STORAGE);
+        if(localRaw){
+          const localEntries = JSON.parse(localRaw);
+          if(localEntries && localEntries.length>0){
+            // push local to firebase
+            fbDB.ref('users/' + uid + '/entries').set(localEntries);
+            // keep local as is (save will also ensure UI)
+          }
+        }
+      }
+    }).catch(err=>{
+      console.error('loadFromFirebase error', err);
+    });
+}
+// Signup
+signupBtn.addEventListener('click', ()=>{
+  const email = authEmail.value.trim();
+  const pass = authPass.value.trim();
+  if(!email || !pass) return alert('Enter email and password');
+  fbAuth.createUserWithEmailAndPassword(email, pass)
+    .then(cred=>{
+      // user auto-signed in after signup
+      alert('Account created');
+    })
+    .catch(err=> alert(err.message || err));
+});
+
+// Sign in
+signinBtn.addEventListener('click', ()=>{
+  const email = authEmail.value.trim();
+  const pass = authPass.value.trim();
+  if(!email || !pass) return alert('Enter email and password');
+  fbAuth.signInWithEmailAndPassword(email, pass)
+    .catch(err=> alert(err.message || err));
+});
+
+// Sign out
+signoutBtn.addEventListener('click', ()=>{
+  fbAuth.signOut().catch(err=> console.error(err));
+});
+fbAuth.onAuthStateChanged(user=>{
+  if(user){
+    currentUser = user;
+    userInfo.textContent = user.email || user.phoneNumber || user.uid;
+    signoutBtn.style.display = 'inline-block';
+    signupBtn.style.display = 'none';
+    signinBtn.style.display = 'none';
+    // Load user data from firebase and merge/replace local
+    loadFromFirebase(user.uid).then(()=> {
+      // after loading, ensure we keep local copy too
+      localStorage.setItem(STORAGE, JSON.stringify(entries));
+      render();
+    });
+  } else {
+    // signed out
+    currentUser = null;
+    userInfo.textContent = '';
+    signoutBtn.style.display = 'none';
+    signupBtn.style.display = 'inline-block';
+    signinBtn.style.display = 'inline-block';
+    // keep using local storage entries (no removal) — user data remains local
+  }
+});
+
 
       const dateEl = document.getElementById('date-input');
       const startEl = document.getElementById('start-input');
@@ -166,7 +268,15 @@
       function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
       function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; let M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
 
-      function save(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
+      function save(){ function save(){
+  localStorage.setItem(STORAGE, JSON.stringify(entries));
+  // if user signed in, also write to their firebase path
+  if(currentUser){
+    try { saveToFirebase(currentUser.uid); } catch(e){ console.error(e); }
+  }
+  render();
+}
+ }
       function load(){ const raw=localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; render(); }
 
       // preview update
@@ -212,6 +322,47 @@
       formReset(); load(); applyTheme();
 
     })();
-  </script>
+<!-- Firebase (compat) SDKs for simple usage -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+
+<script>
+  // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBY9TAXu8mGS-KLQ0t7K9pAhzWQ2f_HYuI",
+  authDomain: "thevanntrackduration-20870.firebaseapp.com",
+  projectId: "thevanntrackduration-20870",
+  storageBucket: "thevanntrackduration-20870.firebasestorage.app",
+  messagingSenderId: "1072618599723",
+  appId: "1:1072618599723:web:df0276f09fc1ba0064416e",
+  measurementId: "G-3CWXMB438M"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSy...yourKey...",
+    authDomain: "thevanntrackduration.firebaseapp.com",
+    databaseURL: "https://thevanntrackduration-default-rtdb.firebaseio.com",
+    projectId: "thevanntrackduration",
+    storageBucket: "thevanntrackduration.appspot.com",
+    messagingSenderId: "XXXXXXXXXXXX",
+    appId: "X:XXXXXXXX:web:XXXXXXXX"
+  };
+
+  // initialize compat SDKs
+  firebase.initializeApp(firebaseConfig);
+  const fbAuth = firebase.auth();
+  const fbDB = firebase.database();
+</script>
 </body>
 </html>
