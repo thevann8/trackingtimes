@@ -1,6 +1,13 @@
 <!doctype html>
 <html lang="en">
 <head>
+<div style="text-align:center; margin-top:20px;">
+  <button id="signInBtn" class="btn">Sign in with Google</button>
+  <button id="signOutBtn" class="btn" style="display:none;">Sign Out</button>
+  <p id="userInfo" style="margin-top:10px; color:lime;"></p>
+</div>
+
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>The Vann Track Duration — v7 (mobile-ready)</title>
@@ -459,6 +466,28 @@
 
     init();
   })();
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
+  authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
+  projectId: "thevanntrackduration-81ee0",
+  storageBucket: "thevanntrackduration-81ee0.firebasestorage.app",
+  messagingSenderId: "56786707859",
+  appId: "1:56786707859:web:75be757ceb95604984f466",
+  measurementId: "G-QNG2F09LWL"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+
   </script>
 </body>
 </html>
