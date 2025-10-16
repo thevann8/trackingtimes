@@ -2,148 +2,74 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>TheVann Track Duration — v7</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+  <title>TheVann Track Duration — v8</title>
+  <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and AdSense ready." />
 
-  <!-- Google AdSense -->
+  <!-- AdSense (one copy only) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398" crossorigin="anonymous"></script>
 
   <style>
-    .btn {
-      padding: 10px 16px;
-      background: #08b6d8;
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-
-<div style="text-align:center; margin-top:20px;">
-  <button id="signInBtn" class="btn">Sign in with Google</button>
-  <button id="signOutBtn" class="btn" style="display:none;">Sign Out</button>
-  <p id="userInfo" style="margin-top:10px; color:lime;"></p>
-</div>
-
-
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>The Vann Track Duration — v7 (mobile-ready)</title>
-  <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and AdSense ready." />
-
-  <!-- Google AdSense (as requested) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
-     crossorigin="anonymous"></script>
-
-  <style>
+    /* minimal styles, kept similar to your v7 */
     :root{
-      --bg-dark: #071124;
-      --card-dark: #071a2a;
-      --navy: #04263a;
-      --cyan: #08b6d8;
-      --muted-dark: #9fb7c6;
-      --text-dark: #e6f7fb;
-      --glass: rgba(255,255,255,0.03);
-      --success: #16a34a;
-      --danger: #ef4444;
-      --radius: 12px;
-      --shadow: 0 12px 30px rgba(2,6,23,0.55);
-      --table-border-dark: rgba(255,255,255,0.04);
-      --font: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+      --bg:#071124; --card:#071a2a; --muted:#9fb7c6; --text:#e6f7fb;
+      --accent:#08b6d8; --success:#16a34a; --danger:#ef4444; --glass:rgba(255,255,255,0.03);
+      --radius:12px; --shadow:0 12px 30px rgba(2,6,23,0.55); --table-border:rgba(255,255,255,0.04);
+      --font: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
     }
     body.light-mode{
-      --bg-dark: #f7fbfc;
-      --card-dark: #ffffff;
-      --navy: #042a4b;
-      --cyan: #06b6d4;
-      --muted-dark: #4b5563;
-      --text-dark: #071124;
-      --glass: rgba(2,6,23,0.03);
-      --shadow: 0 10px 24px rgba(2,6,23,0.08);
-      --table-border-dark: rgba(2,6,23,0.06);
+      --bg:#f7fbfc; --card:#fff; --muted:#4b5563; --text:#071124; --glass:rgba(2,6,23,0.03);
     }
-
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg-dark);color:var(--text-dark);font-family:var(--font);-webkit-font-smoothing:antialiased}
+    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
     .wrap{max-width:980px;margin:18px auto;padding:0 14px}
-    .card{background:linear-gradient(180deg,var(--card-dark), rgba(255,255,255,0.01));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
+    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
     header.app-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
     .title-wrap{display:flex;flex-direction:column;min-width:140px}
     h1.title{margin:0;font-size:18px;letter-spacing:0.2px}
-    .subtitle{color:var(--muted-dark);font-size:12px;margin-top:4px}
-
-    /* top row: language + theme */
+    .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
     .controls-top-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
     .lang-select{display:flex;gap:6px}
-    .lang-btn{background:transparent;border:1px solid var(--table-border-dark);color:var(--text-dark);padding:6px 10px;border-radius:10px;cursor:pointer;font-size:13px}
-    .theme-toggle{background:var(--navy);color:white;border-radius:10px;padding:6px 10px;border:none;cursor:pointer;font-weight:600}
-
-    /* month navigation */
+    .lang-btn{background:transparent;border:1px solid var(--table-border);color:var(--text);padding:6px 10px;border-radius:10px;cursor:pointer;font-size:13px}
+    .theme-toggle{background:var(--accent);color:#022;border-radius:10px;padding:6px 10px;border:none;cursor:pointer;font-weight:600}
     .month-nav{display:flex;align-items:center;gap:8px;margin-top:12px}
-    .month-btn{background:transparent;border:1px solid var(--table-border-dark);color:var(--text-dark);padding:8px 10px;border-radius:10px;cursor:pointer}
-    .month-label{font-weight:700;font-size:15px;color:var(--text-dark)}
-
-    /* form / inputs (mobile-first, stacked) */
+    .month-btn{background:transparent;border:1px solid var(--table-border);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
     .form-row{display:flex;flex-direction:column;gap:8px;margin-top:12px}
     .inputs{display:flex;flex-direction:column;gap:8px}
-    input[type=date], input[type=time], input[type=text]{
-      width:100%;padding:12px;border-radius:10px;border:1px solid var(--table-border-dark);background:transparent;color:var(--text-dark);font-size:15px
-    }
-    .preview{font-size:13px;color:var(--muted-dark);padding:8px 10px;border-radius:8px;background:transparent}
-
-    /* action button row (stacked on mobile, row on desktop) */
+    input[type=date], input[type=time], input[type=text], input[type=email], input[type=password]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--table-border);background:transparent;color:var(--text);font-size:15px}
+    .preview{font-size:13px;color:var(--muted);padding:8px 10px;border-radius:8px;background:transparent}
     .actions-row{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-    .actions-row .row{display:flex;gap:8px}
-    .btn{
-      border-radius:10px;padding:12px 14px;border:none;cursor:pointer;font-weight:700;font-size:15px;
-      box-shadow: 0 6px 16px rgba(2,6,23,0.18);
-    }
-    .btn.primary{background:linear-gradient(90deg,var(--cyan),#38e6f0);color:#012;flex:1}
-    .btn.ghost{background:transparent;border:1px solid var(--table-border-dark);color:var(--text-dark);flex:1}
-
-    /* table area */
+    .btn{border-radius:10px;padding:12px 14px;border:none;cursor:pointer;font-weight:700;font-size:15px}
+    .btn.primary{background:linear-gradient(90deg,var(--accent),#38e6f0);color:#022;flex:1}
+    .btn.ghost{background:transparent;border:1px solid var(--table-border);color:var(--text);flex:1}
     .table-wrap{overflow:auto;margin-top:12px;border-radius:10px}
     table{width:100%;border-collapse:collapse;min-width:680px}
-    thead th{background:transparent;color:var(--muted-dark);text-transform:uppercase;font-size:12px;padding:10px 8px;border-bottom:1px solid var(--table-border-dark);text-align:left}
-    tbody td{padding:10px 8px;border-bottom:1px solid var(--table-border-dark);font-size:14px}
+    thead th{background:transparent;color:var(--muted);text-transform:uppercase;font-size:12px;padding:10px 8px;border-bottom:1px solid var(--table-border);text-align:left}
+    tbody td{padding:10px 8px;border-bottom:1px solid var(--table-border);font-size:14px}
     tbody tr:nth-child(odd){background:rgba(255,255,255,0.02)}
-    tr.day-off td{font-style:italic;color:var(--muted-dark)}
-
-    .actions{display:flex;gap:6px}
+    tr.day-off td{font-style:italic;color:var(--muted)}
     .chip{padding:8px 10px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:none}
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
-
     .total-wrap{display:flex;justify-content:center;margin-top:14px}
-    .total-card{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px 16px;border-radius:12px;font-weight:800;color:var(--text-dark)}
-
-    /* desktop: make inputs row */
+    .total-card{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px 16px;border-radius:12px;font-weight:800;color:var(--text)}
     @media(min-width:680px){
-      .form-row{gap:12px}
       .inputs{flex-direction:row;align-items:center}
       input[type=date], input[type=time], input[type=text]{flex:0 0 auto;min-width:150px;width:auto}
       .actions-row{flex-direction:row}
-      .controls-top-row{gap:12px}
-      .lang-select{gap:8px}
     }
-
-    /* small phones */
-    @media(max-width:380px){
-      input[type=date], input[type=time], input[type=text]{font-size:14px;padding:10px}
-      .btn{padding:10px;font-size:14px}
-      thead th, tbody td{font-size:13px;padding:8px}
-      .title-wrap h1{font-size:17px}
+    @media(max-width:640px){
+      .card{padding:12px}
+      .inputs{flex-direction:column}
+      input[type=date], input[type=time], input[type=text]{width:100%}
+      table{min-width:600px}
     }
-
-    /* print */
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
-      .card{background:#fff;box-shadow:none;border:none}
-      .controls-top-row, .lang-select, .chip, .btn, .actions-row{display:none!important}
+      .controls-top-row,.lang-select,.chip,.btn,.actions-row{display:none!important}
       table{width:100%;border-collapse:collapse}
-      thead th, tbody td{border:1px solid #ccc;padding:8px;color:#000;background:#fff}
+      thead th,tbody td{border:1px solid #ccc;padding:8px;color:#000;background:#fff}
       thead th{background:#f2f2f2}
       td.actions{display:none}
       .total-card{background:transparent;color:#000}
@@ -151,14 +77,20 @@
   </style>
 </head>
 <body>
-  <!-- ✅ Google Sign-in Buttons -->
-  <div style="text-align:center; margin-top:20px;">
-    <button id="signInBtn" class="btn">Sign in with Google</button>
-    <button id="signOutBtn" class="btn" style="display:none;">Sign Out</button>
-    <p id="userInfo" style="margin-top:10px; color:lime;"></p>
-  </div>
+  <div style="max-width:980px;margin:10px auto;padding:0 14px;text-align:center;">
+    <!-- Auth UI -->
+    <div id="auth-area" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin-bottom:12px;">
+      <button id="signInGoogle" class="btn">Sign in with Google</button>
 
-  <!-- Your existing tracker app here -->
+      <!-- email/password small form -->
+      <input id="authEmail" type="email" placeholder="Email" style="padding:10px;border-radius:8px;border:1px solid #ccc" />
+      <input id="authPass" type="password" placeholder="Password" style="padding:10px;border-radius:8px;border:1px solid #ccc" />
+      <button id="signupBtn" class="btn">Sign Up</button>
+      <button id="signinBtn" class="btn">Sign In</button>
+      <button id="signoutBtn" class="btn" style="display:none;background:#ef4444">Sign Out</button>
+      <div id="userInfo" style="width:100%;text-align:center;color:lightgreen;font-weight:700"></div>
+    </div>
+  </div>
 
   <div class="wrap">
     <div class="card" role="application" aria-labelledby="app-title">
@@ -202,7 +134,7 @@
         <div style="margin-top:6px" class="preview" id="preview">Duration: 00:00 (0.00h)</div>
 
         <div class="actions-row" aria-hidden="false">
-          <div class="row">
+          <div class="row" style="display:flex;gap:8px;">
             <button id="add-btn" class="btn primary" type="button">Add Entry</button>
             <button id="dayoff-btn" class="btn ghost" type="button">Add Day Off</button>
           </div>
@@ -232,274 +164,15 @@
     </div>
   </div>
 
-  <script>
-  (function(){
-    // keys
-    const STORAGE = 'vann_v7_entries';
-    const THEME = 'vann_v7_theme';
-    const LANG = 'vann_v7_lang';
-    const MONTH = 'vann_v7_month';
-
-    // elements
-    const dateEl = document.getElementById('date-input');
-    const startEl = document.getElementById('start-input');
-    const endEl = document.getElementById('end-input');
-    const taskEl = document.getElementById('task-input');
-    const previewEl = document.getElementById('preview');
-    const addBtn = document.getElementById('add-btn');
-    const dayOffBtn = document.getElementById('dayoff-btn');
-    const entriesBody = document.getElementById('entries-body');
-    const totalEl = document.getElementById('total');
-    const exportBtn = document.getElementById('export-csv');
-    const printBtn = document.getElementById('print-btn');
-    const prevMonthBtn = document.getElementById('prev-month');
-    const nextMonthBtn = document.getElementById('next-month');
-    const todayMonthBtn = document.getElementById('today-month');
-    const monthLabel = document.getElementById('month-label');
-    const langButtons = document.getElementById('lang-buttons');
-    const themeToggle = document.getElementById('theme-toggle');
-    const themeLabel = document.getElementById('app-sub');
-
-    // translations
-    const translations = {
-      en: {
-        app_title: 'TheVann Track Duration',
-        subtitle: 'Auto rounding, monthly view, multi-language',
-        add_entry: 'Add Entry',
-        add_dayoff: 'Add Day Off',
-        export_csv: 'Export CSV',
-        print: 'Print',
-        duration_default: 'Duration: 00:00 (0.00h)',
-        total_label: 'Total Rounded Hours:',
-        prev: 'Prev',
-        next: 'Next',
-        today: 'Today',
-        alert_fill: 'Please fill Date, Start and End.'
-      },
-      my: {
-        app_title: 'Thevann အချိန်မှတ်တမ်း',
-        subtitle: 'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ',
-        add_entry: 'မှတ်တမ်းထည့်မည်',
-        add_dayoff: 'နားရက်',
-        export_csv: 'CSV ထုတ်ယူမည်',
-        print: 'ပုံနှိပ်',
-        duration_default: 'ကြာချိန်: 00:00 (0.00နာရီ)',
-        total_label: 'စုစုပေါင်း ပတ်လည်နာရီ:',
-        prev: 'မီ',
-        next: 'ရှေ့',
-        today: 'ယနေ့',
-        alert_fill: 'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန် ထည့်ပါ။'
-      },
-      th: {
-        app_title: 'ตัวจับเวลาทำงานของแวน',
-        subtitle: 'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา',
-        add_entry: 'เพิ่มรายการ',
-        add_dayoff: 'วันหยุด',
-        export_csv: 'ส่งออก CSV',
-        print: 'พิมพ์',
-        duration_default: 'ระยะเวลา: 00:00 (0.00 ชม.)',
-        total_label: 'รวมระยะเวลาปัดเศษ:',
-        prev: 'ก่อนหน้า',
-        next: 'ถัดไป',
-        today: 'วันนี้',
-        alert_fill: 'กรุณากรอกวันที่ เวลาเข้า และ เวลาออก'
-      }
-    };
-
-    // state
-    let entries = [];
-    let editId = null;
-    let selectedYear, selectedMonth;
-    let currentLang = localStorage.getItem(LANG) || 'en';
-
-    // helpers
-    function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
-    function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`; }
-    // rounding rule: 1-29 -> 00, 30-39 -> 50, 40-59 -> next hour
-    function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; let M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
-
-    function save(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
-    function load(){ const raw=localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
-
-    function monthLabelText(y,m){
-      const d = new Date(y,m,1);
-      // use en-US for Burmese locale to keep English month names consistent
-      return d.toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
-    }
-
-    function updatePreview(){
-      const s=startEl.value, e=endEl.value;
-      if(s && e){
-        const sM=parseHM(s), eM=parseHM(e);
-        if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; }
-        let diff = eM - sM;
-        if(diff<0) diff += 24*60;
-        previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)`;
-      } else {
-        previewEl.textContent = translations[currentLang].duration_default;
-      }
-    }
-    [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
-
-    // render filtered by selected month
-    function render(){
-      entriesBody.innerHTML = '';
-      let total=0;
-      const filtered = entries.filter(r=>{
-        const d = new Date(r.date);
-        return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
-      });
-
-      filtered.sort((a,b)=>{
-        if(a.date < b.date) return 1;
-        if(a.date > b.date) return -1;
-        return b.id - a.id;
-      });
-
-      for(const row of filtered){
-        const tr = document.createElement('tr');
-        if(row.isDayOff) tr.classList.add('day-off');
-        const start = row.isDayOff? translations[currentLang].add_dayoff : row.start;
-        const end = row.isDayOff? translations[currentLang].add_dayoff : row.end;
-        const duration = row.isDayOff? translations[currentLang].add_dayoff : row.duration;
-        const rounded = row.isDayOff? 0 : row.rounded;
-        tr.innerHTML = `
-          <td>${row.date}</td>
-          <td>${start}</td>
-          <td>${end}</td>
-          <td>${duration}</td>
-          <td>${rounded.toFixed(2)}</td>
-          <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>
-          <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">Del</button>` : `<button class="chip edit" data-id="${row.id}">Edit</button><button class="chip del" data-id="${row.id}">Delete</button>`}</td>
-        `;
-        entriesBody.appendChild(tr);
-        total += rounded;
-      }
-
-      totalEl.textContent = total.toFixed(2);
-      monthLabel.textContent = monthLabelText(selectedYear, selectedMonth);
-      applyLanguageTexts(); // ensure UI text updates
-    }
-
-    // add / update
-    addBtn.addEventListener('click', ()=>{
-      const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
-      if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
-      const sM = parseHM(s), eM = parseHM(e);
-      if(sM==null || eM==null) return alert('Invalid time');
-      let diff = eM - sM;
-      if(diff < 0) diff += 24*60;
-      const formatted = fmtHM(diff); const rounded = computeRounded(diff);
-      if(editId){
-        const i = entries.findIndex(x => x.id === editId);
-        if(i>-1){
-          entries[i] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff: false };
-          editId = null; addBtn.textContent = translations[currentLang].add_entry;
-        }
-      } else {
-        entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff: false });
-      }
-      formReset(); save();
-    });
-
-    function formReset(){
-      const now = new Date();
-      dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(), 28));
-      startEl.value = ''; endEl.value = ''; taskEl.value = '';
-      previewEl.textContent = translations[currentLang].duration_default;
-      addBtn.textContent = translations[currentLang].add_entry;
-    }
-
-    // day off
-    dayOffBtn.addEventListener('click', ()=>{
-      const date = dateEl.value;
-      if(!date) return alert(translations[currentLang].alert_fill);
-      const exists = entries.some(x => x.date === date && x.isDayOff);
-      if(exists && !confirm('Day off exists for this date; add another?')) return;
-      entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: translations[currentLang].add_dayoff, isDayOff: true });
-      formReset(); save();
-    });
-
-    // edit/delete delegation
-    entriesBody.addEventListener('click', (ev)=>{
-      const idStr = ev.target.getAttribute('data-id'); if(!idStr) return; const id = Number(idStr);
-      if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x => x.id !== id); save(); }
-      if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x => x.id === id); if(idx === -1) return; const r = entries[idx]; if(r.isDayOff) return alert('Cannot edit Day Off'); dateEl.value = r.date; startEl.value = r.start; endEl.value = r.end; taskEl.value = r.task; editId = id; addBtn.textContent = 'Save'; window.scrollTo({top:0,behavior:'smooth'}); }
-    });
-
-    // export CSV (current month)
-    exportBtn.addEventListener('click', ()=>{
-      const filtered = entries.filter(r => { const d = new Date(r.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
-      if(filtered.length === 0) return alert('No data to export for this month');
-      const headers = ['Date','Start','End','Duration','Rounded Hours','Task'];
-      let csv = headers.join(',') + '\n';
-      filtered.forEach(r => {
-        csv += [ r.date, r.isDayOff? 'Day Off' : r.start, r.isDayOff? 'Day Off' : r.end, r.isDayOff? 'Day Off' : r.duration, r.isDayOff? '0.00' : r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"` ].join(',') + '\n';
-      });
-      csv += `\n${translations['en'].total_label},,, ,${totalEl.textContent}\n`;
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
-    });
-
-    // print
-    printBtn.addEventListener('click', ()=> window.print());
-
-    // month navigation
-    prevMonthBtn.addEventListener('click', ()=>{ selectedMonth--; if(selectedMonth < 0){ selectedMonth = 11; selectedYear--; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
-    nextMonthBtn.addEventListener('click', ()=>{ selectedMonth++; if(selectedMonth > 11){ selectedMonth = 0; selectedYear++; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
-    todayMonthBtn.addEventListener('click', ()=>{ const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
-
-    // theme toggle
-    function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t === 'light'){ document.body.classList.add('light-mode'); themeToggle.textContent = '☀️'; } else { document.body.classList.remove('light-mode'); themeToggle.textContent = '🌙'; } }
-    themeToggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode') ? 'light' : 'dark'; localStorage.setItem(THEME, now); applyTheme(); });
-
-    // language
-    function applyLanguageTexts(){
-      const t = translations[currentLang];
-      document.getElementById('app-title').textContent = t.app_title;
-      document.getElementById('app-sub').textContent = t.subtitle;
-      addBtn.textContent = t.add_entry;
-      dayOffBtn.textContent = t.add_dayoff;
-      exportBtn.textContent = t.export_csv;
-      printBtn.textContent = t.print;
-      previewEl.textContent = t.duration_default;
-      document.getElementById('total-card').innerHTML = `${t.total_label} <strong id="total">${totalEl.textContent}</strong>`;
-    }
-
-    langButtons.addEventListener('click', (ev)=>{
-      const b = ev.target; const lang = b && b.getAttribute && b.getAttribute('data-lang'); if(!lang) return;
-      currentLang = (lang === 'mm') ? 'my' : lang; // support mm alias
-      localStorage.setItem(LANG, currentLang);
-      render();
-    });
-
-    // init
-    function init(){
-      load();
-      const saved = localStorage.getItem(MONTH);
-      if(saved){
-        try{ const o = JSON.parse(saved); selectedYear = o.y; selectedMonth = o.m; } catch(e){ /* ignore */ }
-      }
-      if(typeof selectedYear === 'undefined'){
-        const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth();
-      }
-      // set date input default to today's date (within selected month)
-      const now = new Date();
-      dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(), 28));
-      currentLang = localStorage.getItem(LANG) || currentLang;
-      applyTheme();
-      applyLanguageTexts();
-      render();
-    }
-
-    init();
-  })();
-
-  </script><script type="module">
+  <!-- App logic + Firebase integration -->
+  <script type="module">
+  // ---------- Firebase + App logic ----------
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
+  // ---------- CONFIG ----------
   const firebaseConfig = {
     apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
     authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
@@ -510,38 +183,339 @@
     measurementId: "G-QNG2F09LWL"
   };
 
-  // Initialize Firebase
+  // ---------- INIT ----------
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
   const analytics = getAnalytics(app);
 
-  // Buttons
-  const signInBtn = document.getElementById("signInBtn");
-  const signOutBtn = document.getElementById("signOutBtn");
-  const userInfo = document.getElementById("userInfo");
+  // ---------- DOM ----------
+  const authEmail = document.getElementById('authEmail');
+  const authPass = document.getElementById('authPass');
+  const signupBtn = document.getElementById('signupBtn');
+  const signinBtn = document.getElementById('signinBtn');
+  const signInGoogle = document.getElementById('signInGoogle');
+  const signoutBtn = document.getElementById('signoutBtn');
+  const userInfo = document.getElementById('userInfo');
 
-  // Sign in
-  signInBtn.addEventListener("click", async () => {
+  const dateEl = document.getElementById('date-input');
+  const startEl = document.getElementById('start-input');
+  const endEl = document.getElementById('end-input');
+  const taskEl = document.getElementById('task-input');
+  const previewEl = document.getElementById('preview');
+  const addBtn = document.getElementById('add-btn');
+  const dayOffBtn = document.getElementById('dayoff-btn');
+  const entriesBody = document.getElementById('entries-body');
+  const totalEl = document.getElementById('total');
+  const exportBtn = document.getElementById('export-csv');
+  const printBtn = document.getElementById('print-btn');
+  const prevMonthBtn = document.getElementById('prev-month');
+  const nextMonthBtn = document.getElementById('next-month');
+  const todayMonthBtn = document.getElementById('today-month');
+  const monthLabel = document.getElementById('month-label');
+  const langButtons = document.getElementById('lang-buttons');
+  const themeToggle = document.getElementById('theme-toggle');
+
+  // ---------- State ----------
+  const STORAGE = 'vann_v8_entries';
+  const THEME = 'vann_v8_theme';
+  const LANG = 'vann_v8_lang';
+  const MONTH = 'vann_v8_month';
+
+  let entries = [];
+  let editId = null;
+  let selectedYear, selectedMonth;
+  let currentUser = null;
+  let currentLang = localStorage.getItem(LANG) || 'en';
+
+  // ---------- Translations (keeps minimal) ----------
+  const translations = {
+    en: { add_entry: 'Add Entry', add_dayoff: 'Day Off', duration_default: 'Duration: 00:00 (0.00h)', total_label: 'Total Rounded Hours:', alert_fill: 'Please fill Date, Start and End.' },
+    my: { add_entry: 'မှတ်တမ်းထည့်မည်', add_dayoff: 'နားရက်', duration_default: 'ကြာချိန်: 00:00 (0.00နာရီ)', total_label: 'စုစုပေါင်း ပတ်လည်နာရီ:', alert_fill: 'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန် ထည့်ပါ။' },
+    th: { add_entry: 'เพิ่มรายการ', add_dayoff: 'วันหยุด', duration_default: 'ระยะเวลา: 00:00 (0.00 ชม.)', total_label: 'รวมระยะเวลาปัดเศษ:', alert_fill: 'กรุณากรอกวันที่ เวลาเข้า และ เวลาออก' }
+  };
+
+  // ---------- helpers ----------
+  function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
+  function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`; }
+  // rounding rule: 1-29 -> 00, 30-39 -> 50, 40-59 -> next hour
+  function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h, M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
+
+  // ---------- Local storage save & Firestore sync ----------
+  async function saveLocalAndMaybeRemote(){
+    localStorage.setItem(STORAGE, JSON.stringify(entries));
+    updateTotalAndRender();
+    if(currentUser){
+      try{
+        await saveToFirestore(currentUser.uid);
+      }catch(e){
+        console.error('saveToFirestore error', e);
+      }
+    }
+  }
+
+  // Save entries array under users/{uid}/data (simple structure)
+  async function saveToFirestore(uid){
+    const userDoc = doc(db, 'users', uid);
+    // store entries and timestamp
+    await setDoc(userDoc, { entries: entries, updatedAt: Date.now() }, { merge: true });
+    console.log('Saved to Firestore for', uid);
+  }
+
+  // Load from Firestore, return object { entries: [...] } or null
+  async function loadFromFirestore(uid){
+    const userDoc = doc(db, 'users', uid);
+    const snap = await getDoc(userDoc);
+    if(snap.exists()){
+      return snap.data();
+    } else {
+      return null;
+    }
+  }
+
+  // Merge remote and local entries: keep unique by id
+  function mergeEntries(localArr, remoteArr){
+    const map = new Map();
+    (remoteArr || []).forEach(e => map.set(String(e.id), e));
+    (localArr || []).forEach(e => {
+      if(!map.has(String(e.id))){
+        map.set(String(e.id), e);
+      } else {
+        // prefer remote for exact match, else keep both -> remote wins
+      }
+    });
+    return Array.from(map.values()).sort((a,b)=> b.id - a.id);
+  }
+
+  // ---------- UI helpers ----------
+  function updatePreview(){
+    const s=startEl.value, e=endEl.value;
+    if(s && e){
+      const sM=parseHM(s), eM=parseHM(e);
+      if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; }
+      let diff = eM - sM; if(diff<0) diff += 24*60;
+      previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)`;
+    } else {
+      previewEl.textContent = translations[currentLang].duration_default;
+    }
+  }
+  [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
+
+  function monthLabelText(y,m){
+    const d = new Date(y,m,1);
+    return d.toLocaleString(currentLang==='my'?'en-US':currentLang,{ month:'long', year:'numeric' });
+  }
+
+  function updateTotalAndRender(){
+    entriesBody.innerHTML = '';
+    let total = 0;
+    const filtered = entries.filter(r => { const d = new Date(r.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
+    filtered.sort((a,b) => (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : b.id - a.id);
+
+    for(const row of filtered){
+      const tr = document.createElement('tr');
+      if(row.isDayOff) tr.classList.add('day-off');
+      const start = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.start;
+      const end = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.end;
+      const duration = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.duration;
+      const rounded = row.isDayOff? 0 : row.rounded;
+      tr.innerHTML = `
+        <td>${row.date}</td>
+        <td>${start}</td>
+        <td>${end}</td>
+        <td>${duration}</td>
+        <td>${rounded.toFixed(2)}</td>
+        <td class="${row.isDayOff? 'day-off':''}">${row.task || ''}</td>
+        <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">Del</button>` : `<button class="chip edit" data-id="${row.id}">Edit</button><button class="chip del" data-id="${row.id}">Delete</button>`}</td>
+      `;
+      entriesBody.appendChild(tr);
+      total += rounded;
+    }
+
+    totalEl.textContent = total.toFixed(2);
+    monthLabel.textContent = monthLabelText(selectedYear, selectedMonth);
+    applyLanguageTexts();
+  }
+
+  // ---------- CRUD ----------
+  addBtn.addEventListener('click', ()=>{
+    const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
+    if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
+    const sM = parseHM(s), eM = parseHM(e); if(sM==null || eM==null) return alert('Invalid time');
+    let diff = eM - sM; if(diff < 0) diff += 24*60;
+    const formatted = fmtHM(diff); const rounded = computeRounded(diff);
+
+    if(editId){
+      const i = entries.findIndex(x => x.id === editId);
+      if(i>-1){ entries[i] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId=null; addBtn.textContent = translations[currentLang].add_entry; }
+    } else {
+      entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
+    }
+    formReset();
+    saveLocalAndMaybeRemote();
+  });
+
+  function formReset(){
+    const now = new Date();
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(), 28));
+    startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent = translations[currentLang].duration_default;
+  }
+
+  dayOffBtn.addEventListener('click', ()=>{
+    const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
+    const exists = entries.some(x=>x.date===date && x.isDayOff);
+    if(exists && !confirm('Day off exists for this date; add another?')) return;
+    entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: translations[currentLang].add_dayoff || 'DAY OFF', isDayOff:true });
+    formReset(); saveLocalAndMaybeRemote();
+  });
+
+  entriesBody.addEventListener('click', (ev)=>{
+    const idStr = ev.target.getAttribute('data-id'); if(!idStr) return; const id = Number(idStr);
+    if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); saveLocalAndMaybeRemote(); }
+    if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x=>x.id===id); if(idx===-1) return; const r = entries[idx]; if(r.isDayOff) return alert('Cannot edit Day Off'); dateEl.value=r.date; startEl.value=r.start; endEl.value=r.end; taskEl.value=r.task; editId=id; addBtn.textContent='Save'; window.scrollTo({top:0,behavior:'smooth'}); }
+  });
+
+  // export CSV (current month)
+  document.getElementById('export-csv').addEventListener('click', ()=>{
+    const filtered = entries.filter(r => { const d = new Date(r.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
+    if(filtered.length === 0) return alert('No data to export for this month');
+    const headers = ['Date','Start','End','Duration','Rounded Hours','Task'];
+    let csv = headers.join(',') + '\n';
+    filtered.forEach(r => {
+      csv += [ r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"` ].join(',') + '\n';
+    });
+    csv += `\n${'Total Rounded Hours'},,, ,${totalEl.textContent}\n`;
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  // print
+  printBtn.addEventListener('click', ()=> window.print());
+
+  // month navigation
+  prevMonthBtn.addEventListener('click', ()=>{ selectedMonth--; if(selectedMonth < 0){ selectedMonth=11; selectedYear--; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
+  nextMonthBtn.addEventListener('click', ()=>{ selectedMonth++; if(selectedMonth > 11){ selectedMonth=0; selectedYear++; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
+  todayMonthBtn.addEventListener('click', ()=>{ const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
+
+  // theme
+  function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeToggle.textContent='🌙'; } }
+  themeToggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
+
+  // language
+  function applyLanguageTexts(){
+    const t = translations[currentLang] || translations.en;
+    addBtn.textContent = t.add_entry || 'Add Entry';
+    dayOffBtn.textContent = t.add_dayoff || 'Day Off';
+    previewEl.textContent = t.duration_default;
+    document.getElementById('total-card').innerHTML = `${t.total_label} <strong id="total">${totalEl.textContent}</strong>`;
+  }
+  langButtons.addEventListener('click', (ev)=>{ const b = ev.target; const lang = b && b.getAttribute && b.getAttribute('data-lang'); if(!lang) return; currentLang = (lang==='mm')? 'my': lang; localStorage.setItem(LANG, currentLang); updateTotalAndRender(); });
+
+  // ---------- Auth UI handlers ----------
+  signupBtn.addEventListener('click', async ()=>{
+    const email = authEmail.value.trim(); const pass = authPass.value.trim();
+    if(!email || !pass) return alert('Enter email and password');
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      userInfo.innerText = `Account created: ${cred.user.email}`;
+    } catch(e){ alert('Sign up error: ' + e.message); }
+  });
+
+  signinBtn.addEventListener('click', async ()=>{
+    const email = authEmail.value.trim(); const pass = authPass.value.trim();
+    if(!email || !pass) return alert('Enter email and password');
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      userInfo.innerText = `Signed in: ${cred.user.email}`;
+    } catch(e){ alert('Sign in error: ' + e.message); }
+  });
+
+  signInGoogle.addEventListener('click', async ()=>{
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-      userInfo.innerHTML = `✅ Signed in as <b>${user.displayName}</b>`;
-      signInBtn.style.display = "none";
-      signOutBtn.style.display = "inline-block";
-    } catch (error) {
-      alert("Login failed: " + error.message);
+      // onAuthStateChanged will handle UI & sync
+    } catch(e){ alert('Google sign-in failed: ' + e.message); }
+  });
+
+  signoutBtn.addEventListener('click', async ()=>{
+    try {
+      await signOut(auth);
+      // onAuthStateChanged will handle UI & local state
+    } catch(e){ console.error(e); }
+  });
+
+  // ---------- Auth state observer: load/save data ----------
+  onAuthStateChanged(auth, async (user) => {
+    if(user){
+      currentUser = user;
+      userInfo.innerText = `Signed in: ${user.displayName || user.email}`;
+      signoutBtn.style.display = 'inline-block';
+      signInGoogle.style.display = 'none';
+      signinBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+      // merge/load
+      try{
+        const remote = await loadFromFirestore(user.uid);
+        const localRaw = localStorage.getItem(STORAGE);
+        const local = localRaw ? JSON.parse(localRaw) : [];
+        if(remote && Array.isArray(remote.entries) && remote.entries.length>0){
+          // both exist -> merge
+          if(local && local.length>0){
+            entries = mergeEntries(local, remote.entries);
+            // push merged to remote and local
+            await saveToFirestore(user.uid);
+            localStorage.setItem(STORAGE, JSON.stringify(entries));
+          } else {
+            // remote only -> use remote
+            entries = remote.entries;
+            localStorage.setItem(STORAGE, JSON.stringify(entries));
+          }
+        } else {
+          // remote empty -> push local up
+          entries = local || [];
+          await saveToFirestore(user.uid);
+        }
+        updateTotalAndRender();
+      }catch(e){
+        console.error('Auth load error', e);
+      }
+    } else {
+      currentUser = null;
+      userInfo.innerText = 'Signed out';
+      signoutBtn.style.display = 'none';
+      signInGoogle.style.display = 'inline-block';
+      signinBtn.style.display = 'inline-block';
+      signupBtn.style.display = 'inline-block';
+      // keep local data (already in localStorage)
+      const raw = localStorage.getItem(STORAGE);
+      entries = raw ? JSON.parse(raw) : [];
+      updateTotalAndRender();
     }
   });
 
-  // Sign out
-  signOutBtn.addEventListener("click", async () => {
-    await signOut(auth);
-    userInfo.innerHTML = "";
-    signInBtn.style.display = "inline-block";
-    signOutBtn.style.display = "none";
-  });
-</script>
+  // ---------- Init ----------
+  function loadLocal() {
+    const raw = localStorage.getItem(STORAGE);
+    entries = raw ? JSON.parse(raw) : [];
+  }
 
+  function init(){
+    loadLocal();
+    const saved = localStorage.getItem(MONTH);
+    if(saved){
+      try{ const o = JSON.parse(saved); selectedYear = o.y; selectedMonth = o.m; }catch(e){}
+    }
+    if(typeof selectedYear === 'undefined'){
+      const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth();
+    }
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(), 28));
+    applyTheme();
+    applyLanguageTexts();
+    updateTotalAndRender();
+  }
+  init();
+
+  </script>
 </body>
 </html>
