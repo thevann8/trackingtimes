@@ -3,96 +3,94 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>TheVann Track Duration — v8</title>
-  <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and AdSense ready." />
+  <title>TheVann Track Duration — v8 (Google sign-in)</title>
+  <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
-  <!-- AdSense (one copy only) -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398" crossorigin="anonymous"></script>
+  <!-- Google AdSense (you requested this) -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
+     crossorigin="anonymous"></script>
 
   <style>
-    /* minimal styles, kept similar to your v7 */
     :root{
-      --bg:#071124; --card:#071a2a; --muted:#9fb7c6; --text:#e6f7fb;
-      --accent:#08b6d8; --success:#16a34a; --danger:#ef4444; --glass:rgba(255,255,255,0.03);
-      --radius:12px; --shadow:0 12px 30px rgba(2,6,23,0.55); --table-border:rgba(255,255,255,0.04);
-      --font: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      --bg:#071226;--card:#0b1724;--text:#eaf6fb;--muted:#9fb7c6;--accent:#06c2d6;--accent-2:#2dd4bf;--success:#16a34a;--danger:#ef4444;
+      --glass:rgba(255,255,255,0.03);--radius:12px;--shadow:0 12px 30px rgba(3,8,20,0.6);--table-border:rgba(255,255,255,0.04)
     }
-    body.light-mode{
-      --bg:#f7fbfc; --card:#fff; --muted:#4b5563; --text:#071124; --glass:rgba(2,6,23,0.03);
-    }
+    body.light-mode{--bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06)}
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:var(--bg);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
-    .wrap{max-width:980px;margin:18px auto;padding:0 14px}
-    .card{background:linear-gradient(180deg,var(--card), rgba(255,255,255,0.01));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
-    header.app-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-    .title-wrap{display:flex;flex-direction:column;min-width:140px}
-    h1.title{margin:0;font-size:18px;letter-spacing:0.2px}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
+    .wrap{max-width:980px;margin:0 auto}
+    .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
+    .title-wrap{flex:1;min-width:180px}
+    h1.title{margin:0;font-size:18px}
     .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
-    .controls-top-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+
+    /* sign area */
+    .auth-area{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px}
+    .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25)}
+    .signed-as{color:var(--success);font-weight:700}
+
+    /* language + theme */
+    .right-controls{display:flex;align-items:center;gap:8px}
     .lang-select{display:flex;gap:6px}
-    .lang-btn{background:transparent;border:1px solid var(--table-border);color:var(--text);padding:6px 10px;border-radius:10px;cursor:pointer;font-size:13px}
-    .theme-toggle{background:var(--accent);color:#022;border-radius:10px;padding:6px 10px;border:none;cursor:pointer;font-weight:600}
-    .month-nav{display:flex;align-items:center;gap:8px;margin-top:12px}
-    .month-btn{background:transparent;border:1px solid var(--table-border);color:var(--text);padding:8px 10px;border-radius:10px;cursor:pointer}
-    .form-row{display:flex;flex-direction:column;gap:8px;margin-top:12px}
-    .inputs{display:flex;flex-direction:column;gap:8px}
-    input[type=date], input[type=time], input[type=text], input[type=email], input[type=password]{width:100%;padding:12px;border-radius:10px;border:1px solid var(--table-border);background:transparent;color:var(--text);font-size:15px}
-    .preview{font-size:13px;color:var(--muted);padding:8px 10px;border-radius:8px;background:transparent}
-    .actions-row{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-    .btn{border-radius:10px;padding:12px 14px;border:none;cursor:pointer;font-weight:700;font-size:15px}
-    .btn.primary{background:linear-gradient(90deg,var(--accent),#38e6f0);color:#022;flex:1}
-    .btn.ghost{background:transparent;border:1px solid var(--table-border);color:var(--text);flex:1}
-    .table-wrap{overflow:auto;margin-top:12px;border-radius:10px}
-    table{width:100%;border-collapse:collapse;min-width:680px}
-    thead th{background:transparent;color:var(--muted);text-transform:uppercase;font-size:12px;padding:10px 8px;border-bottom:1px solid var(--table-border);text-align:left}
-    tbody td{padding:10px 8px;border-bottom:1px solid var(--table-border);font-size:14px}
-    tbody tr:nth-child(odd){background:rgba(255,255,255,0.02)}
+    .lang-select button{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;color:var(--text);cursor:pointer;font-size:13px}
+    .toggle{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;cursor:pointer}
+
+    /* inputs / controls */
+    .controls-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+    .entry-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:10px;border-radius:10px;color:var(--text);min-width:120px}
+    .preview{color:var(--muted);font-size:13px}
+
+    .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022}
+    .ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
+
+    /* table */
+    .table-wrap{overflow:auto;margin-top:14px;border-radius:10px}
+    table{width:100%;border-collapse:collapse;min-width:700px}
+    thead th{padding:10px 12px;text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;border-bottom:1px solid var(--table-border)}
+    tbody td{padding:10px 12px;border-bottom:1px solid var(--table-border)}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
     tr.day-off td{font-style:italic;color:var(--muted)}
-    .chip{padding:8px 10px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;border:none}
+    .actions{display:flex;gap:8px}
+    .chip{padding:6px 10px;border-radius:8px;font-weight:600;cursor:pointer}
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
-    .total-wrap{display:flex;justify-content:center;margin-top:14px}
-    .total-card{background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:12px 16px;border-radius:12px;font-weight:800;color:var(--text)}
-    @media(min-width:680px){
-      .inputs{flex-direction:row;align-items:center}
-      input[type=date], input[type=time], input[type=text]{flex:0 0 auto;min-width:150px;width:auto}
-      .actions-row{flex-direction:row}
-    }
+
+    .footer{display:flex;justify-content:flex-end;margin-top:12px}
+    .total-card{background:var(--glass);padding:12px 16px;border-radius:10px;color:var(--text);font-weight:700}
+
     @media(max-width:640px){
-      .card{padding:12px}
-      .inputs{flex-direction:column}
-      input[type=date], input[type=time], input[type=text]{width:100%}
+      .entry-grid{flex-direction:column;align-items:stretch}
+      input[type=date],input[type=time],input[type=text],.btn{width:100%}
       table{min-width:600px}
+      .total-card{width:100%;text-align:center}
     }
+
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
-      .controls-top-row,.lang-select,.chip,.btn,.actions-row{display:none!important}
-      table{width:100%;border-collapse:collapse}
-      thead th,tbody td{border:1px solid #ccc;padding:8px;color:#000;background:#fff}
-      thead th{background:#f2f2f2}
-      td.actions{display:none}
-      .total-card{background:transparent;color:#000}
+      .card{background:#fff;box-shadow:none;border:none}
+      .controls-top,.entry-grid,button,[class*="chip"]{display:none}
+      table{min-width:0}
+      thead th,tbody td{border:1px solid #ccc;padding:8px}
+      th{background:#f2f2f2}
     }
   </style>
 </head>
 <body>
-  <div style="max-width:980px;margin:10px auto;padding:0 14px;text-align:center;">
-    <!-- Auth UI -->
-    <div id="auth-area" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;align-items:center;margin-bottom:12px;">
-      <button id="signInGoogle" class="btn">Sign in with Google</button>
-
-      <!-- email/password small form -->
-      <input id="authEmail" type="email" placeholder="Email" style="padding:10px;border-radius:8px;border:1px solid #ccc" />
-      <input id="authPass" type="password" placeholder="Password" style="padding:10px;border-radius:8px;border:1px solid #ccc" />
-      <button id="signupBtn" class="btn">Sign Up</button>
-      <button id="signinBtn" class="btn">Sign In</button>
-      <button id="signoutBtn" class="btn" style="display:none;background:#ef4444">Sign Out</button>
-      <div id="userInfo" style="width:100%;text-align:center;color:lightgreen;font-weight:700"></div>
-    </div>
-  </div>
-
   <div class="wrap">
+    <div class="auth-area" id="auth-area">
+      <button id="googleSignIn" class="auth-btn">Sign in with Google</button>
+      <div id="signedState" style="display:none;">
+        <div class="signed-as" id="signedText"></div>
+        <button id="signOut" class="auth-btn" style="margin-top:6px;background:#efefef;color:#022">Sign out</button>
+      </div>
+      <div id="notSigned" style="color:var(--muted);font-size:13px">Signed out — data will be stored locally until you sign in.</div>
+    </div>
+
     <div class="card" role="application" aria-labelledby="app-title">
       <header class="app-head">
         <div class="title-wrap">
@@ -100,79 +98,77 @@
           <div class="subtitle" id="app-sub">Auto rounding, monthly view, multi-language</div>
         </div>
 
-        <div class="controls-top-row" aria-hidden="false">
+        <div class="right-controls">
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
-            <button class="lang-btn" data-lang="en" aria-pressed="true">English</button>
-            <button class="lang-btn" data-lang="my">မြန်မာ</button>
-            <button class="lang-btn" data-lang="th">ไทย</button>
+            <button data-lang="en">EN</button>
+            <button data-lang="my">မြန်မာ</button>
+            <button data-lang="th">ไทย</button>
           </div>
-
-          <button id="theme-toggle" class="theme-toggle" title="Toggle theme">🌙</button>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="toggle" id="theme-toggle" title="Toggle theme">🌙</div>
+          </div>
         </div>
       </header>
 
-      <div class="month-nav" style="margin-top:12px">
-        <button id="prev-month" class="month-btn">◀</button>
-        <div class="month-label" id="month-label">Month</div>
-        <button id="next-month" class="month-btn">▶</button>
-        <button id="today-month" class="month-btn" style="margin-left:8px">Today</button>
+      <div class="controls-top">
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="prev-month" class="ghost btn">◀</button>
+          <div id="month-label" style="font-weight:700;min-width:160px">Month</div>
+          <button id="next-month" class="ghost btn">▶</button>
+          <button id="today-month" class="ghost btn">Today</button>
+        </div>
 
         <div style="margin-left:auto;display:flex;gap:8px">
-          <button id="export-csv" class="month-btn">Export CSV</button>
-          <button id="print-btn" class="month-btn">Print</button>
+          <button id="export-csv" class="ghost btn">Export CSV</button>
+          <button id="print-btn" class="ghost btn">Print</button>
         </div>
       </div>
 
-      <form id="entry-form" class="form-row" onsubmit="return false;">
-        <div class="inputs" role="group" aria-label="Entry inputs">
-          <input id="date-input" type="date" required aria-label="Date" />
-          <input id="start-input" type="time" required aria-label="Start time" />
-          <input id="end-input" type="time" required aria-label="End time" />
-          <input id="task-input" type="text" placeholder="Task / notes (optional)" aria-label="Task notes" />
+      <div class="entry-grid" style="margin-top:12px">
+        <input id="date-input" type="date" />
+        <input id="start-input" type="time" />
+        <input id="end-input" type="time" />
+        <input id="task-input" type="text" placeholder="Task / notes (optional)" />
+        <div class="preview" id="preview">Duration: 00:00 (0.00h)</div>
+
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <button id="add-btn" class="primary btn">Add Entry</button>
+          <button id="dayoff-btn" class="ghost btn">Day Off</button>
         </div>
+      </div>
 
-        <div style="margin-top:6px" class="preview" id="preview">Duration: 00:00 (0.00h)</div>
-
-        <div class="actions-row" aria-hidden="false">
-          <div class="row" style="display:flex;gap:8px;">
-            <button id="add-btn" class="btn primary" type="button">Add Entry</button>
-            <button id="dayoff-btn" class="btn ghost" type="button">Add Day Off</button>
-          </div>
-        </div>
-      </form>
-
-      <div class="table-wrap" role="region" aria-label="Entries table">
-        <table id="entries-table" role="table" aria-describedby="month-label">
-          <thead role="rowgroup">
-            <tr role="row">
-              <th role="columnheader">Date</th>
-              <th role="columnheader">Start</th>
-              <th role="columnheader">End</th>
-              <th role="columnheader">Duration (H:M)</th>
-              <th role="columnheader">Rounded (hrs)</th>
-              <th role="columnheader">Task</th>
-              <th role="columnheader" class="actions">Actions</th>
+      <div class="table-wrap">
+        <table id="entries-table" aria-describedby="month-label">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Duration (H:M)</th>
+              <th>Rounded (hrs)</th>
+              <th>Task</th>
+              <th class="actions">Actions</th>
             </tr>
           </thead>
-          <tbody id="entries-body" role="rowgroup"></tbody>
+          <tbody id="entries-body"></tbody>
         </table>
       </div>
 
-      <div class="total-wrap">
-        <div class="total-card" id="total-card">Total Rounded Hours: <strong id="total">0.00</strong></div>
+      <div class="footer">
+        <div class="total-card">Total Rounded Hours: <span id="total">0.00</span></div>
       </div>
     </div>
   </div>
 
-  <!-- App logic + Firebase integration -->
+  <!-- Firebase + app script -->
   <script type="module">
-  // ---------- Firebase + App logic ----------
+  // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
-  // ---------- CONFIG ----------
+  // --- Your confirmed Firebase config ---
   const firebaseConfig = {
     apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
     authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
@@ -183,21 +179,19 @@
     measurementId: "G-QNG2F09LWL"
   };
 
-  // ---------- INIT ----------
+  // init firebase
   const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics?.(app);
   const auth = getAuth(app);
   const provider = new GoogleAuthProvider();
   const db = getFirestore(app);
-  const analytics = getAnalytics(app);
 
-  // ---------- DOM ----------
-  const authEmail = document.getElementById('authEmail');
-  const authPass = document.getElementById('authPass');
-  const signupBtn = document.getElementById('signupBtn');
-  const signinBtn = document.getElementById('signinBtn');
-  const signInGoogle = document.getElementById('signInGoogle');
-  const signoutBtn = document.getElementById('signoutBtn');
-  const userInfo = document.getElementById('userInfo');
+  // --- DOM ---
+  const googleSignInBtn = document.getElementById('googleSignIn');
+  const signedState = document.getElementById('signedState');
+  const signedText = document.getElementById('signedText');
+  const notSigned = document.getElementById('notSigned');
+  const signOutBtn = document.getElementById('signOut');
 
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
@@ -217,101 +211,150 @@
   const langButtons = document.getElementById('lang-buttons');
   const themeToggle = document.getElementById('theme-toggle');
 
-  // ---------- State ----------
+  // keys
   const STORAGE = 'vann_v8_entries';
   const THEME = 'vann_v8_theme';
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
+  // translations
+  const translations = {
+    en: { app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.' },
+    my: { app_title:'Thevann အချိန်မှတ်တမ်း', sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', add_entry:'မှတ်တမ်းထည့်မည်', add_dayoff:'နားရက်', export_csv:'CSV ထုတ်ယူမည်', print:'ပုံနှိပ်', duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။' },
+    th: { app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก' }
+  };
+
+  // state
   let entries = [];
   let editId = null;
   let selectedYear, selectedMonth;
-  let currentUser = null;
   let currentLang = localStorage.getItem(LANG) || 'en';
+  let currentUser = null; // firebase user object
 
-  // ---------- Translations (keeps minimal) ----------
-  const translations = {
-    en: { add_entry: 'Add Entry', add_dayoff: 'Day Off', duration_default: 'Duration: 00:00 (0.00h)', total_label: 'Total Rounded Hours:', alert_fill: 'Please fill Date, Start and End.' },
-    my: { add_entry: 'မှတ်တမ်းထည့်မည်', add_dayoff: 'နားရက်', duration_default: 'ကြာချိန်: 00:00 (0.00နာရီ)', total_label: 'စုစုပေါင်း ပတ်လည်နာရီ:', alert_fill: 'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန် ထည့်ပါ။' },
-    th: { add_entry: 'เพิ่มรายการ', add_dayoff: 'วันหยุด', duration_default: 'ระยะเวลา: 00:00 (0.00 ชม.)', total_label: 'รวมระยะเวลาปัดเศษ:', alert_fill: 'กรุณากรอกวันที่ เวลาเข้า และ เวลาออก' }
-  };
-
-  // ---------- helpers ----------
+  // helpers
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
-  function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`; }
-  // rounding rule: 1-29 -> 00, 30-39 -> 50, 40-59 -> next hour
+  function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
   function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h, M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
 
-  // ---------- Local storage save & Firestore sync ----------
-  async function saveLocalAndMaybeRemote(){
-    localStorage.setItem(STORAGE, JSON.stringify(entries));
-    updateTotalAndRender();
-    if(currentUser){
-      try{
-        await saveToFirestore(currentUser.uid);
-      }catch(e){
-        console.error('saveToFirestore error', e);
-      }
+  // local storage
+  function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
+  function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
+
+  // Firestore helpers: store under collection "users", doc id = uid, field "entries" = array
+  async function saveToFirestore(uid){
+    if(!uid) return;
+    try{
+      const d = doc(db, 'users', uid);
+      await setDoc(d, { entries }, { merge: true });
+      // console.log('Saved to Firestore');
+    }catch(err){
+      console.error('saveToFirestore error:', err);
     }
   }
 
-  // Save entries array under users/{uid}/data (simple structure)
-  async function saveToFirestore(uid){
-    const userDoc = doc(db, 'users', uid);
-    // store entries and timestamp
-    await setDoc(userDoc, { entries: entries, updatedAt: Date.now() }, { merge: true });
-    console.log('Saved to Firestore for', uid);
-  }
-
-  // Load from Firestore, return object { entries: [...] } or null
   async function loadFromFirestore(uid){
-    const userDoc = doc(db, 'users', uid);
-    const snap = await getDoc(userDoc);
-    if(snap.exists()){
-      return snap.data();
-    } else {
+    if(!uid) return null;
+    try{
+      const d = doc(db, 'users', uid);
+      const snap = await getDoc(d);
+      if(snap.exists()){
+        const data = snap.data();
+        if(Array.isArray(data.entries) && data.entries.length>0){
+          return data.entries;
+        }
+        return [];
+      } else {
+        return [];
+      }
+    }catch(err){
+      console.error('loadFromFirestore error:', err);
       return null;
     }
   }
 
-  // Merge remote and local entries: keep unique by id
-  function mergeEntries(localArr, remoteArr){
-    const map = new Map();
-    (remoteArr || []).forEach(e => map.set(String(e.id), e));
-    (localArr || []).forEach(e => {
-      if(!map.has(String(e.id))){
-        map.set(String(e.id), e);
-      } else {
-        // prefer remote for exact match, else keep both -> remote wins
+  // merge policy on sign-in:
+  // - load cloud entries; if cloud has entries => replace local with cloud
+  // - if cloud empty & local has entries => upload local to cloud
+  async function handleUserSignedIn(user){
+    currentUser = user;
+    const uid = user.uid;
+    signedText.textContent = `Signed in: ${user.displayName || user.email}`;
+    signedState.style.display = 'block';
+    notSigned.style.display = 'none';
+    googleSignInBtn.style.display = 'none';
+
+    // try load from cloud
+    const cloud = await loadFromFirestore(uid);
+    if(cloud === null){
+      // error reading cloud: keep local
+      console.warn('Could not read from Firestore — using local data');
+      loadLocal();
+    } else if(Array.isArray(cloud) && cloud.length>0){
+      // cloud has entries -> adopt cloud
+      entries = cloud;
+      saveLocal(); // update local
+    } else {
+      // cloud empty -> push local if have local entries
+      loadLocal();
+      if(Array.isArray(entries) && entries.length>0){
+        await saveToFirestore(uid);
       }
-    });
-    return Array.from(map.values()).sort((a,b)=> b.id - a.id);
+    }
+    render();
   }
 
-  // ---------- UI helpers ----------
-  function updatePreview(){
-    const s=startEl.value, e=endEl.value;
-    if(s && e){
-      const sM=parseHM(s), eM=parseHM(e);
-      if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; }
-      let diff = eM - sM; if(diff<0) diff += 24*60;
-      previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)`;
-    } else {
-      previewEl.textContent = translations[currentLang].duration_default;
-    }
+  function handleUserSignedOut(){
+    currentUser = null;
+    signedState.style.display = 'none';
+    googleSignInBtn.style.display = 'inline-block';
+    notSigned.style.display = 'block';
+    signedText.textContent = '';
+    // keep local data (no deletion)
+    loadLocal();
+    render();
   }
+
+  // auth events
+  onAuthStateChanged(auth, async (user) => {
+    if(user){
+      await handleUserSignedIn(user);
+    } else {
+      handleUserSignedOut();
+    }
+  });
+
+  // sign in/out UI
+  googleSignInBtn.addEventListener('click', async ()=>{
+    try{
+      await signInWithPopup(auth, provider);
+      // onAuthStateChanged will handle loading
+    }catch(err){
+      alert('Google sign-in failed: ' + err.message);
+    }
+  });
+  signOutBtn.addEventListener('click', async ()=>{
+    try{
+      await signOut(auth);
+      // onAuthStateChanged will handle UI
+    }catch(err){
+      console.error(err);
+    }
+  });
+
+  // preview update
+  function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent = translations[currentLang].duration_default } }
   [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
 
-  function monthLabelText(y,m){
-    const d = new Date(y,m,1);
-    return d.toLocaleString(currentLang==='my'?'en-US':currentLang,{ month:'long', year:'numeric' });
-  }
-
-  function updateTotalAndRender(){
+  // render
+  function render(){
     entriesBody.innerHTML = '';
     let total = 0;
-    const filtered = entries.filter(r => { const d = new Date(r.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
-    filtered.sort((a,b) => (a.date < b.date) ? 1 : (a.date > b.date) ? -1 : b.id - a.id);
+    const filtered = entries.filter(r=>{
+      const d = new Date(r.date);
+      return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth;
+    });
+
+    filtered.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
 
     for(const row of filtered){
       const tr = document.createElement('tr');
@@ -326,7 +369,7 @@
         <td>${end}</td>
         <td>${duration}</td>
         <td>${rounded.toFixed(2)}</td>
-        <td class="${row.isDayOff? 'day-off':''}">${row.task || ''}</td>
+        <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>
         <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">Del</button>` : `<button class="chip edit" data-id="${row.id}">Edit</button><button class="chip del" data-id="${row.id}">Delete</button>`}</td>
       `;
       entriesBody.appendChild(tr);
@@ -334,69 +377,72 @@
     }
 
     totalEl.textContent = total.toFixed(2);
-    monthLabel.textContent = monthLabelText(selectedYear, selectedMonth);
+    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
     applyLanguageTexts();
   }
 
-  // ---------- CRUD ----------
-  addBtn.addEventListener('click', ()=>{
+  // save local + cloud (if signed)
+  async function saveAll(){
+    saveLocal();
+    if(currentUser){
+      await saveToFirestore(currentUser.uid);
+    }
+  }
+
+  // add/update
+  addBtn.addEventListener('click', async ()=>{
     const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
     if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
-    const sM = parseHM(s), eM = parseHM(e); if(sM==null || eM==null) return alert('Invalid time');
-    let diff = eM - sM; if(diff < 0) diff += 24*60;
+    const sM = parseHM(s), eM = parseHM(e);
+    if(sM==null||eM==null) return alert('Invalid time');
+    let diff = eM - sM; if(diff<0) diff += 24*60;
     const formatted = fmtHM(diff); const rounded = computeRounded(diff);
-
     if(editId){
-      const i = entries.findIndex(x => x.id === editId);
-      if(i>-1){ entries[i] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId=null; addBtn.textContent = translations[currentLang].add_entry; }
+      const idx = entries.findIndex(x=>x.id===editId);
+      if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = translations[currentLang].add_entry; }
     } else {
       entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
     }
     formReset();
-    saveLocalAndMaybeRemote();
+    await saveAll();
   });
 
-  function formReset(){
-    const now = new Date();
-    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(), 28));
-    startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent = translations[currentLang].duration_default;
-  }
+  function formReset(){ const now = new Date(); dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(),28)); startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent = translations[currentLang].duration_default; addBtn.textContent = translations[currentLang].add_entry; }
 
-  dayOffBtn.addEventListener('click', ()=>{
+  // day off
+  dayOffBtn.addEventListener('click', async ()=>{
     const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
     const exists = entries.some(x=>x.date===date && x.isDayOff);
     if(exists && !confirm('Day off exists for this date; add another?')) return;
-    entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: translations[currentLang].add_dayoff || 'DAY OFF', isDayOff:true });
-    formReset(); saveLocalAndMaybeRemote();
+    entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: translations[currentLang].add_dayoff || 'Day Off', isDayOff:true });
+    formReset(); await saveAll();
   });
 
-  entriesBody.addEventListener('click', (ev)=>{
+  // edit/delete delegation
+  entriesBody.addEventListener('click', async (ev)=>{
     const idStr = ev.target.getAttribute('data-id'); if(!idStr) return; const id = Number(idStr);
-    if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); saveLocalAndMaybeRemote(); }
-    if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x=>x.id===id); if(idx===-1) return; const r = entries[idx]; if(r.isDayOff) return alert('Cannot edit Day Off'); dateEl.value=r.date; startEl.value=r.start; endEl.value=r.end; taskEl.value=r.task; editId=id; addBtn.textContent='Save'; window.scrollTo({top:0,behavior:'smooth'}); }
+    if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); await saveAll(); }
+    if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x=>x.id===id); if(idx===-1) return; const r = entries[idx]; if(r.isDayOff) return alert('Cannot edit Day Off'); dateEl.value = r.date; startEl.value = r.start; endEl.value = r.end; taskEl.value = r.task; editId = id; addBtn.textContent = 'Save'; window.scrollTo({top:0,behavior:'smooth'}); }
   });
 
-  // export CSV (current month)
-  document.getElementById('export-csv').addEventListener('click', ()=>{
-    const filtered = entries.filter(r => { const d = new Date(r.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
-    if(filtered.length === 0) return alert('No data to export for this month');
-    const headers = ['Date','Start','End','Duration','Rounded Hours','Task'];
-    let csv = headers.join(',') + '\n';
-    filtered.forEach(r => {
-      csv += [ r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"` ].join(',') + '\n';
-    });
-    csv += `\n${'Total Rounded Hours'},,, ,${totalEl.textContent}\n`;
+  // export CSV for current month
+  exportBtn.addEventListener('click', ()=>{
+    const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
+    if(filtered.length===0) return alert('No data to export for this month');
+    const header=['Date','Start','End','Duration','Rounded Hours','Task'];
+    let csv = header.join(',') + '\n';
+    filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
+    csv += `\n${translations['en'].total_label},,, ,${totalEl.textContent}\n`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
 
-  // print
   printBtn.addEventListener('click', ()=> window.print());
 
-  // month navigation
-  prevMonthBtn.addEventListener('click', ()=>{ selectedMonth--; if(selectedMonth < 0){ selectedMonth=11; selectedYear--; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
-  nextMonthBtn.addEventListener('click', ()=>{ selectedMonth++; if(selectedMonth > 11){ selectedMonth=0; selectedYear++; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
-  todayMonthBtn.addEventListener('click', ()=>{ const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); updateTotalAndRender(); });
+  // month nav
+  prevMonthBtn.addEventListener('click', ()=>{ selectedMonth--; if(selectedMonth<0){ selectedMonth=11; selectedYear--; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
+  nextMonthBtn.addEventListener('click', ()=>{ selectedMonth++; if(selectedMonth>11){ selectedMonth=0; selectedYear++; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
+  todayMonthBtn.addEventListener('click', ()=>{ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
 
   // theme
   function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeToggle.textContent='🌙'; } }
@@ -404,115 +450,30 @@
 
   // language
   function applyLanguageTexts(){
-    const t = translations[currentLang] || translations.en;
-    addBtn.textContent = t.add_entry || 'Add Entry';
-    dayOffBtn.textContent = t.add_dayoff || 'Day Off';
+    const t = translations[currentLang];
+    document.getElementById('app-title').textContent = t.app_title;
+    document.getElementById('app-sub').textContent = t.sub;
+    addBtn.textContent = t.add_entry;
+    dayOffBtn.textContent = t.add_dayoff;
+    exportBtn.textContent = t.export_csv;
+    printBtn.textContent = t.print;
     previewEl.textContent = t.duration_default;
-    document.getElementById('total-card').innerHTML = `${t.total_label} <strong id="total">${totalEl.textContent}</strong>`;
+    // total label (keeps number)
+    document.querySelector('.total-card').innerHTML = `${t.total_label} <span id="total">${totalEl.textContent}</span>`;
   }
-  langButtons.addEventListener('click', (ev)=>{ const b = ev.target; const lang = b && b.getAttribute && b.getAttribute('data-lang'); if(!lang) return; currentLang = (lang==='mm')? 'my': lang; localStorage.setItem(LANG, currentLang); updateTotalAndRender(); });
+  langButtons.addEventListener('click', (ev)=>{ const b=ev.target; if(!b) return; const lang=b.getAttribute('data-lang'); if(!lang) return; currentLang = lang; localStorage.setItem(LANG,currentLang); render(); });
 
-  // ---------- Auth UI handlers ----------
-  signupBtn.addEventListener('click', async ()=>{
-    const email = authEmail.value.trim(); const pass = authPass.value.trim();
-    if(!email || !pass) return alert('Enter email and password');
-    try {
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      userInfo.innerText = `Account created: ${cred.user.email}`;
-    } catch(e){ alert('Sign up error: ' + e.message); }
-  });
-
-  signinBtn.addEventListener('click', async ()=>{
-    const email = authEmail.value.trim(); const pass = authPass.value.trim();
-    if(!email || !pass) return alert('Enter email and password');
-    try {
-      const cred = await signInWithEmailAndPassword(auth, email, pass);
-      userInfo.innerText = `Signed in: ${cred.user.email}`;
-    } catch(e){ alert('Sign in error: ' + e.message); }
-  });
-
-  signInGoogle.addEventListener('click', async ()=>{
-    try {
-      const result = await signInWithPopup(auth, provider);
-      // onAuthStateChanged will handle UI & sync
-    } catch(e){ alert('Google sign-in failed: ' + e.message); }
-  });
-
-  signoutBtn.addEventListener('click', async ()=>{
-    try {
-      await signOut(auth);
-      // onAuthStateChanged will handle UI & local state
-    } catch(e){ console.error(e); }
-  });
-
-  // ---------- Auth state observer: load/save data ----------
-  onAuthStateChanged(auth, async (user) => {
-    if(user){
-      currentUser = user;
-      userInfo.innerText = `Signed in: ${user.displayName || user.email}`;
-      signoutBtn.style.display = 'inline-block';
-      signInGoogle.style.display = 'none';
-      signinBtn.style.display = 'none';
-      signupBtn.style.display = 'none';
-      // merge/load
-      try{
-        const remote = await loadFromFirestore(user.uid);
-        const localRaw = localStorage.getItem(STORAGE);
-        const local = localRaw ? JSON.parse(localRaw) : [];
-        if(remote && Array.isArray(remote.entries) && remote.entries.length>0){
-          // both exist -> merge
-          if(local && local.length>0){
-            entries = mergeEntries(local, remote.entries);
-            // push merged to remote and local
-            await saveToFirestore(user.uid);
-            localStorage.setItem(STORAGE, JSON.stringify(entries));
-          } else {
-            // remote only -> use remote
-            entries = remote.entries;
-            localStorage.setItem(STORAGE, JSON.stringify(entries));
-          }
-        } else {
-          // remote empty -> push local up
-          entries = local || [];
-          await saveToFirestore(user.uid);
-        }
-        updateTotalAndRender();
-      }catch(e){
-        console.error('Auth load error', e);
-      }
-    } else {
-      currentUser = null;
-      userInfo.innerText = 'Signed out';
-      signoutBtn.style.display = 'none';
-      signInGoogle.style.display = 'inline-block';
-      signinBtn.style.display = 'inline-block';
-      signupBtn.style.display = 'inline-block';
-      // keep local data (already in localStorage)
-      const raw = localStorage.getItem(STORAGE);
-      entries = raw ? JSON.parse(raw) : [];
-      updateTotalAndRender();
-    }
-  });
-
-  // ---------- Init ----------
-  function loadLocal() {
-    const raw = localStorage.getItem(STORAGE);
-    entries = raw ? JSON.parse(raw) : [];
-  }
-
+  // init
   function init(){
     loadLocal();
     const saved = localStorage.getItem(MONTH);
-    if(saved){
-      try{ const o = JSON.parse(saved); selectedYear = o.y; selectedMonth = o.m; }catch(e){}
-    }
-    if(typeof selectedYear === 'undefined'){
-      const now = new Date(); selectedYear = now.getFullYear(); selectedMonth = now.getMonth();
-    }
-    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(), 28));
+    if(saved){ try{ const o=JSON.parse(saved); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
+    if(typeof selectedYear==='undefined'){ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); }
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
+    currentLang = localStorage.getItem(LANG) || currentLang;
     applyTheme();
     applyLanguageTexts();
-    updateTotalAndRender();
+    render();
   }
   init();
 
