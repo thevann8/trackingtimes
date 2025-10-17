@@ -198,17 +198,22 @@
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
 
-    .footer{display:flex;justify-content:flex-end;margin-top:20px}
+    /* NEW Header Total Card Style - same as footer but placed differently */
     .total-card{
       background:var(--glass);
-      padding:15px 20px;
+      padding:12px 18px; /* Slightly adjusted padding for header */
       border-radius:12px;
       color:var(--text);
       font-weight:700;
-      font-size:18px;
+      font-size:16px; /* Slightly smaller font for header */
       border:1px solid var(--table-border);
+      /* margin-left: auto; */ /* Let it flow with flex-wrap */
     }
-    .total-card span { color: var(--accent-2); }
+    .total-card span { color: var(--accent-2); font-size: 18px; } /* Highlight the number */
+
+    /* Footer - Removed the old total card style since it's now in the header */
+    .footer{display:flex;justify-content:flex-end;margin-top:20px; display: none;} /* Hide footer entirely */
+
 
     @media(max-width:768px){
       body { padding: 10px; }
@@ -220,14 +225,19 @@
       .entry-grid{flex-direction:column;align-items:stretch}
       input[type=date],input[type=time],input[type=text],.btn,.total-card{width:100%; min-width:unset;}
       table{min-width:550px}
+      
+      /* On mobile, total card gets full width */
+      .total-card{ width: 100%; text-align: center; }
     }
 
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
       .card{background:#fff;box-shadow:none;border:none}
-      .controls-top,.entry-grid,button,[class*="chip"],.auth-area,#loading-screen{display:none}
-      .right-controls{display:none}
+      /* Hide all controls and inputs, but keep the header total for printing */
+      .entry-grid,button,[class*="chip"],.auth-area,#loading-screen,.right-controls{display:none}
+      .controls-top{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .controls-top > div:last-child { display: none; } /* Hide export/print buttons on print view */
       table{min-width:0; margin-top: 0;}
       thead th,tbody td{border:1px solid #ccc;padding:8px}
       th{background:#f2f2f2}
@@ -272,13 +282,14 @@
       </header>
 
       <div class="controls-top">
-        <div style="display:flex;gap:8px;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
           <button id="prev-month" class="ghost btn">◀</button>
           <div id="month-label" style="font-weight:700;min-width:160px;text-align:center;">Month</div>
           <button id="next-month" class="ghost btn">▶</button>
           <button id="today-month" class="ghost btn">🗓️ Today</button>
         </div>
-
+        
+        <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
         <div style="margin-left:auto;display:flex;gap:12px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
@@ -314,9 +325,9 @@
           <tbody id="entries-body"></tbody>
         </table>
       </div>
-
-      <div class="footer">
-        <div class="total-card">Total Rounded Hours: <span id="total">0.00</span></div>
+      
+      <div class="footer" style="display:none;">
+        <div class="total-card">Total Rounded Hours: <span id="total-footer">0.00</span></div>
       </div>
     </div>
   </div>
@@ -365,7 +376,12 @@
   const addBtn = document.getElementById('add-btn');
   const dayOffBtn = document.getElementById('dayoff-btn');
   const entriesBody = document.getElementById('entries-body');
-  const totalEl = document.getElementById('total');
+  
+  // *** MODIFIED: Use the total element from the header ***
+  const totalHeaderEl = document.getElementById('total-header'); 
+  const totalEl = totalHeaderEl.querySelector('#total'); // Get the actual span inside the header element
+  // ***
+  
   const exportBtn = document.getElementById('export-csv');
   const printBtn = document.getElementById('print-btn');
   const prevMonthBtn = document.getElementById('prev-month');
@@ -605,7 +621,10 @@
       total += rounded;
     }
 
+    // *** MODIFIED: Update the header total element ***
     totalEl.textContent = total.toFixed(2);
+    // ***
+    
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
     applyLanguageTexts();
   }
@@ -715,7 +734,7 @@
     const header=[t.date,t.start,t.end,'Duration','Rounded Hours','Task'];
     let csv = header.join(',') + '\n';
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
-    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
+    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`; // Use totalEl from header
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
@@ -752,8 +771,8 @@
         previewEl.textContent = t.duration_default;
     }
     
-    // total label (keeps number)
-    document.querySelector('.total-card').innerHTML = `${t.total_label} <span id="total">${totalEl.textContent}</span>`;
+    // total label for header
+    totalHeaderEl.innerHTML = `${t.total_label} <span id="total">${totalEl.textContent}</span>`;
   }
   langButtons.addEventListener('click', (ev)=>{ 
     const b=ev.target; 
