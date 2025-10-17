@@ -7,73 +7,197 @@
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
-      crossorigin="anonymous"></script>
+     crossorigin="anonymous"></script>
 
   <style>
+    /* Clean & Modern Theme CSS */
     :root{
-      --bg:#071226;--card:#0b1724;--text:#eaf6fb;--muted:#9fb7c6;--accent:#06c2d6;--accent-2:#2dd4bf;--success:#16a34a;--danger:#ef4444;
-      --glass:rgba(255,255,255,0.03);--radius:12px;--shadow:0 12px 30px rgba(3,8,20,0.6);--table-border:rgba(255,255,255,0.04)
+      --bg:#0c152a; /* Darker, richer blue-black */
+      --card:#142036; /* Slightly lighter card background */
+      --text:#e3eafc;
+      --muted:#9ab8c9;
+      --accent:#4e89ff; /* Primary blue accent */
+      --accent-2:#4dcbff; /* Secondary bright blue */
+      --success:#39c16d; /* Green */
+      --danger:#ff6b6b; /* Red */
+      --glass:rgba(255,255,255,0.08); /* Stronger glass effect */
+      --radius:16px; /* Larger radius for a softer look */
+      --shadow:0 18px 40px rgba(0,0,0,0.4); /* Deeper shadow */
+      --table-border:rgba(255,255,255,0.05);
+      --input-bg:rgba(255,255,255,0.05);
     }
-    body.light-mode{--bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06)}
-    *{box-sizing:border-box}
+    body.light-mode{
+      --bg:#f0f4f8;
+      --card:#ffffff;
+      --text:#102a43;
+      --muted:#657d9d;
+      --accent:#2b7de3;
+      --accent-2:#56c5ff;
+      --success:#16a34a;
+      --danger:#cc3333;
+      --glass:rgba(0,0,0,0.05);
+      --shadow:0 12px 25px rgba(0,0,0,0.1);
+      --table-border:rgba(0,0,0,0.1);
+      --input-bg:#f9fbfd;
+    }
+    *{box-sizing:border-box; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
-    .wrap{max-width:980px;margin:0 auto}
-    .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
-    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
-    .title-wrap{flex:1;min-width:180px}
-    h1.title{margin:0;font-size:18px}
-    .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:20px}
+    .wrap{max-width:1080px;margin:0 auto}
+    
+    /* Card/Container Styling */
+    .card{
+      background:var(--card);
+      padding:24px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid var(--glass);
+      margin-bottom:20px;
+    }
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+    h1.title{margin:0;font-size:24px;font-weight:700}
+    .subtitle{color:var(--muted);font-size:14px;margin-top:4px}
 
-    /* sign area */
-    .auth-area{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:14px}
-    .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25)}
-    .signed-as{color:var(--success);font-weight:700}
+    /* Auth/Sign Area */
+    .auth-area{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
+    .auth-btn{
+      padding:12px 28px;
+      border-radius:30px;
+      border:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 8px 20px rgba(0, 0, 0, 0.25);
+      transition:transform 0.2s, box-shadow 0.2s;
+    }
+    .auth-btn:hover{transform:translateY(-2px); box-shadow:0 12px 25px rgba(0, 0, 0, 0.35);}
+    .auth-btn.secondary{background:var(--input-bg); color:var(--text); box-shadow:none; border:1px solid var(--table-border)}
+    .signed-as{color:var(--success);font-weight:700;font-size:15px}
+    
+    /* Loading/Sign-in Required Screen */
+    #loading-screen{
+        text-align:center;
+        padding: 50px;
+        box-shadow: var(--shadow);
+        background: var(--card);
+    }
+    #loading-screen h2 { color:var(--accent); margin-top: 0;}
 
-    /* language + theme */
-    .right-controls{display:flex;align-items:center;gap:8px}
+
+    /* Language + Theme */
+    .right-controls{display:flex;align-items:center;gap:12px}
     .lang-select{display:flex;gap:6px}
-    .lang-select button{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;color:var(--text);cursor:pointer;font-size:13px}
-    .toggle{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;cursor:pointer}
+    .lang-select button{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:8px 12px;
+      border-radius:12px;
+      color:var(--text);
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+    }
+    .lang-select button:hover { border-color: var(--accent-2); }
+    .toggle{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:8px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:16px;
+    }
 
-    /* inputs / controls */
-    .controls-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
-    .entry-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
-    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:10px;border-radius:10px;color:var(--text);min-width:120px}
-    .preview{color:var(--muted);font-size:13px}
+    /* Inputs / Controls */
+    .controls-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}
+    .entry-grid{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
+    input[type=date],input[type=time],input[type=text]{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:12px 14px;
+      border-radius:12px;
+      color:var(--text);
+      min-width:140px;
+      font-size:16px;
+      outline:none;
+    }
+    input::placeholder{color:var(--muted)}
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-2);}
+    .preview{color:var(--muted);font-size:14px;font-weight:600;}
 
-    .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .btn{
+      padding:12px 18px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
     .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022}
-    .ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
+    .ghost{background:var(--input-bg);border:1px solid var(--table-border);color:var(--text)}
+    .ghost:hover{border-color:var(--accent-2)}
 
     /* table */
-    .table-wrap{overflow:auto;margin-top:14px;border-radius:10px}
-    table{width:100%;border-collapse:collapse;min-width:700px}
-    thead th{padding:10px 12px;text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;border-bottom:1px solid var(--table-border)}
-    tbody td{padding:10px 12px;border-bottom:1px solid var(--table-border)}
-    tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
-    tr.day-off td{font-style:italic;color:var(--muted)}
-    .actions{display:flex;gap:8px}
-    .chip{padding:6px 10px;border-radius:8px;font-weight:600;cursor:pointer}
+    .table-wrap{overflow:auto;margin-top:20px;border-radius:12px; border:1px solid var(--table-border);}
+    table{width:100%;border-collapse:collapse;min-width:750px; background:var(--card)}
+    thead th{
+      padding:14px 18px;
+      text-align:left;
+      color:var(--muted);
+      font-size:13px;
+      text-transform:uppercase;
+      border-bottom:2px solid var(--table-border);
+      background:var(--input-bg);
+      letter-spacing:0.5px;
+    }
+    tbody td{padding:12px 18px;border-bottom:1px solid var(--table-border); vertical-align:middle;}
+    tbody tr:nth-child(even){background:var(--input-bg)}
+    tbody tr:hover {background:var(--glass)}
+    tr.day-off td{font-style:italic;color:var(--muted); opacity:0.7;}
+    .actions{display:flex;gap:10px}
+    .chip{
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:13px;
+      border:none;
+    }
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
 
-    .footer{display:flex;justify-content:flex-end;margin-top:12px}
-    .total-card{background:var(--glass);padding:12px 16px;border-radius:10px;color:var(--text);font-weight:700}
+    .footer{display:flex;justify-content:flex-end;margin-top:20px}
+    .total-card{
+      background:var(--glass);
+      padding:15px 20px;
+      border-radius:12px;
+      color:var(--text);
+      font-weight:700;
+      font-size:18px;
+      border:1px solid var(--table-border);
+    }
+    .total-card span { color: var(--accent-2); }
 
-    @media(max-width:640px){
+    @media(max-width:768px){
+      body { padding: 10px; }
+      .card { padding: 16px; border-radius: 12px; }
+      h1.title { font-size: 20px; }
+      .controls-top{flex-direction:column; align-items:stretch;}
+      .controls-top > div { flex-wrap: nowrap !important; }
+      .controls-top > div:last-child { margin-left: 0 !important; }
       .entry-grid{flex-direction:column;align-items:stretch}
-      input[type=date],input[type=time],input[type=text],.btn{width:100%}
-      table{min-width:600px}
-      .total-card{width:100%;text-align:center}
+      input[type=date],input[type=time],input[type=text],.btn,.total-card{width:100%; min-width:unset;}
+      table{min-width:550px}
     }
 
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
       .card{background:#fff;box-shadow:none;border:none}
-      .controls-top,.entry-grid,button,[class*="chip"]{display:none}
-      table{min-width:0}
+      .controls-top,.entry-grid,button,[class*="chip"],.auth-area,#loading-screen{display:none}
+      .right-controls{display:none}
+      table{min-width:0; margin-top: 0;}
       thead th,tbody td{border:1px solid #ccc;padding:8px}
       th{background:#f2f2f2}
     }
@@ -82,12 +206,19 @@
 <body>
   <div class="wrap">
     <div class="auth-area" id="auth-area">
-      <button id="googleSignIn" class="auth-btn">Sign in with Google</button>
+      <button id="googleSignIn" class="auth-btn">
+        <span style="font-size:18px; margin-right: 8px;">🚀</span> Sign in with Google
+      </button>
       <div id="signedState" style="display:none;">
         <div class="signed-as" id="signedText"></div>
-        <button id="signOut" class="auth-btn" style="margin-top:6px;background:#efefef;color:#022">Sign out</button>
+        <button id="signOut" class="auth-btn secondary" style="margin-top:6px;">Sign out</button>
       </div>
       <div id="notSigned" style="color:var(--muted);font-size:13px">Signed out — data will be stored locally until you sign in.</div>
+    </div>
+    
+    <div id="loading-screen" class="card" style="display:none;">
+        <h2 style="margin-top:0;">⏳ Loading...</h2>
+        <p style="color:var(--muted);">Checking authentication status...</p>
     </div>
 
     <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
@@ -99,9 +230,9 @@
 
         <div class="right-controls">
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
-            <button data-lang="en">EN</button>
-            <button data-lang="my">မြန်မာ</button>
-            <button data-lang="th">ไทย</button>
+            <button data-lang="en">🇺🇸 EN</button>
+            <button data-lang="my">🇲🇲 ျမန္မာ</button>
+            <button data-lang="th">🇹🇭 ไทย</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
             <div class="toggle" id="theme-toggle" title="Toggle theme">🌙</div>
@@ -112,27 +243,27 @@
       <div class="controls-top">
         <div style="display:flex;gap:8px;align-items:center">
           <button id="prev-month" class="ghost btn">◀</button>
-          <div id="month-label" style="font-weight:700;min-width:160px">Month</div>
+          <div id="month-label" style="font-weight:700;min-width:160px;text-align:center;">Month</div>
           <button id="next-month" class="ghost btn">▶</button>
-          <button id="today-month" class="ghost btn">Today</button>
+          <button id="today-month" class="ghost btn">🗓️ Today</button>
         </div>
 
-        <div style="margin-left:auto;display:flex;gap:8px">
-          <button id="export-csv" class="ghost btn">Export CSV</button>
-          <button id="print-btn" class="ghost btn">Print</button>
+        <div style="margin-left:auto;display:flex;gap:12px">
+          <button id="export-csv" class="ghost btn">💾 Export CSV</button>
+          <button id="print-btn" class="ghost btn">🖨️ Print</button>
         </div>
       </div>
 
-      <div class="entry-grid" style="margin-top:12px">
+      <div class="entry-grid" style="margin-top:16px">
         <input id="date-input" type="date" />
         <input id="start-input" type="time" />
         <input id="end-input" type="time" />
-        <input id="task-input" type="text" placeholder="Task / notes (optional)" />
+        <input id="task-input" type="text" placeholder="📝 Task / notes (optional)" />
         <div class="preview" id="preview">Duration: 00:00 (0.00h)</div>
 
-        <div style="display:flex;gap:8px;flex-wrap:wrap">
-          <button id="add-btn" class="primary btn">Add Entry</button>
-          <button id="dayoff-btn" class="ghost btn">Day Off</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button id="add-btn" class="primary btn">➕ Add Entry</button>
+          <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
         </div>
       </div>
 
@@ -157,12 +288,6 @@
         <div class="total-card">Total Rounded Hours: <span id="total">0.00</span></div>
       </div>
     </div>
-    
-    <div id="loading-screen" class="card" style="display:none; text-align:center; padding: 40px;">
-        <h2 style="margin-top:0;">Please Sign In to Start Tracking</h2>
-        <p style="color:var(--muted);">Your data is stored securely via Google login.</p>
-    </div>
-    
   </div>
 
   <script type="module">
@@ -196,10 +321,11 @@
   const signedText = document.getElementById('signedText');
   const notSigned = document.getElementById('notSigned');
   const signOutBtn = document.getElementById('signOut');
-  // *** NEW: App content and loading screen DOM elements ***
+  
+  // New DOM elements for content hiding
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
-  // *******************************************************
+
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
   const endEl = document.getElementById('end-input');
@@ -224,23 +350,30 @@
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
-  // --- MODIFIED: Corrected Myanmar Unicode text ---
+  // translations (Myanmar Unicode fixed)
   const translations = {
-    en: { app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.' },
-    my: { 
-        app_title:'Thevann အချိန်မှတ်တမ်း', 
-        sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
-        add_entry:'မှတ်တမ်းထည့်မည်', 
-        add_dayoff:'နားရက်', 
-        export_csv:'CSV ထုတ်ယူမည်', 
-        print:'ပုံနှိပ်', 
-        duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
-        total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
-        alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။' 
+    en: { 
+      app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.', 
+      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off'
     },
-    th: { app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเข้า และ เวลาออก' }
+    my: { 
+      // Myanmar Unicode Fixed
+      app_title:'Thevann အချိန်မှတ်တမ်း', 
+      sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
+      add_entry:'မှတ်တမ်းထည့်မည်', 
+      add_dayoff:'နားရက်', 
+      export_csv:'CSV ထုတ်ယူမည်', 
+      print:'ပုံနှိပ်', 
+      duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
+      total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
+      alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
+      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်'
+    },
+    th: { 
+      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
+      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด'
+    }
   };
-  // ------------------------------------------------
 
   // state
   let entries = [];
@@ -253,31 +386,27 @@
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
   function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
   
-  // --- MODIFIED: computeRounded function (back to English comments) ---
+  // *** FIXED computeRounded function (30-39 mins = 0.5) ***
   function computeRounded(raw){ 
-      if(raw<=0) return 0.00; 
-      const h=Math.floor(raw/60); 
-      const m=raw%60; 
-      let H=h; 
-      
-      // 1. 00–29 → round down to previous hour (H.00)
-      if(m>=0 && m<=29) {
-          return +(H).toFixed(2);
-      } 
-      // 2. 30–39 → round to hour + 0.5 (H.50) (THIS IS THE FIX)
-      else if(m>=30 && m<=39) {
-          return +(H + 0.5).toFixed(2); // return H.50 exactly
-      } 
-      // 3. 40–59 → round up to next full hour (H+1.00)
-      else if(m>=40 && m<=59){ 
-          return +(H + 1).toFixed(2); // round up
-      }
-      
-      // Default or 60 minutes case
-      return +(H).toFixed(2);
+    if(raw<=0) return 0.00; 
+    const h=Math.floor(raw/60); 
+    const m=raw%60; 
+    let H=h; 
+    
+    if(m>=0 && m<=29) {
+        return +(H).toFixed(2);
+    } 
+    else if(m>=30 && m<=39) {
+        return +(H + 0.5).toFixed(2); // Fix: return H.50 exactly
+    } 
+    else if(m>=40 && m<=59){ 
+        return +(H + 1).toFixed(2); // round up
+    }
+    
+    return +(H).toFixed(2);
   }
-  // ------------------------------------------------------------------
-  
+  // *********************************************************
+
   // local storage
   function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
   function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
@@ -314,9 +443,18 @@
     }
   }
 
-  // merge policy on sign-in:
-  // - load cloud entries; if cloud has entries => replace local with cloud
-  // - if cloud empty & local has entries => upload local to cloud
+  // UI/STATE CONTROL FUNCTION
+  function showLoadingState(){
+      appContent.style.display = 'none';
+      googleSignInBtn.style.display = 'none';
+      signedState.style.display = 'none';
+      notSigned.style.display = 'none';
+      loadingScreen.style.display = 'block'; 
+      loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
+      loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
+  }
+
+  // handle user status
   async function handleUserSignedIn(user){
     currentUser = user;
     const uid = user.uid;
@@ -325,10 +463,9 @@
     notSigned.style.display = 'none';
     googleSignInBtn.style.display = 'none';
     
-    // *** FIX: Show the main app content ***
+    // Show the main app content
     appContent.style.display = 'block';
     loadingScreen.style.display = 'none';
-    // *************************************
 
     // try load from cloud
     const cloud = await loadFromFirestore(uid);
@@ -357,36 +494,23 @@
     notSigned.style.display = 'block';
     signedText.textContent = '';
     
-    // *** FIX: Hide the main app content and show sign-in prompt ***
+    // Hide the main app content and show sign-in prompt
     appContent.style.display = 'none';
     loadingScreen.style.display = 'block';
-    loadingScreen.querySelector('h2').textContent = 'Please Sign In to Start Tracking';
+    loadingScreen.querySelector('h2').innerHTML = '🔒 Please Sign In to Start Tracking';
     loadingScreen.querySelector('p').textContent = 'Your data is stored securely via Google login.';
-    // ************************************************************
     
     // keep local data (no deletion)
     loadLocal();
     render();
   }
-  
-  // --- NEW: UI/STATE CONTROL FUNCTION (Immediate Loading State) ---
-  function showLoadingState(){
-      appContent.style.display = 'none';
-      googleSignInBtn.style.display = 'none';
-      signedState.style.display = 'none';
-      notSigned.style.display = 'none';
-      loadingScreen.style.display = 'block'; // Show a brief loading/sign-in screen
-      loadingScreen.querySelector('h2').textContent = 'Loading...';
-      loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
-  }
-  // -------------------------------------------------------------
 
   // auth events
   onAuthStateChanged(auth, async (user) => {
     if(user){
       await handleUserSignedIn(user);
     } else {
-      handleUserSignedOut();
+      await handleUserSignedOut();
     }
   });
 
@@ -422,13 +546,16 @@
     });
 
     filtered.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
+    
+    const t = translations[currentLang]; // Get current translation object
+    const dayOffText = t.day_off_text || 'Day Off';
 
     for(const row of filtered){
       const tr = document.createElement('tr');
       if(row.isDayOff) tr.classList.add('day-off');
-      const start = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.start;
-      const end = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.end;
-      const duration = row.isDayOff? translations[currentLang].add_dayoff || 'Day Off' : row.duration;
+      const start = row.isDayOff? dayOffText : row.start;
+      const end = row.isDayOff? dayOffText : row.end;
+      const duration = row.isDayOff? dayOffText : row.duration;
       const rounded = row.isDayOff? 0 : row.rounded;
       tr.innerHTML = `
         <td>${row.date}</td>
@@ -437,7 +564,7 @@
         <td>${duration}</td>
         <td>${rounded.toFixed(2)}</td>
         <td class="${row.isDayOff? 'day-off':''}">${row.task||''}</td>
-        <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">Del</button>` : `<button class="chip edit" data-id="${row.id}">Edit</button><button class="chip del" data-id="${row.id}">Delete</button>`}</td>
+        <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">${t.del}</button>` : `<button class="chip edit" data-id="${row.id}">${t.edit}</button><button class="chip del" data-id="${row.id}">${t.del}</button>`}</td>
       `;
       entriesBody.appendChild(tr);
       total += rounded;
@@ -466,7 +593,7 @@
     const formatted = fmtHM(diff); const rounded = computeRounded(diff);
     if(editId){
       const idx = entries.findIndex(x=>x.id===editId);
-      if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = translations[currentLang].add_entry; }
+      if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = '➕ ' + translations[currentLang].add_entry; }
     } else {
       entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
     }
@@ -474,32 +601,64 @@
     await saveAll();
   });
 
-  function formReset(){ const now = new Date(); dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(),28)); startEl.value=''; endEl.value=''; taskEl.value=''; previewEl.textContent = translations[currentLang].duration_default; addBtn.textContent = translations[currentLang].add_entry; }
+  function formReset(){ 
+    const now = new Date(); 
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(now.getDate(),28)); 
+    startEl.value=''; 
+    endEl.value=''; 
+    taskEl.value=''; 
+    previewEl.textContent = translations[currentLang].duration_default; 
+    addBtn.textContent = '➕ ' + translations[currentLang].add_entry; 
+    editId = null; // Ensure editId is reset
+  }
 
   // day off
   dayOffBtn.addEventListener('click', async ()=>{
     const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
     const exists = entries.some(x=>x.date===date && x.isDayOff);
-    if(exists && !confirm('Day off exists for this date; add another?')) return;
-    entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: translations[currentLang].add_dayoff || 'Day Off', isDayOff:true });
+    const dayOffText = translations[currentLang].day_off_text || 'Day Off';
+    if(exists && !confirm(`Day off exists for ${date}. Add another entry?`)) return;
+    entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: dayOffText, isDayOff:true });
     formReset(); await saveAll();
   });
 
   // edit/delete delegation
   entriesBody.addEventListener('click', async (ev)=>{
-    const idStr = ev.target.getAttribute('data-id'); if(!idStr) return; const id = Number(idStr);
-    if(ev.target.classList.contains('del')){ if(!confirm('Delete this entry?')) return; entries = entries.filter(x=>x.id!==id); await saveAll(); }
-    if(ev.target.classList.contains('edit')){ const idx = entries.findIndex(x=>x.id===id); if(idx===-1) return; const r = entries[idx]; if(r.isDayOff) return alert('Cannot edit Day Off'); dateEl.value = r.date; startEl.value = r.start; endEl.value = r.end; taskEl.value = r.task; editId = id; addBtn.textContent = 'Save'; window.scrollTo({top:0,behavior:'smooth'}); }
+    const idStr = ev.target.getAttribute('data-id'); 
+    if(!idStr) return; 
+    const id = Number(idStr);
+    const t = translations[currentLang];
+
+    if(ev.target.classList.contains('del')){ 
+      if(!confirm('Delete this entry?')) return; 
+      entries = entries.filter(x=>x.id!==id); 
+      await saveAll(); 
+    }
+    if(ev.target.classList.contains('edit')){ 
+      const idx = entries.findIndex(x=>x.id===id); 
+      if(idx===-1) return; 
+      const r = entries[idx]; 
+      if(r.isDayOff) return alert('Cannot edit Day Off'); 
+      dateEl.value = r.date; 
+      startEl.value = r.start; 
+      endEl.value = r.end; 
+      taskEl.value = r.task; 
+      editId = id; 
+      addBtn.textContent = '💾 Save'; 
+      updatePreview();
+      window.scrollTo({top:0,behavior:'smooth'}); 
+    }
   });
 
   // export CSV for current month
   exportBtn.addEventListener('click', ()=>{
     const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     if(filtered.length===0) return alert('No data to export for this month');
-    const header=['Date','Start','End','Duration','Rounded Hours','Task'];
+    const t = translations['en']; // Use English headers for CSV compatibility
+    const header=[t.date,t.start,t.end,'Duration','Rounded Hours','Task'];
     let csv = header.join(',') + '\n';
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
-    csv += `\n${translations['en'].total_label},,, ,${totalEl.textContent}\n`;
+    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
@@ -520,21 +679,38 @@
     const t = translations[currentLang];
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
-    addBtn.textContent = t.add_entry;
-    dayOffBtn.textContent = t.add_dayoff;
-    exportBtn.textContent = t.export_csv;
-    printBtn.textContent = t.print;
-    previewEl.textContent = t.duration_default;
+    
+    // Check if we are in edit mode
+    if (editId) {
+      addBtn.textContent = '💾 Save';
+    } else {
+      addBtn.textContent = '➕ ' + t.add_entry;
+    }
+    
+    dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
+    exportBtn.textContent = '💾 ' + t.export_csv;
+    printBtn.textContent = '🖨️ ' + t.print;
+    // Do not reset preview if times are set
+    if (!startEl.value || !endEl.value) {
+        previewEl.textContent = t.duration_default;
+    }
+    
     // total label (keeps number)
     document.querySelector('.total-card').innerHTML = `${t.total_label} <span id="total">${totalEl.textContent}</span>`;
   }
-  langButtons.addEventListener('click', (ev)=>{ const b=ev.target; if(!b) return; const lang=b.getAttribute('data-lang'); if(!lang) return; currentLang = lang; localStorage.setItem(LANG,currentLang); render(); });
+  langButtons.addEventListener('click', (ev)=>{ 
+    const b=ev.target; 
+    const lang=b.getAttribute('data-lang'); 
+    if(!lang) return; 
+    currentLang = lang; 
+    localStorage.setItem(LANG,currentLang); 
+    render(); 
+  });
 
   // init
   function init(){
-    // *** FIX: Show loading state immediately while we check auth status ***
-    showLoadingState(); 
-    
+    showLoadingState(); // Show loading state immediately
+
     loadLocal();
     const saved = localStorage.getItem(MONTH);
     if(saved){ try{ const o=JSON.parse(saved); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
@@ -542,8 +718,7 @@
     dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
     currentLang = localStorage.getItem(LANG) || currentLang;
     applyTheme();
-    applyLanguageTexts();
-    // NOTE: render() is called by onAuthStateChanged after auth status check is complete
+    // render will be called by onAuthStateChanged
   }
   init();
 
