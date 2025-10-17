@@ -234,8 +234,7 @@
   // helpers
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
   function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
-  function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h, M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) M=50; else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
-
+  function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h, M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) return +(H + 0.5).toFixed(2); else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
   // local storage
   function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
   function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
