@@ -6,9 +6,8 @@
   <title>TheVann Track Duration — v8 (Google sign-in)</title>
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
-  <!-- Google AdSense (you requested this) -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
-     crossorigin="anonymous"></script>
+      crossorigin="anonymous"></script>
 
   <style>
     :root{
@@ -91,7 +90,7 @@
       <div id="notSigned" style="color:var(--muted);font-size:13px">Signed out — data will be stored locally until you sign in.</div>
     </div>
 
-    <div class="card" role="application" aria-labelledby="app-title">
+    <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
       <header class="app-head">
         <div class="title-wrap">
           <h1 class="title" id="app-title">TheVann Track Duration</h1>
@@ -158,9 +157,14 @@
         <div class="total-card">Total Rounded Hours: <span id="total">0.00</span></div>
       </div>
     </div>
+    
+    <div id="loading-screen" class="card" style="display:none; text-align:center; padding: 40px;">
+        <h2 style="margin-top:0;">Please Sign In to Start Tracking</h2>
+        <p style="color:var(--muted);">Your data is stored securely via Google login.</p>
+    </div>
+    
   </div>
 
-  <!-- Firebase + app script -->
   <script type="module">
   // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
@@ -192,7 +196,10 @@
   const signedText = document.getElementById('signedText');
   const notSigned = document.getElementById('notSigned');
   const signOutBtn = document.getElementById('signOut');
-
+  // *** NEW: App content and loading screen DOM elements ***
+  const appContent = document.getElementById('app-content');
+  const loadingScreen = document.getElementById('loading-screen');
+  // *******************************************************
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
   const endEl = document.getElementById('end-input');
@@ -217,12 +224,23 @@
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
-  // translations
+  // --- MODIFIED: Corrected Myanmar Unicode text ---
   const translations = {
     en: { app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.' },
-    my: { app_title:'Thevann အချိန်မှတ်တမ်း', sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', add_entry:'မှတ်တမ်းထည့်မည်', add_dayoff:'နားရက်', export_csv:'CSV ထုတ်ယူမည်', print:'ပုံနှိပ်', duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', total_label:'နာရီပေါင်း အားလုံး:', alert_fill:'ရက်စွဲ၊ အလုပ်ဝင်ချိန် နှင့် အလုပ်ထွက်ချိန်ထည့်ပါ။' },
+    my: { 
+        app_title:'Thevann အချိန်မှတ်တမ်း', 
+        sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
+        add_entry:'မှတ်တမ်းထည့်မည်', 
+        add_dayoff:'နားရက်', 
+        export_csv:'CSV ထုတ်ယူမည်', 
+        print:'ပုံနှိပ်', 
+        duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
+        total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
+        alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။' 
+    },
     th: { app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเข้า และ เวลาออก' }
   };
+  // ------------------------------------------------
 
   // state
   let entries = [];
@@ -234,7 +252,32 @@
   // helpers
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
   function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
-  function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h, M=0; if(m>=1 && m<=29) M=0; else if(m>=30 && m<=39) return +(H + 0.5).toFixed(2); else if(m>=40 && m<=59){ M=0; H=h+1; } return +(H + M/60).toFixed(2); }
+  
+  // --- MODIFIED: computeRounded function (back to English comments) ---
+  function computeRounded(raw){ 
+      if(raw<=0) return 0.00; 
+      const h=Math.floor(raw/60); 
+      const m=raw%60; 
+      let H=h; 
+      
+      // 1. 00–29 → round down to previous hour (H.00)
+      if(m>=0 && m<=29) {
+          return +(H).toFixed(2);
+      } 
+      // 2. 30–39 → round to hour + 0.5 (H.50) (THIS IS THE FIX)
+      else if(m>=30 && m<=39) {
+          return +(H + 0.5).toFixed(2); // return H.50 exactly
+      } 
+      // 3. 40–59 → round up to next full hour (H+1.00)
+      else if(m>=40 && m<=59){ 
+          return +(H + 1).toFixed(2); // round up
+      }
+      
+      // Default or 60 minutes case
+      return +(H).toFixed(2);
+  }
+  // ------------------------------------------------------------------
+  
   // local storage
   function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
   function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
@@ -281,6 +324,11 @@
     signedState.style.display = 'block';
     notSigned.style.display = 'none';
     googleSignInBtn.style.display = 'none';
+    
+    // *** FIX: Show the main app content ***
+    appContent.style.display = 'block';
+    loadingScreen.style.display = 'none';
+    // *************************************
 
     // try load from cloud
     const cloud = await loadFromFirestore(uid);
@@ -308,10 +356,30 @@
     googleSignInBtn.style.display = 'inline-block';
     notSigned.style.display = 'block';
     signedText.textContent = '';
+    
+    // *** FIX: Hide the main app content and show sign-in prompt ***
+    appContent.style.display = 'none';
+    loadingScreen.style.display = 'block';
+    loadingScreen.querySelector('h2').textContent = 'Please Sign In to Start Tracking';
+    loadingScreen.querySelector('p').textContent = 'Your data is stored securely via Google login.';
+    // ************************************************************
+    
     // keep local data (no deletion)
     loadLocal();
     render();
   }
+  
+  // --- NEW: UI/STATE CONTROL FUNCTION (Immediate Loading State) ---
+  function showLoadingState(){
+      appContent.style.display = 'none';
+      googleSignInBtn.style.display = 'none';
+      signedState.style.display = 'none';
+      notSigned.style.display = 'none';
+      loadingScreen.style.display = 'block'; // Show a brief loading/sign-in screen
+      loadingScreen.querySelector('h2').textContent = 'Loading...';
+      loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
+  }
+  // -------------------------------------------------------------
 
   // auth events
   onAuthStateChanged(auth, async (user) => {
@@ -464,6 +532,9 @@
 
   // init
   function init(){
+    // *** FIX: Show loading state immediately while we check auth status ***
+    showLoadingState(); 
+    
     loadLocal();
     const saved = localStorage.getItem(MONTH);
     if(saved){ try{ const o=JSON.parse(saved); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
@@ -472,7 +543,7 @@
     currentLang = localStorage.getItem(LANG) || currentLang;
     applyTheme();
     applyLanguageTexts();
-    render();
+    // NOTE: render() is called by onAuthStateChanged after auth status check is complete
   }
   init();
 
