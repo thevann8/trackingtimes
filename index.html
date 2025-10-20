@@ -6,9 +6,6 @@
   <title>TheVann Track Duration — v8 (Google sign-in)</title>
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
-     crossorigin="anonymous"></script>
-
   <style>
     /* Clean & Modern Theme CSS */
     :root{
@@ -25,9 +22,18 @@
       --shadow:0 18px 40px rgba(0,0,0,0.4); /* Deeper shadow */
       --table-border:rgba(255,255,255,0.05);
       --input-bg:rgba(255,255,255,0.05);
-      --dayoff-bg: #2a1a45; /* Purple background for visibility */
-      --dayoff-border: #9b59b6; /* Purple border */
-      --dayoff-text: #f0e6ff;
+      /* --- DAY OFF NEW RED STYLE --- */
+      --dayoff-bg: #451a1a; /* Dark red background for visibility */
+      --dayoff-border: #e74c3c; /* Bright red border */
+      --dayoff-text: #ffcfcf; /* Light text */
+
+      /* NEW: Auth Page specific colors for light mode to match the image */
+      --auth-bg-light: #f0f4f8; /* Use main light background for simplicity */
+      --auth-text-light: #3d3b3c;
+      --auth-btn-bg-light: #ffffff;
+      --auth-btn-border-light: #e0e0e0;
+      --auth-btn-text-light: #3d3b3c;
+      --auth-link-light: #2b7de3;
     }
     body.light-mode{
       --bg:#f0f4f8;
@@ -35,6 +41,1137 @@
       --text:#102a43;
       --muted:#657d9d;
       --accent:#2b7de3;
+      --accent-2:#56c5ff;
+      --success:#16a34a;
+      --danger:#cc3333;
+      --glass:rgba(0,0,0,0.05);
+      --shadow:0 12px 25px rgba(0,0,0,0.1);
+      --table-border:rgba(0,0,0,0.1);
+      --input-bg:#f9fbfd;
+      /* --- DAY OFF NEW RED STYLE --- */
+      --dayoff-bg: #fff0f0;
+      --dayoff-border: #e74c3c;
+      --dayoff-text: #cc3333;
+    }
+    
+    /* Global styles */
+    *{box-sizing:border-box; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:20px}
+    .wrap{max-width:1080px;margin:0 auto}
+    
+    /* Card/Container Styling */
+    .card{
+      background:var(--card);
+      padding:24px;
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      border:1px solid var(--glass);
+      margin-bottom:20px;
+    }
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+    h1.title{margin:0;font-size:24px;font-weight:700}
+    .subtitle{color:var(--muted);font-size:14px;margin-top:4px}
+
+    /* Auth/Sign Area - NEW DESIGN TO MATCH REFERENCE IMAGE */
+    #auth-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 40px);
+      background: var(--bg);
+      color: var(--text);
+      text-align: center;
+      padding: 20px;
+      margin: -20px;
+    }
+    body.light-mode #auth-area {
+        background: var(--auth-bg-light);
+        color: var(--auth-text-light);
+    }
+    #auth-area .auth-title {
+        font-size: 38px;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-family: serif;
+        color: inherit;
+    }
+    #auth-area .auth-subtitle {
+        font-size: 16px;
+        color: var(--muted);
+        margin-bottom: 30px;
+    }
+    body.light-mode #auth-area .auth-subtitle {
+        color: var(--auth-text-light);
+        opacity: 0.7;
+    }
+    
+    /* Button Wrapper for Centering */
+    .auth-buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .auth-btn{
+      width: 100%;
+      max-width: 320px; 
+      padding:16px 28px;
+      border-radius:12px; 
+      border:1px solid var(--table-border);
+      background:var(--card); 
+      color:var(--text);
+      font-weight:700;
+      cursor:pointer;
+      box-shadow:0 2px 5px rgba(0,0,0,0.1); 
+      transition:transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      margin-bottom: 12px; 
+    }
+    body.light-mode .auth-btn {
+        background: var(--auth-btn-bg-light);
+        color: var(--auth-btn-text-light);
+        border: 1px solid var(--auth-btn-border-light);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .auth-btn:hover{
+      transform:translateY(-1px); 
+      box-shadow:0 4px 8px rgba(0, 0, 0, 0.15);
+      background: var(--input-bg);
+    }
+    body.light-mode .auth-btn:hover {
+        background: #f8f8f8;
+    }
+
+    /* Google Logo (using a small space and background-image for BASE64 SVG) */
+    .google-icon {
+        width: 22px; 
+        height: 22px;
+        margin-right: 15px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        /* Base64 SVG for the standard Google G Logo */
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjctLjQtMS4zLS45LTEuOGwtNC44LTQuOGMtLjUtLjUtMS4yLS44LTEuNy0uOGgtNS42Yy0uNiAwLTEuMS4zLTEuNy44bC0zLjcgMy43Yy0uNS41LS44IDEuMi0uOCAxLjcVd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9Im5vbmUiLz48cGF0aCBmaWxsPSIjRUE0MzM1IiBkPSJNMjQuNyAxMi45Yy01LjEtLjEtMTAuMiAxLjQtMTQuMSAzLjlsLTQuNyA0LjRjLS41LjUtLjggMS4yLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40Yy41LjUgMS4yLjggMS43LjhzMS4yLS4yIDEuNy0uN0wzMSAyMC41Yy40LS41LjctMS4xLjctMS43VjE4LjNjMC0uNS0uMy0xLjEtLjctMS42TDI5IDExLjZjLS41LS41LTEuMi0uOC0xLjctLjhINjBjLS44IDAtMS40LjYtMS40IDEuNHYxLjJjMCAuOC42IDEuNCAxLjQgMS40aDE3LjZjLjctLjEgMS40LS4xIDIuMS0uMlY2LjljLS43LS4xLTEuNC0uMS0yLjEtLjItLjk0LS4zLTEuNy0uOC0yLjQtMS40TDkuOSAxNi43Yy0uNS41LTEuMi44LTEuNy44cz0iIEMgMTcuNiwgMTguMyAxNy42LCAxOC4zIDE3LjcsIDE4LjIgTCAxNy43LCAxOC4yIEMgMTcuNywgMTguMiAxNy43LCAxOC4yIDE3LjgsIDE4LjIgTCAxNy44LCAxOC4yIEMgMTcuOCwgMTguMiAxNy44LCAxOC4yIDE3LjksIDE4LjIgTCAxNy45LCAxOC4yIEMgMTcuOSwgMTguMiAxOCwgMTguMiAxOC4xLDE4LjIgTCAxOC4xLCAxOC4yIEMgMTguMiwgMTguMyAxOC4zLCAxOC4zIDE4LjMsIDE4LjMgTCAxOC4zLCAxOC4zIEMgMTguNCwgMTguMyAxOC41LCAxOC4zIDE4LjYsIDE4LjQgTCAxOC42LCAxOC40IEMgMTguNywgMTguNSAxOC44LCAxOC41IDE4LjksIDE4LjYgTCAxOC45LCAxOC42IEMgMTkuMSwgMTguNyAxOS4zLCAxOC45IDE5LjYsIDE5LjEgTCAxOS42LCAxOS4xIEMgMTkuOCwgMTkuMiAxOS45LCAxOS40IDIwLjEsIDE5LjYgTCAyMC4xLCAxOS42IEMgMjAuNCwgMTkuOCAyMC43LCAyMC4xIDIxLCAyMC40IEwgMjEuMCwgMjAuNCBDIDIxLjMsIDIwLjcgMjEuNiwgMjEgMjEuOSwgMjEuMyBMIDIxLjksIDIxLjMgQyAyMi4yLCAyMS42IDIyLjUsIDIxLjkgMjIuOCwgMjIuMyBMIDIyLjgsIDIyLjMgQyAyMy4xLCAyMi42IDIzLjQsIDIzIDI0LjcsIDIzIEwgMjQuNywgMjMgTCAyNC43LCAyMyBDIDI1LjksIDIzIDI2LjMgMjIuNiAyNi43LCAyMi4zIEwgMjYuNywgMjIuMyBDIDI3LjAsIDIxLjkgMjcuMywgMjEuNiAyNy42LCAyMS4zIEwgMjcuNiwgMjEuMyBDIDI3LjksIDIxLjAgMjguMywgMjAuNyAyOC41LCAyMC40IEwgMjguNSwgMjAuNCBDIDI4LjgsIDIwLjEgMjkuMSwgMTkuOCAyOS40LCAxOS42IEwgMjkuNCwgMTkuNiBDIDI5LjYsIDE5LjQgMjkuOCwgMTkuMiAzMC4xLDE5LjEgTCAzMC4xLCAxOS4xIEMgMzAuMywgMTguOSAzMC41LCAxOC43IDMwLjggMTguNiBMIDMwLjgsIDE4LjYgQyAzMS4wLCAxOC41IDMxLjEsIDE4LjUgMzEuMiwgMTguNCBMIDMxLjIsIDE4LjQgQyAzMS4zLCAxOC4zIDMxLjQsIDE4LjMgMzEuNSwgMTguMyBMIDMxLjUsIDE4LjMgQyAzMS42LCAxOC4zIDMxLjYgMTguMyAzMS42LCAxOC4yIEwgMzEuNiwgMTguMiBDIDMxLjcsIDE4LjIgMzEuNywgMTguMiAzMS43LDE4LjIgTCAzMS43LCAxOC4yIEMgMzEuNywgMTguMiAzMS43LCAxOC4yIDMxLjgsIDE4LjIgTCAzMS44LCAxOC4yIEMgMzEuOCwgMTguMiAzMS44LCAxOC4yIDMxLjgsIDE4LjIgTCAzMS44LCAxOC4yIEMgMzIuMSwgMTcuOCAzMi40LCAxNy40IDMyLjYgMTcgTCAzMi42LCAxNyBDIDMyLjcsIDE2LjYgMzIuOSwgMTYuMiAzMy4xLCAxNS43IEwgMzMuMSwgMTUuNyBDIDMzLjMsIDE1LjIgMzMuNCwgMTQuOCAzMy42LCAxNC4zIEwgMzMuNiwgMTQuMyBDIDMzLjcsIDEzLjkgMzMuOCwgMTMuNSAzMy45LCAxMy4wIEwgMzMuOSwgMTMuMCBDIDM0LjAsIDEyLjYgMzQuMCwgMTIuMiAzNC4wLCAxMS44IEwgMzQuMCwgMTEuOCBDIDM0LjAsIDExLjQgMzQuMCwgMTEuMCAzMy45LCAxMC41IEwgMzMuOSwgMTAuNSBDIDMzLjggLjk2IDI2LjYsIC42NSAxNy40LCAxLjI1IEwgMTcuNCwgMS4yNSBDIDguMiwgMS44NSA4LDIuMjEgMy41LDIuNzggTCAzLjUsIDIuNzggQyAtMS4wLDMuMzYgMCw4LjEgMCw4LjcgTCAwLDguNyBDIDAsOS4yIDAsMTMuOCA1LjYsMTQuNCBMIDUuNiwgMTQuNCBDIDEwLjksIDE1LjAgMTUuNywgMTUuMiAyNC43LCAxNS4yIEwgMjQuNywgMTUuMiBDIDMzLjIsIDE1LjIgMzYuMSwxNC45IDQwLjMsMTQuNSBMIDQwLjMsIDE0LjUgQyA0NC40LDE0LjIgNDUuMiAxMy40IDQ1LjIgMTMuNCBMIDQ1LjIsIDEzLjQgQyA0NS43LDEyLjggNDYsMTEuNCA0NiwxMSBMIDQ2LDExIEMgNDYsMTAuNiA0Ni4xLDEwLjIgNDYuMSw5LjcgTCA0Ni4xLDkuNyBDIDQ2LjcsOC42IDQ3LjgsNC44IDQ3LjgsNC44IEwgNDcuOCw0LjggQyA0OCw0LjEgNDgsMS41IDQ2LjYsLjk0IEwgNDYuNiwwLjk0IEMgNDUuMywuMzggNDQsMCA0My41LDAuMCBMIDQzLjUsIDAuMCBDIDQzLjIsMCA0Mi44LDAgNDIuNSwwIEwgNDIuNSwwIEwgNDIuNSwwIEMgNDIuMSAwIDQxLjggMCA0MS40LDAuMSBMIDQxLjQsMC4xIEMgNDEuMCwwLjEgNDAuNSwwLjIgNDAuMSwwLjIgTCA0MC4xLDAuMiBDIDM5LjggMC4yIDM5LjQgMC4zIDM5LjEgMC4zIEwgMzkuMSAwLjMgQyAzOC45LDAuNCAzOC43LDAuNCAzOC41LDAuNCBMIDM4LjUsIDAuNCBDIDM4LjIgMC41IDM3LjkgMC41IDM3LjYgMC42IEwgMzcuNiwwLjYgQyAzNy4zLDAuNiAzNy4xLDAuNyAzNi44LDAuNyBMIDM2LjgsMC43IEMgMzYuNSwwLjggMzYuMiwwLjkgMzYuMCwxLjAgTCAzNi4wLDEuMCBDIDM1LjcgMS4wIDM1LjQgMS4xIDM1LjEgMS4xIEwgMzUuMSwxLjEgQyAzNC45LDEuMiAzNC42LDEuMyAzNC40LDEuMyBMIDM0LjQsMS4zIEMgMzQuMSwxLjQgMzMuOCwxLjUgMzMuNSwxLjUgTCAzMy41LDEuNSBDIDMzLjMgMS42IDMzLjEgMS42IDMyLjggMS43IEwgMzIuOCwxLjcifSImZmlsbD0iIzNCNDMyNSIvPjwvc3ZnPg==');
+    }
+
+    .auth-btn img {
+        display: none; /* Hide the img tag */
+    }
+    
+    .auth-btn .google-icon {
+        display: block; /* Show the custom div icon */
+    }
+
+    
+    .auth-terms {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 30px;
+        max-width: 320px;
+        line-height: 1.5;
+    }
+
+    /* Username Setup Modal Styling */
+    #username-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+    }
+    #username-form-card {
+        background: var(--card);
+        padding: 30px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+    }
+    #username-form-card h3 {
+        margin-top: 0;
+        color: var(--accent);
+    }
+    #username-input-field {
+        width: 100%;
+        margin-bottom: 15px;
+        /* Inherit input styling */
+        background:var(--input-bg);
+        border:1px solid var(--table-border);
+        padding:12px 14px;
+        border-radius:12px;
+        color:var(--text);
+        font-size:16px;
+        outline:none;
+    }
+    #save-username-btn {
+        width: 100%;
+    }
+
+
+    /* Signed in display area (Fixed Top Right - Desktop) */
+    #signedState {
+        display: none;
+        position: fixed; 
+        top: 0;
+        right: 0;
+        padding: 10px 20px;
+        background: var(--card);
+        border-bottom-left-radius: 12px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .signed-as{color:var(--success);font-weight:700;font-size:15px; margin-top: 5px; white-space: nowrap;}
+    .auth-btn.secondary{
+      background:var(--input-bg); 
+      color:var(--text); 
+      box-shadow:none; 
+      border:1px solid var(--table-border);
+      padding: 8px 15px;
+      font-size: 14px;
+      margin-bottom: 0;
+      max-width: fit-content;
+    }
+    .auth-btn.secondary:hover {
+        border-color: var(--danger);
+        color: var(--danger);
+    }
+    
+    /* Loading/Sign-in Required Screen */
+    #loading-screen{
+        text-align:center;
+        padding: 50px;
+        box-shadow: var(--shadow);
+        background: var(--card);
+        margin-top: 20px;
+    }
+    #loading-screen h2 { color:var(--accent); margin-top: 0;}
+
+
+    /* Language + Theme */
+    .right-controls{display:flex;align-items:center;gap:12px}
+    .lang-select{display:flex;gap:6px}
+    .lang-select button{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:8px 12px;
+      border-radius:12px;
+      color:var(--text);
+      cursor:pointer;
+      font-size:14px;
+      font-weight:600;
+    }
+    .lang-select button:hover { border-color: var(--accent-2); }
+    .toggle{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:8px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    /* Inputs / Controls */
+    .controls-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}
+    
+    /* New Input Grid/Grouping */
+    .entry-grid{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .input-group label {
+        color: var(--muted);
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-left: 5px;
+    }
+    input[type=date],input[type=time],input[type=text]{
+      background:var(--input-bg);
+      border:1px solid var(--table-border);
+      padding:12px 14px;
+      border-radius:12px;
+      color:var(--text);
+      min-width:140px;
+      font-size:16px;
+      outline:none;
+    }
+    input::placeholder{color:var(--muted)}
+    input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-2);}
+    .preview{color:var(--muted);font-size:14px;font-weight:600;}
+
+    .btn{
+      padding:12px 18px;
+      border-radius:12px;
+      border:none;
+      cursor:pointer;
+      font-weight:600;
+      font-size:15px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+    }
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022}
+    .ghost{background:var(--input-bg);border:1px solid var(--table-border);color:var(--text)}
+    .ghost:hover{border-color:var(--accent-2)}
+
+    /* table */
+    .table-wrap{overflow:auto;margin-top:20px;border-radius:12px; border:1px solid var(--table-border);}
+    table{width:100%;border-collapse:collapse;min-width:750px; background:var(--card)}
+    thead th{
+      padding:14px 18px;
+      text-align:left;
+      color:var(--muted);
+      font-size:13px;
+      text-transform:uppercase;
+      border-bottom:2px solid var(--table-border);
+      background:var(--input-bg);
+      letter-spacing:0.5px;
+    }
+    tbody td{padding:12px 18px;border-bottom:1px solid var(--table-border); vertical-align:middle;}
+    tbody tr:nth-child(even):not(.day-off){background:var(--input-bg)}
+    tbody tr:hover:not(.day-off) {background:var(--glass)}
+    
+    /* --- DAY OFF NEW BRIGHT RED STYLE --- */
+    tr.day-off {
+        background: var(--dayoff-bg) !important; 
+        color: var(--dayoff-text) !important;
+        font-weight: 700; 
+        border: 2px solid var(--dayoff-border) !important; 
+    }
+    tr.day-off td {
+        font-style: italic;
+        border-bottom: 1px solid var(--dayoff-border) !important;
+        padding: 14px 18px;
+    }
+    tr.day-off:hover {
+        background: var(--dayoff-bg) !important; 
+        opacity: 0.9;
+    }
+    tr.day-off td:first-child::before {
+        content: "🚨 "; 
+        margin-right: 5px;
+    }
+    tr.day-off td:last-child {
+        text-align: right;
+    }
+    /* ----------------------------------------------- */
+    
+    .actions{display:flex;gap:10px}
+    .chip{
+      padding:8px 12px;
+      border-radius:10px;
+      font-weight:600;
+      cursor:pointer;
+      font-size:13px;
+      border:none;
+    }
+    .chip.edit{background:var(--success);color:#fff}
+    .chip.del{background:var(--danger);color:#fff}
+
+    .total-card{
+      background:var(--glass);
+      padding:12px 18px; 
+      border-radius:12px;
+      color:var(--text);
+      font-weight:700;
+      font-size:16px; 
+      border:1px solid var(--table-border);
+    }
+    .total-card span { color: var(--accent-2); font-size: 18px; } 
+
+    .footer{display:flex;justify-content:flex-end;margin-top:20px; display: none;} 
+
+
+    @media(max-width:768px){
+      body { padding: 10px; }
+      .card { padding: 16px; border-radius: 12px; }
+      h1.title { font-size: 20px; }
+      .controls-top{flex-direction:column; align-items:stretch;}
+      .controls-top > div { flex-wrap: nowrap !important; }
+      .controls-top > div:last-child { margin-left: 0 !important; }
+      .entry-grid{flex-direction:column;align-items:stretch}
+      
+      .input-group { width: 100%; }
+      input[type=date],input[type=time],input[type=text]{width:100%; min-width:unset;}
+      
+      .btn,.total-card{width:100%; min-width:unset;}
+      table{min-width:550px}
+      
+      .total-card{ width: 100%; text-align: center; }
+
+      #auth-area {
+        min-height: calc(100vh - 20px);
+        padding: 10px;
+        margin: -10px;
+      }
+      #auth-area .auth-title { font-size: 32px; }
+      
+      /* SIGN OUT BUTTON MOBILE FIX */
+      #signedState {
+        position: absolute;
+        padding: 8px 10px;
+        margin-top: 10px;
+        top: 0;
+        right: 10px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        flex-direction: row;
+        gap: 10px;
+        border-radius: 8px;
+        background: var(--card);
+      }
+      #signedState .signed-as { margin-top: 0; font-size: 13px; }
+      #signedState .auth-btn.secondary { padding: 4px 8px; font-size: 12px; }
+    }
+
+    @media print{
+      @page{size:A4 landscape;margin:12mm}
+      body,html{background:#fff;color:#000}
+      .card{background:#fff;box-shadow:none;border:none}
+      .entry-grid,button,[class*="chip"],.auth-area,#loading-screen,.right-controls,#signedState{display:none}
+      .controls-top{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+      .controls-top > div:last-child { display: none; }
+      table{min-width:0; margin-top: 0;}
+      thead th,tbody td{border:1px solid #ccc;padding:8px}
+      th{background:#f2f2f2}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    
+<div class="auth-area" id="auth-area" style="display:none;">
+      <h1 class="auth-title">Log into TheVann</h1>
+      <p class="auth-subtitle">Or create a free account</p>
+
+    <div class="auth-buttons-wrapper">
+      
+      <button id="googleSignIn" class="auth-btn">
+        <div class="google-icon"></div> 
+        Continue with Google
+      </button>
+
+      </div>
+
+      <p class="auth-terms">
+        By creating an account, you agree to the <a href="#">Terms of Service</a> and acknowledge that you have read and
+        understood the <a href="#">Privacy Policy</a>
+      </p>
+
+</div>
+    
+    <div id="username-modal" style="display:none;">
+        <div id="username-form-card" class="card">
+            <h3 id="modal-title">Set Your Display Name</h3>
+            <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in reports.</p>
+            <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
+            <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
+        </div>
+    </div>
+    <div id="loading-screen" class="card" style="display:none;">
+        <h2 style="margin-top:0;">⏳ Loading...</h2>
+        <p style="color:var(--muted);">Checking authentication status...</p>
+    </div>
+
+    <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
+      
+      <div id="signedState" style="display:none;">
+        <div class="signed-as" id="signedText"></div>
+        <button id="signOut" class="auth-btn secondary"></button>
+      </div>
+      <header class="app-head">
+        <div class="title-wrap">
+          <h1 class="title" id="app-title">TheVann Track Duration</h1>
+          <div class="subtitle" id="app-sub">Auto rounding, monthly view, multi-language</div>
+        </div>
+
+        <div class="right-controls">
+          <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
+            <button data-lang="en">🇺🇸 EN</button>
+            <button data-lang="my">🇲🇲 မြန်မာ</button>
+            <button data-lang="th">🇹🇭 ไทย</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="toggle" id="theme-toggle" title="Toggle theme">🌙</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="controls-top">
+        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+          <button id="prev-month" class="ghost btn">◀</button>
+          <div id="month-label" style="font-weight:700;min-width:160px;text-align:center;">Month</div>
+          <button id="next-month" class="ghost btn">▶</button>
+          <button id="today-month" class="ghost btn">🗓️ Today</button>
+        </div>
+        
+        <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
+        
+
+        <div style="margin-left:auto;display:flex;gap:12px">
+          <button id="export-csv" class="ghost btn">💾 Export CSV</button>
+          <button id="print-btn" class="ghost btn">🖨️ Print</button>
+        </div>
+      </div>
+
+      <div class="entry-grid" style="margin-top:16px">
+        <div class="input-group">
+            <label id="date-label" for="date-input">Date</label>
+            <input id="date-input" type="date" />
+        </div>
+        
+        <div class="input-group">
+            <label id="start-label" for="start-input">IN</label>
+            <input id="start-input" type="time" />
+        </div>
+        
+        <div class="input-group">
+            <label id="end-label" for="end-input">OUT</label>
+            <input id="end-input" type="time" />
+        </div>
+        
+        <div class="input-group" style="flex-grow: 1;">
+            <label id="task-label" for="task-input">Task / notes (optional)</label>
+            <input id="task-input" type="text" placeholder="" />
+        </div>
+        
+        <div class="preview" id="preview" style="align-self: flex-end;">Duration: 00:00 (0.00h)</div>
+
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button id="add-btn" class="primary btn">➕ Add Entry</button>
+          <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table id="entries-table" aria-describedby="month-label">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start</th>
+              <th>End</th>
+              <th>Duration (H:M)</th>
+              <th>Rounded (hrs)</th>
+              <th>Task</th>
+              <th class="actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="entries-body"></tbody>
+        </table>
+      </div>
+      
+      <div class="footer" style="display:none;">
+        <div class="total-card">Total Rounded Hours: <span id="total-footer">0.00</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+  // --- Firebase imports (modular) ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
+
+  // --- Your confirmed Firebase config ---
+  const firebaseConfig = {
+    apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
+    authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
+    projectId: "thevanntrackduration-81ee0",
+    storageBucket: "thevanntrackduration-81ee0.firebasestorage.app",
+    messagingSenderId: "56786707859",
+    appId: "1:56786707859:web:75be757ceb95604984f466",
+    measurementId: "G-QNG2F09LWL"
+  };
+
+  // init firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics?.(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
+
+  // --- DOM ---
+  const googleSignInBtn = document.getElementById('googleSignIn');
+  const signedState = document.getElementById('signedState');
+  const signedText = document.getElementById('signedText');
+  const signOutBtn = document.getElementById('signOut');
+  
+  // Username Modal DOM
+  const usernameModal = document.getElementById('username-modal');
+  const usernameInputField = document.getElementById('username-input-field');
+  const saveUsernameBtn = document.getElementById('save-username-btn');
+
+  // New DOM elements for content hiding
+  const appContent = document.getElementById('app-content');
+  const loadingScreen = document.getElementById('loading-screen');
+  const authArea = document.getElementById('auth-area'); // Reference to the main auth area
+
+  const dateEl = document.getElementById('date-input');
+  const startEl = document.getElementById('start-input');
+  const endEl = document.getElementById('end-input');
+  const taskEl = document.getElementById('task-input');
+  const previewEl = document.getElementById('preview');
+  const addBtn = document.getElementById('add-btn');
+  const dayOffBtn = document.getElementById('dayoff-btn');
+  const entriesBody = document.getElementById('entries-body');
+  
+  const totalHeaderEl = document.getElementById('total-header'); 
+  const totalEl = totalHeaderEl.querySelector('#total'); 
+  
+  const exportBtn = document.getElementById('export-csv');
+  const printBtn = document.getElementById('print-btn');
+  const prevMonthBtn = document.getElementById('prev-month');
+  const nextMonthBtn = document.getElementById('next-month');
+  const todayMonthBtn = document.getElementById('today-month');
+  const monthLabel = document.getElementById('month-label');
+  const langButtons = document.getElementById('lang-buttons');
+  const themeToggle = document.getElementById('theme-toggle');
+
+  // Input Labels for dynamic translation
+  const dateLabel = document.getElementById('date-label');
+  const startLabel = document.getElementById('start-label');
+  const endLabel = document.getElementById('end-label');
+  const taskLabel = document.getElementById('task-label');
+
+
+  // keys
+  const STORAGE = 'vann_v8_entries';
+  const THEME = 'vann_v8_theme';
+  const LANG = 'vann_v8_lang';
+  const MONTH = 'vann_v8_month';
+
+  // translations (Myanmar Unicode fixed)
+  const translations = {
+    en: { 
+      app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.', 
+      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
+      // NEW LABELS
+      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
+      csv_user_label: 'User Name',
+      modal_title: 'Set Your Display Name',
+      modal_subtitle: 'This name will be used in reports.',
+      save_name: 'Save Name',
+      sign_out_btn: 'Sign out' // New button text
+    },
+    my: { 
+      // Myanmar Unicode Fixed
+      app_title:'Thevann အချိန်မှတ်တမ်း', 
+      sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
+      add_entry:'မှတ်တမ်းထည့်မည်', 
+      add_dayoff:'နားရက်', 
+      export_csv:'CSV ထုတ်ယူမည်', 
+      print:'ပုံနှိပ်', 
+      duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
+      total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
+      alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
+      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
+      // NEW LABELS
+      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
+      csv_user_label: 'အသုံးပြုသူအမည်',
+      modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
+      modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
+      save_name: 'အမည်သိမ်းမည်',
+      sign_out_btn: 'ထွက်မည်' // New button text
+    },
+    th: { 
+      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
+      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
+      // NEW LABELS
+      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
+      csv_user_label: 'ชื่อผู้ใช้',
+      modal_title: 'กำหนดชื่อแสดงผล',
+      modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
+      save_name: 'บันทึกชื่อ',
+      sign_out_btn: 'ออกจากระบบ' // New button text
+    }
+  };
+
+  // state
+  let entries = [];
+  let editId = null;
+  let selectedYear, selectedMonth;
+  let currentLang = localStorage.getItem(LANG) || 'en';
+  let currentUser = null; // firebase user object
+
+  // helpers
+  function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
+  function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
+  
+  // *** FIXED computeRounded function (30-39 mins = 0.5) ***
+  function computeRounded(raw){ 
+    if(raw<=0) return 0.00; 
+    const h=Math.floor(raw/60); 
+    const m=raw%60; 
+    let H=h; 
+    
+    if(m>=0 && m<=29) {
+        return +(H).toFixed(2);
+    } 
+    else if(m>=30 && m<=39) {
+        return +(H + 0.5).toFixed(2); // Fix: return H.50 exactly
+    } 
+    else if(m>=40 && m<=59){ 
+        return +(H + 1).toFixed(2); // round up
+    }
+    
+    return +(H).toFixed(2);
+  }
+  // *********************************************************
+
+  // local storage
+  function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
+  function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
+
+  // Firestore helpers: store under collection "users", doc id = uid, field "entries" = array
+  async function saveToFirestore(uid){
+    if(!uid) return;
+    try{
+      const d = doc(db, 'users', uid);
+      await setDoc(d, { entries }, { merge: true });
+      // console.log('Saved to Firestore');
+    }catch(err){
+      console.error('saveToFirestore error:', err);
+    }
+  }
+
+  async function loadFromFirestore(uid){
+    if(!uid) return null;
+    try{
+      const d = doc(db, 'users', uid);
+      const snap = await getDoc(d);
+      if(snap.exists()){
+        const data = snap.data();
+        if(Array.isArray(data.entries) && data.entries.length>0){
+          return data.entries;
+        }
+        return [];
+      } else {
+        return [];
+      }
+    }catch(err){
+      console.error('loadFromFirestore error:', err);
+      return null;
+    }
+  }
+
+  // USER NAME HANDLING
+  async function handleUsernameSetup(user) {
+    // Show username modal
+    usernameModal.style.display = 'flex';
+    // Use part of email as initial name if display name is totally empty
+    usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
+    
+    // Update modal texts (since render is not called)
+    const t = translations[currentLang];
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+  }
+  
+  saveUsernameBtn.addEventListener('click', async () => {
+      const newName = usernameInputField.value.trim();
+      if (!newName) {
+          alert('Please enter a name.');
+          return;
+      }
+      if (currentUser) {
+          try {
+              // Update display name in Firebase Auth
+              await updateProfile(currentUser, {
+                  displayName: newName
+              });
+              // Force the app to re-render with the new name
+              currentUser.displayName = newName;
+              usernameModal.style.display = 'none';
+              handleUserSignedIn(currentUser); 
+          } catch (error) {
+              console.error('Error updating profile:', error);
+              alert('Failed to save name: ' + error.message);
+          }
+      }
+  });
+
+
+  // UI/STATE CONTROL FUNCTION
+  function showLoadingState(){
+      authArea.style.display = 'none'; // Hide auth area
+      appContent.style.display = 'none'; // Hide main app
+      signedState.style.display = 'none'; // Hide signed state
+      usernameModal.style.display = 'none'; // Hide username modal
+      loadingScreen.style.display = 'block'; 
+      loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
+      loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
+  }
+
+  // handle user status
+  async function handleUserSignedIn(user){
+    currentUser = user;
+    const uid = user.uid;
+    
+    // *** CHECK FOR DISPLAY NAME FIRST ***
+    // Checks if name is missing OR if it looks like an email (which Google sometimes defaults to)
+    if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
+        // If not set, show the setup modal and stop here
+        await handleUsernameSetup(user);
+        return; 
+    }
+    
+    // If name is set, proceed to app
+    signedText.textContent = `Signed in: ${user.displayName}`;
+    signedState.style.display = 'flex'; // Show sign out button and signed text
+    authArea.style.display = 'none'; // Hide the full auth screen
+    
+    // Show the main app content
+    appContent.style.display = 'block';
+    loadingScreen.style.display = 'none';
+
+    // try load from cloud
+    const cloud = await loadFromFirestore(uid);
+    if(cloud === null){
+      // error reading cloud: keep local
+      console.warn('Could not read from Firestore — using local data');
+      loadLocal();
+    } else if(Array.isArray(cloud) && cloud.length>0){
+      // cloud has entries -> adopt cloud
+      entries = cloud;
+      saveLocal(); // update local
+    } else {
+      // cloud empty -> push local if have local entries
+      // *** FIX IMPLEMENTED HERE ***: Clearing LocalStorage on sign-out forces the app to load cloud data or nothing.
+      loadLocal();
+      if(Array.isArray(entries) && entries.length>0){
+        await saveToFirestore(uid);
+      }
+    }
+    render();
+  }
+
+  function handleUserSignedOut(){
+    currentUser = null;
+    signedState.style.display = 'none'; // Hide sign out button and signed text
+    usernameModal.style.display = 'none'; // Hide username modal
+    authArea.style.display = 'flex'; // Show the new auth screen
+    
+    // Hide the main app content
+    appContent.style.display = 'none';
+    loadingScreen.style.display = 'none'; // Ensure loading screen is hidden
+
+    // *** THE FIX: Clear only the user's data from local storage on sign-out ***
+    localStorage.removeItem(STORAGE); 
+    // ************************************************************************
+    
+    loadLocal();
+    render(); 
+  }
+
+  // auth events
+  onAuthStateChanged(auth, async (user) => {
+    if(user){
+      await handleUserSignedIn(user);
+    } else {
+      await handleUserSignedOut();
+    }
+  });
+
+  // sign in/out UI
+  googleSignInBtn.addEventListener('click', async ()=>{
+    showLoadingState(); // Show loading state when attempting sign-in
+    try{
+      await signInWithPopup(auth, provider);
+      // onAuthStateChanged will handle loading and UI
+    }catch(err){
+      alert('Google sign-in failed: ' + err.message);
+      handleUserSignedOut(); // Go back to sign-out state if sign-in fails
+    }
+  });
+  
+  signOutBtn.addEventListener('click', async ()=>{
+    try{
+      await signOut(auth);
+      // onAuthStateChanged will handle UI
+    }catch(err){
+      console.error(err);
+    }
+  });
+
+  // preview update
+  function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent = translations[currentLang].duration_default } }
+  [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
+
+  // render
+  function render(){
+    entriesBody.innerHTML = '';
+    let total = 0;
+    const filtered = entries.filter(r=>{
+      const d = new Date(r.date);
+      return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth;
+    });
+
+    filtered.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
+    
+    const t = translations[currentLang]; // Get current translation object
+    const dayOffText = t.day_off_text || 'Day Off';
+
+    for(const row of filtered){
+      const tr = document.createElement('tr');
+      if(row.isDayOff) tr.classList.add('day-off');
+      const start = row.isDayOff? dayOffText : row.start;
+      const end = row.isDayOff? dayOffText : row.end;
+      const duration = row.isDayOff? dayOffText : row.duration;
+      const rounded = row.isDayOff? 0 : row.rounded;
+      
+      const taskDisplay = row.isDayOff ? dayOffText : row.task || '';
+
+      tr.innerHTML = `
+        <td>${row.date}</td>
+        <td>${start}</td>
+        <td>${end}</td>
+        <td>${duration}</td>
+        <td>${rounded.toFixed(2)}</td>
+        <td class="${row.isDayOff? 'day-off-task':''}">${taskDisplay}</td>
+        <td class="actions">${row.isDayOff? `<button class="chip del" data-id="${row.id}">${t.del}</button>` : `<button class="chip edit" data-id="${row.id}">${t.edit}</button><button class="chip del" data-id="${row.id}">${t.del}</button>`}</td>
+      `;
+      entriesBody.appendChild(tr);
+      total += rounded;
+    }
+
+    totalEl.textContent = total.toFixed(2);
+    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
+    applyLanguageTexts();
+  }
+
+  // save local + cloud (if signed)
+  async function saveAll(){
+    saveLocal();
+    if(currentUser){
+      await saveToFirestore(currentUser.uid);
+    }
+  }
+
+  // add/update
+  addBtn.addEventListener('click', async ()=>{
+    const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
+    if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
+    const sM = parseHM(s), eM = parseHM(e);
+    if(sM==null||eM==null) return alert('Invalid time');
+    let diff = eM - sM; if(diff<0) diff += 24*60;
+    const formatted = fmtHM(diff); const rounded = computeRounded(diff);
+    if(editId){
+      const idx = entries.findIndex(x=>x.id===editId);
+      if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = '➕ ' + translations[currentLang].add_entry; }
+    } else {
+      entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
+    }
+    formReset();
+    await saveAll();
+  });
+
+  function formReset(){ 
+    const now = new Date(); 
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28)); 
+    startEl.value=''; 
+    endEl.value=''; 
+    taskEl.value=''; 
+    
+    // Task input placeholder needs to be set based on current language
+    taskEl.placeholder = translations[currentLang].task_placeholder;
+    
+    previewEl.textContent = translations[currentLang].duration_default; 
+    addBtn.textContent = '➕ ' + translations[currentLang].add_entry; 
+    editId = null; // Ensure editId is reset
+  }
+
+  // day off
+  dayOffBtn.addEventListener('click', async ()=>{
+    const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
+    const dayOffText = translations[currentLang].day_off_text || 'Day Off';
+    
+    // Check if a day off already exists for this date
+    const existingDayOff = entries.some(x => x.date === date && x.isDayOff);
+
+    if (existingDayOff) {
+        // Find existing day off entry to remove it
+        entries = entries.filter(x => !(x.date === date && x.isDayOff));
+        // Also remove any regular entries on that date (optional, but clean)
+        entries = entries.filter(x => x.date !== date);
+    } else {
+        // Not exists, so add it
+        // First, check if there are any regular entries on this date and ask for confirmation to delete
+        const regularEntries = entries.filter(x => x.date === date && !x.isDayOff);
+        if (regularEntries.length > 0 && !confirm(`There are ${regularEntries.length} regular entries on ${date}. Do you want to delete them and mark this day as Day Off?`)) {
+            return;
+        }
+        
+        // Delete regular entries
+        entries = entries.filter(x => x.date !== date);
+
+        // Add the new Day Off entry
+        entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: dayOffText, isDayOff:true });
+    }
+
+    formReset(); 
+    await saveAll();
+  });
+
+  // edit/delete delegation
+  entriesBody.addEventListener('click', async (ev)=>{
+    const idStr = ev.target.getAttribute('data-id'); 
+    if(!idStr) return; 
+    const id = Number(idStr);
+    const t = translations[currentLang];
+
+    if(ev.target.classList.contains('del')){ 
+      if(!confirm('Delete this entry?')) return; 
+      entries = entries.filter(x=>x.id!==id); 
+      await saveAll(); 
+    }
+    if(ev.target.classList.contains('edit')){ 
+      const idx = entries.findIndex(x=>x.id===id); 
+      if(idx===-1) return; 
+      const r = entries[idx]; 
+      if(r.isDayOff) return alert('Cannot edit Day Off'); 
+      dateEl.value = r.date; 
+      startEl.value = r.start; 
+      endEl.value = r.end; 
+      taskEl.value = r.task; 
+      editId = id; 
+      addBtn.textContent = '💾 Save'; 
+      updatePreview();
+      window.scrollTo({top:0,behavior:'smooth'}); 
+    }
+  });
+
+  // export CSV for current month
+  exportBtn.addEventListener('click', ()=>{
+    const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
+    if(filtered.length===0) return alert('No data to export for this month');
+    
+    const t = translations['en']; // Use English headers for CSV compatibility
+    const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
+    const userLabel = translations[currentLang].csv_user_label || 'User Name';
+    
+    const header=['Date','Start','End','Duration','Rounded Hours','Task'];
+    let csv = `${userLabel}:,${userName}\n\n`; // ADD USER NAME TO TOP OF CSV
+    csv += header.join(',') + '\n';
+    
+    filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
+    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
+    
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+  });
+
+  printBtn.addEventListener('click', ()=> window.print());
+
+  // month nav
+  prevMonthBtn.addEventListener('click', ()=>{ selectedMonth--; if(selectedMonth<0){ selectedMonth=11; selectedYear--; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
+  nextMonthBtn.addEventListener('click', ()=>{ selectedMonth++; if(selectedMonth>11){ selectedMonth=0; selectedYear++; } localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
+  todayMonthBtn.addEventListener('click', ()=>{ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
+
+  // theme
+  function applyTheme(){ 
+    const t = localStorage.getItem(THEME) || 'dark'; 
+    if(t==='light'){ 
+      document.body.classList.add('light-mode'); 
+      themeToggle.textContent='☀️'; 
+    } else { 
+      document.body.classList.remove('light-mode'); 
+      themeToggle.textContent='🌙'; 
+    } 
+    // Since Google logo uses SVG Base64, we don't need explicit JS filter here.
+  }
+  themeToggle.addEventListener('click', ()=>{ 
+    const now = document.body.classList.toggle('light-mode')? 'light':'dark'; 
+    localStorage.setItem(THEME, now); 
+    applyTheme(); 
+  });
+
+  // language
+  function applyLanguageTexts(){
+    const t = translations[currentLang];
+    document.getElementById('app-title').textContent = t.app_title;
+    document.getElementById('app-sub').textContent = t.sub;
+    
+    // Update Username Modal
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+    
+    // Update Sign out button
+    signOutBtn.textContent = t.sign_out_btn;
+    
+    // Update Input Labels
+    dateLabel.textContent = t.date_label;
+    startLabel.textContent = t.in_label;
+    endLabel.textContent = t.out_label;
+    taskLabel.textContent = t.task_placeholder;
+    taskEl.placeholder = t.task_placeholder;
+    
+    if (currentUser && currentUser.displayName) {
+        signedText.textContent = `${t.sign_out_btn} in: ${currentUser.displayName}`;
+    }
+
+    // Check if we are in edit mode
+    if (editId) {
+      addBtn.textContent = '💾 Save';
+    } else {
+      addBtn.textContent = '➕ ' + t.add_entry;
+    }
+    
+    dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
+    exportBtn.textContent = '💾 ' + t.export_csv;
+    printBtn.textContent = '🖨️ ' + t.print;
+    
+    if (!startEl.value || !endEl.value) {
+        previewEl.textContent = t.duration_default;
+    }
+    
+    // total label for header
+    totalHeaderEl.innerHTML = `${t.total_label} <span id="total">${totalEl.textContent}</span>`;
+  }
+  langButtons.addEventListener('click', (ev)=>{ 
+    const b=ev.target; 
+    const lang=b.getAttribute('data-lang'); 
+    if(!lang) return; 
+    currentLang = lang; 
+    localStorage.setItem(LANG,currentLang); 
+    render(); 
+  });
+
+  // init
+  function init(){
+    // Initial state: show loading and then auth area or app content
+    showLoadingState(); 
+
+    loadLocal();
+    const saved = localStorage.getItem(MONTH);
+    if(saved){ try{ const o=JSON.parse(saved); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
+    if(typeof selectedYear==='undefined'){ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); }
+    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
+    currentLang = localStorage.getItem(LANG) || currentLang;
+    applyTheme();
+    // render is called by onAuthStateChanged, which runs after init.
+    // This ensures translations and styles are applied correctly
+  }
+  init();
+
+  </script>
+</body>
+</html>      --accent:#2b7de3;
       --accent-2:#56c5ff;
       --success:#16a34a;
       --danger:#cc3333;
