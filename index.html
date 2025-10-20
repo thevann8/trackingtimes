@@ -148,66 +148,19 @@
         background: #f8f8f8;
     }
 
-    .auth-btn img {
+    /* Google Logo (using a small space and background-image for BASE64 SVG) */
+    .google-icon {
         width: 22px; 
         height: 22px;
         margin-right: 15px;
-        object-fit: contain; 
-        filter: none !important; /* Force no filter on Google logo */
-    }
-    
-    .auth-terms {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 30px;
-        max-width: 320px;
-        line-height: 1.5;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        /* Base64 SVG for the standard Google G Logo */
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcgLjhsLTMuNyAzLjdjLS41LjUtLjggMS4yLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNnoiLz48cGF0aCBmaWxsPSIjM0E0M0U5IiBkPSJNMzYgMjQuM2MxLjYtLjYgMi41LTEuNSAyLjUtMi41VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjN6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTExLjggNDMuNWMzLjMgMS45IDcgMi42IDEwLjcgMi41Yy43LS4xIDEuNC0uMSAyLjEtLjJ2LTkuM2MtLjktLjEtMS44LS4xLTIuNy0uMS0yLjIgMC00LjgtLjQtNy4yLTEuNlY0My41eiIvPjxwYXRoIGZpbGw9IiMzNEE4NTkiIGQ9Ik0zMC4yIDQ1LjhjLjctLjEgMS40LS4xIDIuMS0uMnYtOS4zYy0uOS0uMS0xLjgtLjEtMi43LS4xLTIuMiAwLTQuOC0uNC03LjItMS42VjQzLjVjMy4zIDEuOSAzIDkuMS0uMSAxMC43LjctLjEgMS40LS4xIDIuMS0uMnYtOS4zYzAtLjEtLjEtLjEtLjItLjJzLS4xLS4xLS4yLS4xVjM3LjJjMC0uMi0uMS0uMy0uMi0uNXMtLjEtLjMtLjItLjVWMzUuNWMwLS4xLS4xLS4yLS4yLS4yLS4xLS4xLS4yLS4xLS40LS4xVjI5LjZjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxOC4zYy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjQuNWMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYyOS42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzNC42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzOS45Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY0NS44eiIvPjxwYXRoIGZpbGw9IiNFQTQzMzUiIGQ9Ik0zMC4yIDMyLjJjLTEuOC0uNy00LjItMS4xLTYuMi0xLjFzLTQuNS40LTYuMiAxLjFjLS42LjItMS4yLjQtMS45LjV2LTQuNmMtLjctLjMtMS40LS40LTIuMS0uNlYyNWMtLjctLjItMS4zLS41LTEuOS0uN3YtNC41Yy0uNy0uMy0xLjQtLjYtMi4xLS43VjE3YzAtLjctLjQtMS40LS45LTEuOUw1LjUgMTBDMy45IDExLjcgMy42IDE1LjIgMy42IDE4LjhjMCAxMS4yIDcuMyAxOS45IDEwLjMgMTkuOSAxLjEgMCAyLjctLjQgMy45LTEuNWw0LjgtNC44Yy41LS41IDEuMi0uOCAxLjctLjhoNC44di0xMS4yYzAtLjcgLjQtMS4zLjktMS44bDMuNy0zLjRjLjUtLjQgMS4yLS41IDEuNy0uNVMzNCAyNC4xIDM0LjQgMjQuOHY1LjZjMCAxIC45IDEuOSAyLjUgMi41djQuNWMyLjUgLjYgMy45IDEuMyA1LjUgM1YyOS43YzAtLjctLjQtMS4zLS45LTEuOGwtMy43LTMuNWMtLjUtLjUtMS4yLS44LTEuNy0uOHMtMS4yLjItMS43LjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhIMjQuNEMxMi4zIDIwLjEgNCAyOS42IDQgMzkuOXY0LjVjLjcgLjEgMS4zLjEgMiAuMnYtNC41YzAtMTEuMiA3LjMtMTkuOSAxMC4zLTE5LjkgMS4xIDAgMi43LjQgMy45IDEuNWw0LjggNC44Yy41LjUuOCAxLjIuOCAxLjc3di01LjZ6Ii8+PHBhdGggZmlsbD0iIzNCNDMyNSIgZD0iTTQyLjggMzIuNGMtLjQtMS4xLTEtMi4yLTEuOC0zLjVsLTExLjItMTEuMmMtLjUtLjUtMS4yLS44LTEuNy0uOHMtMS4yLjItMS43LjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDM0LjJjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDM0LjJjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjcuNC0xLjMgLjktMS44bDMuOS0zLjljLjUtLjUgMS4yLS45IDEuNy0uOVM0My45IDIzLjQgNDQuNCAyNC4xdi00LjhjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI5LjZjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxOC4zYy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjQuNWMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYyOS42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzNC42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzOS45Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY0NS44eiIvPjwvc3ZnPg==');
     }
 
-    /* Username Setup Modal Styling */
-    #username-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 2000;
-        display: none; /* Hidden by default */
-        justify-content: center;
-        align-items: center;
-    }
-    #username-form-card {
-        background: var(--card);
-        padding: 30px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-    }
-    #username-form-card h3 {
-        margin-top: 0;
-        color: var(--accent);
-    }
-    #username-input-field {
-        width: 100%;
-        margin-bottom: 15px;
-        /* Inherit input styling */
-        background:var(--input-bg);
-        border:1px solid var(--table-border);
-        padding:12px 14px;
-        border-radius:12px;
-        color:var(--text);
-        font-size:16px;
-        outline:none;
-    }
-    #save-username-btn {
-        width: 100%;
-    }
-
-
-    /* Signed in display area (Fixed Top Right - Desktop) */
+    /* Signed in display area (Fixed Top Right) */
     #signedState {
         display: none;
         position: fixed; 
@@ -448,7 +401,8 @@
     <div class="auth-buttons-wrapper">
       
       <button id="googleSignIn" class="auth-btn">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo"/> Continue with Google
+        <div class="google-icon"></div> 
+        Continue with Google
       </button>
 
       </div>
@@ -463,7 +417,7 @@
     <div id="username-modal" style="display:none;">
         <div id="username-form-card" class="card">
             <h3 id="modal-title">Set Your Display Name</h3>
-            <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in the printed reports to identify your data.</p>
+            <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in reports.</p>
             <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
             <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
         </div>
@@ -477,7 +431,7 @@
       
       <div id="signedState" style="display:none;">
         <div class="signed-as" id="signedText"></div>
-        <button id="signOut" class="auth-btn secondary">Sign out</button>
+        <button id="signOut" class="auth-btn secondary"></button>
       </div>
       <header class="app-head">
         <div class="title-wrap">
@@ -1069,16 +1023,11 @@
     if(t==='light'){ 
       document.body.classList.add('light-mode'); 
       themeToggle.textContent='☀️'; 
-      // Set icon filter for light mode (icons should be dark)
-      document.querySelector('.auth-btn img[alt="Email icon"]').style.filter = 'invert(0)'; 
-      document.querySelector('.auth-btn img[alt="Phone icon"]').style.filter = 'invert(0)'; 
     } else { 
       document.body.classList.remove('light-mode'); 
       themeToggle.textContent='🌙'; 
-      // Set icon filter for dark mode (icons should be light)
-      document.querySelector('.auth-btn img[alt="Email icon"]').style.filter = 'invert(1)'; 
-      document.querySelector('.auth-btn img[alt="Phone icon"]').style.filter = 'invert(1)'; 
     } 
+    // Since Google logo uses SVG Base64, we don't need explicit JS filter here.
   }
   themeToggle.addEventListener('click', ()=>{ 
     const now = document.body.classList.toggle('light-mode')? 'light':'dark'; 
@@ -1107,6 +1056,10 @@
     taskLabel.textContent = t.task_placeholder;
     taskEl.placeholder = t.task_placeholder;
     
+    if (currentUser && currentUser.displayName) {
+        signedText.textContent = `${t.sign_out_btn} in: ${currentUser.displayName}`;
+    }
+
     // Check if we are in edit mode
     if (editId) {
       addBtn.textContent = '💾 Save';
