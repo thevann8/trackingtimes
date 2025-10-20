@@ -66,14 +66,13 @@
       padding:24px;
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      border:1px solid var(--glass);
       margin-bottom:20px;
     }
     header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
     h1.title{margin:0;font-size:24px;font-weight:700}
     .subtitle{color:var(--muted);font-size:14px;margin-top:4px}
 
-    /* Auth/Sign Area - NEW DESIGN TO MATCH REFERENCE IMAGE */
+    /* Auth/Sign Area - NEW DESIGN */
     #auth-area {
       display: flex;
       flex-direction: column;
@@ -97,15 +96,11 @@
         font-family: serif;
         color: inherit;
     }
-    /* HIDDEN: #auth-area .auth-subtitle { display: none; } */
-    
-    /* Button Wrapper for Centering */
     .auth-buttons-wrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
         width: 100%;
-        margin-top: 20px;
     }
 
     .auth-btn{
@@ -150,11 +145,11 @@
         background-repeat: no-repeat;
         background-position: center;
         /* Base64 SVG for the standard Google G Logo */
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjctLjQtMS4zLS45LTEuOGwtNC44LTQuOGMtLjUtLjUtMS4yLS44LTEuNy0uOGgtNS42Yy0uNiAwLTEuMS4zLTEuNy44bC0zLjcgMy43Yy0uNS41LS44IDEuMi0uOCAxLjcVd2lkdGg9IjEwMCIgaGVpZ2h0PSIxMDAiIGZpbGw9Im5vbmUiLz48cGF0aCBmaWxsPSIjRUE0MzM1IiBkPSJNMjQuNyAxMi45Yy01LjEtLjEtMTAuMiAxLjQtMTQuMSAzLjlsLTQuNyA0LjRjLS41LjUtLjggMS4yLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40Yy41LjUgMS4yLjggMS43LjhzMS4yLS4yIDEuNy0uN0wzMSAyMC41Yy40LS41LjctMS4xLjctMS43VjE4LjNjMC0uNS0uMy0xLjEtLjctMS42TDI5IDExLjZjLS41LS41LTEuMi0uOC0xLjctLjhINjBjLS44IDAtMS40LjYtMS40IDEuNHYxLjJjMCAuOC42IDEuNCAxLjQgMS40aDE3LjZjLjctLjEgMS40LS4xIDIuMS0uMlY2LjljLS43LS4xLTEuNC0uMS0yLjEtLjItLjk0LS4zLTEuNy0uOC0yLjQtMS40TDkuOSAxNi43Yy0uNS41LTEuMi44LTEuNy44cz=iIEMgMTcuNiwgMTguMyAxNy42LCAxOC4zIDE3LjcsIDE4LjIgTCAxNy43LCAxOC4yIEMgMTcuNywgMTguMiAxNy43LCAxOC4yIDE3LjgsIDE4LjIgTCAxNy44LCAxOC4yIEMgMTcuOCwgMTguMiAxNy44LCAxOC4yIDE3LjksIDE4LjIgTCAxNy45LCAxOC4yIEMgMTcuOSwgMTguMiAxOCwgMTguMiAxOC4xLDE4LjIgTCAxOC4xLCAxOC4yIEMgMTguMiwgMTguMyAxOC4zLCAxOC4zIDE4LjMsIDE4LjMgTCAxOC4zLCAxOC4zIEMgMTguNCwgMTguMyAxOC41LCAxOC4zIDE4LjYsIDE4LjQgTCAxOC42LCAxOC40IEMgMTguNywgMTguNSAxOC44LCAxOC41IDE4LjksIDE4LjYgTCAxOC45LCAxOC42IEMgMTkuMSwgMTguNyAxOS4zLCAxOC45IDE5LjYsIDE5LjEgTCAxOS42LCAxOS4xIEMgMTkuOCwgMTkuMiAxOS45LCAxOS40IDIwLjEsIDE5LjYgTCAyMC4xLCAxOS42IEMgMjAuNCwgMTkuOCAyMC43LCAyMC4xIDIxLCAyMC40IEwgMjEuMCwgMjAuNCBDIDIxLjMsIDIwLjcgMjEuNiwgMjEgMjEuOSwgMjEuMyBMIDIxLjksIDIxLjMgQyAyMi4yLCAyMS42IDIyLjUsIDIxLjkgMjIuOCwgMjIuMyBMIDIyLjgsIDIyLjMgQyAyMy4xLCAyMi42IDIzLjQsIDIzIDI0LjcsIDIzIEwgMjQuNywgMjMgTCAyNC43LCAyMyBDIDI1LjksIDIzIDI2LjMgMjIuNiAyNi43LCAyMi4zIEwgMjYuNywgMjIuMyBDIDI3LjAsIDIxLjkgMjcuMywgMjEuNiAyNy42LCAyMS4zIEwgMjcuNiwgMjEuMyBDIDI3LjksIDIxLjAgMjguMywgMjAuNyAyOC41LCAyMC40IEwgMjguNSwgMjAuNCBDIDI4LjgsIDIwLjEgMjkuMSwgMTkuOCAyOS40LDE5LjYgTCAyOS40LCAxOS42IEMgMjkuNiwgMTkuNCAyOS44LCAxOS4yIDMwLjEsMTkuMSBMIDMwLjEsIDE5LjEgQyAzMC4zLCAxOC45IDMwLjUsIDE4LjcgMzAuOCwxOC42IEwgMzAuOCwgMTguNiBDIDMxLjAsIDE4LjUgMzEuMSwgMTguNSAzMS4yLCAxOC40IEwgMzEuMiwgMTguNCBDIDMxLjMsIDE4LjMgMzEuNCwgMTguMyAzMS41LCAxOC4zIEwgMzEuNSwgMTguMyBDIDMxLjYsIDE4LjMgMzEuNiwgMTguMyAzMS42LCAxOC4yIEwgMzEuNiwgMTguMiBDIDMxLjcsIDE4LjIgMzEuNywgMTguMiAzMS43LDE4LjIgTCAzMS43LCAxOC4yIEMgMzEuNywgMTguMiAzMS43LCAxOC4yIDMxLjgsIDE4LjIgTCAzMS44LCAxOC4yIEMgMzEuOCwgMTguMiAzMS44LCAxOC4yIDMxLjgsIDE4LjIgTCAzMS44LCAxOC4yIEMgMzIuMSwgMTcuOCAzMi40LCAxNy40IDMyLjYgMTcgTCAzMi42LCAxNyBDIDMyLjcsIDE2LjYgMzIuOSwgMTYuMiAzMy4xLCAxNS43IEwgMzMuMSwgMTUuNyBDIDMzLjMsIDE1LjIgMzMuNCwgMTQuOCAzMy42LCAxNC4zIEwgMzMuNiwgMTQuMyBDIDMzLjcsIDEzLjkgMzMuOCwgMTMuNSAzMy45LCAxMy4wIEwgMzMuOSwgMTMuMCBDIDM0LjAsIDEyLjYgMzQuMCwgMTIuMiAzNC4wLCAxMS44IEwgMzQuMCwgMTEuOCBDIDM0LjAsIDExLjQgMzQuMCwgMTEuMCAzMy45LCAxMC41IEwgMzMuOSwgMTAuNSBDIDMzLjggLjk2IDI2LjYsIC42NSAxNy40LCAxLjI1IEwgMTcuNCwgMS4yNSBDIDguMiwgMS44NSA4LDUuMjEgMy41LDIuNzggTCAzLjUsIDIuNzggQyAtMS4wLDMuMzYgMCw4LjEgMCw4LjcgTCAwLDguNyBDIDAsOS4yIDAsMTMuOCA1LjYsMTQuNCBMIDUuNiwgMTQuNCBDIDEwLjksIDE1LjAgMTUuNywgMTUuMiAyNC43LCAxNS4yIEwgMjQuNywgMTUuMiBDIDMzLjIsIDE1LjIgMzYuMSwxNC45IDQwLjMsMTQuNSBMIDQwLjMsIDE0LjUgQyA0NC40LDE0LjIgNDUuMiAxMy40IDQ1LjIgMTMuNCBMIDQ1LjIsIDEzLjQgQyA0NS43LDEyLjggNDYsMTEuNCA0NiwxMSBMIDQ2LDExIEMgNDYsMTAuNiA0Ni4xLDEwLjIgNDYuMSw5LjcgTCA0Ni4xLDkuNyBDIDQ2LjcsOC42IDQ3LjgsNC44IDQ3LjgsNC44IEwgNDcuOCw0LjggQyA0OCw0LjEgNDgsMS41IDQ2LjYsLjk0IEwgNDYuNiwwLjk0IEMgNDUuMywuMzggNDQsMCA0My41LDAuMCBMIDQzLjUsIDAuMCBDIDQzLjIsMCA0Mi44LDAgNDIuNSwwIEwgNDIuNSwwIEwgNDIuNSwwIEMgNDIuMSAwIDQxLjggMCA0MS40LDAuMSBMIDQxLjQsMC4xIEMgNDEuMCwwLjEgNDAuNSwwLjIgNDAuMSwwLjIgTCA0MC4xLDAuMiBDIDM5LjggMC4yIDM5LjQgMC4zIDM5LjEgMC4zIEwgMzkuMSAwLjMgQyAzOC45LDAuNCAzOC43LDAuNCAzOC41LDAuNCBMIDM4LjUsIDAuNCBDIDM4LjIgMC41IDM3LjkgMC41IDM3LjYgMC42IEwgMzcuNiwwLjYgQyAzNy4zLDAuNiAzNy4xLDAuNyAzNi44LDAuNyBMIDM2LjgsMC43IEMgMzYuNSwwLjggMzYuMiwwLjkgMzYuMCwxLjAgTCAzNi4wLDEuMCBDIDM1LjcgMS4wIDM1LjQgMS4xIDM1LjEgMS4xIEwgMzUuMSwxLjEgQyAzNC45LDEuMiAzNC42LDEuMyAzNC40LDEuMyBMIDM0LjQsMS4zIEMgMzQuMSwxLjQgMzMuOCwxLjUgMzMuNSwxLjUgTCAzMy41LDEuNSBDIDMzLjMgMS42IDMzLjEgMS42IDMyLjggMS43IEwgMzIuOCwxLjcifSImZmlsbD0iIzNCNDMyNSIvPjwvc3ZnPg==');
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy.3...9...l-3.7...3.7c1.5-3.5 3.9-6.3 6.3-8.7l3.7-3.7c2.5-2.5 5.3-3.8 8.9-3.8h7.2m14.3 26c0 6.2-2.5 10.3-5.3 12.6l-3.7 3.7c-1.6 1.5-3.7 2.6-8.9 5.3h-3.8v-19.5h2.6c4.2 0 7.6 3 9.4 6.5L43 29.6c.5.9.7 1.8.7 2.8m-8.2-3.5c-.6 0-1.2-.1-1.7-.3-1.6-.6-2.5-1.5-2.5-2.5V27c0-1 .9-1.9 2.5-2.5v-.5c0-.6-.3-1.2-.8-1.7L36 23.5c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V13c0-.7-.4-1.3-.9-1.7l-3.9-3.9c-.5-.5-1.2-.8-1.7-.8H34c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V17c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 24.3c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7.4-1.3.9-1.8l3.9-3.9c.5-.5 1.2-.9 1.7-.9S43.9 23.4 44.4 24.1v-4.8c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V12.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V6.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V1.2c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V4.5c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V34.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V39.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V45.8z');
     }
 
     .auth-btn img {
-        display: none; /* Hide the img tag */
+        display: none; /* Hide the img tag (if still present) */
     }
     
     .auth-btn .google-icon {
@@ -414,7 +409,7 @@
       }
       #auth-area .auth-title { font-size: 32px; }
       
-      /* SIGN OUT BUTTON MOBILE FIX */
+      /* SIGN OUT BUTTON MOBILE FIX (Now placed absolutely at the top right of the whole app) */
       #signedState {
         position: absolute;
         padding: 8px 10px;
@@ -449,14 +444,15 @@
     
 <div class="auth-area" id="auth-area" style="display:none;">
       <h1 class="auth-title">Log into TheVann</h1>
-      <div class="auth-buttons-wrapper">
       
-        <button id="googleSignIn" class="auth-btn">
-          <div class="google-icon"></div> 
-          Continue with Google
-        </button>
+    <div class="auth-buttons-wrapper">
+      
+      <button id="googleSignIn" class="auth-btn">
+        <div class="google-icon"></div> 
+        Continue with Google
+      </button>
 
-        </div>
+    </div>
 
       <p class="auth-terms">
         Data is synced to the cloud via your Google Account.
@@ -493,7 +489,7 @@
         <div class="right-controls">
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
             <button data-lang="en">🇺🇸 EN</button>
-            <button data-lang="my">🇲🇲 မြန်မာ</button>
+            <button data-lang="my">🇲🇲 ျမန္မာ</button>
             <button data-lang="th">🇹🇭 ไทย</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
@@ -1112,7 +1108,6 @@
     taskEl.placeholder = t.task_placeholder;
     
     if (currentUser && currentUser.displayName) {
-        // FIXED: Use correct translation for "Signed in"
         signedText.textContent = `Signed in: ${currentUser.displayName}`;
     }
 
