@@ -190,16 +190,24 @@
         margin-top: 0;
         color: var(--accent);
     }
-    #username-input {
+    #username-input-field {
         width: 100%;
         margin-bottom: 15px;
+        /* Inherit input styling */
+        background:var(--input-bg);
+        border:1px solid var(--table-border);
+        padding:12px 14px;
+        border-radius:12px;
+        color:var(--text);
+        font-size:16px;
+        outline:none;
     }
     #save-username-btn {
         width: 100%;
     }
 
 
-    /* Signed in display area (Fixed Top Right) */
+    /* Signed in display area (Fixed Top Right - Desktop) */
     #signedState {
         display: none;
         position: fixed; 
@@ -400,6 +408,7 @@
       }
       #auth-area .auth-title { font-size: 32px; }
       
+      /* SIGN OUT BUTTON MOBILE FIX */
       #signedState {
         position: absolute;
         padding: 8px 10px;
@@ -453,8 +462,8 @@
     
     <div id="username-modal" style="display:none;">
         <div id="username-form-card" class="card">
-            <h3>Set Your Display Name</h3>
-            <p style="color:var(--muted); font-size: 14px;">This name will be used in the printed reports to identify your data.</p>
+            <h3 id="modal-title">Set Your Display Name</h3>
+            <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in the printed reports to identify your data.</p>
             <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
             <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
         </div>
@@ -641,7 +650,8 @@
       csv_user_label: 'User Name',
       modal_title: 'Set Your Display Name',
       modal_subtitle: 'This name will be used in reports.',
-      save_name: 'Save Name'
+      save_name: 'Save Name',
+      sign_out_btn: 'Sign out' // New button text
     },
     my: { 
       // Myanmar Unicode Fixed
@@ -660,7 +670,8 @@
       csv_user_label: 'အသုံးပြုသူအမည်',
       modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
       modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
-      save_name: 'အမည်သိမ်းမည်'
+      save_name: 'အမည်သိမ်းမည်',
+      sign_out_btn: 'ထွက်မည်' // New button text
     },
     th: { 
       app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
@@ -670,7 +681,8 @@
       csv_user_label: 'ชื่อผู้ใช้',
       modal_title: 'กำหนดชื่อแสดงผล',
       modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
-      save_name: 'บันทึกชื่อ'
+      save_name: 'บันทึกชื่อ',
+      sign_out_btn: 'ออกจากระบบ' // New button text
     }
   };
 
@@ -744,13 +756,16 @@
 
   // USER NAME HANDLING
   async function handleUsernameSetup(user) {
-    // Check if the user has a display name
-    if (user && !user.displayName) {
-        usernameModal.style.display = 'flex';
-        usernameInputField.value = user.email ? user.email.split('@')[0] : '';
-    } else {
-        usernameModal.style.display = 'none';
-    }
+    // Show username modal
+    usernameModal.style.display = 'flex';
+    // Use part of email as initial name if display name is totally empty
+    usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
+    
+    // Update modal texts (since render is not called)
+    const t = translations[currentLang];
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
   }
   
   saveUsernameBtn.addEventListener('click', async () => {
@@ -793,15 +808,15 @@
     currentUser = user;
     const uid = user.uid;
     
-    // Check if user needs to set up name first
-    if (!user.displayName || user.displayName === '') {
+    // *** CHECK FOR DISPLAY NAME FIRST ***
+    if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
         // If not set, show the setup modal and stop here
         await handleUsernameSetup(user);
         return; 
     }
     
     // If name is set, proceed to app
-    signedText.textContent = `Signed in: ${user.displayName || 'Van Noon'}`;
+    signedText.textContent = `Signed in: ${user.displayName}`;
     signedState.style.display = 'flex'; // Show sign out button and signed text
     authArea.style.display = 'none'; // Hide the full auth screen
     
@@ -864,8 +879,6 @@
       handleUserSignedOut(); // Go back to sign-out state if sign-in fails
     }
   });
-  
-  // Email and Phone buttons are removed from HTML, keeping only Google logic
   
   signOutBtn.addEventListener('click', async ()=>{
     try{
@@ -1080,9 +1093,12 @@
     document.getElementById('app-sub').textContent = t.sub;
     
     // Update Username Modal
-    document.querySelector('#username-form-card h3').textContent = t.modal_title;
-    document.querySelector('#username-form-card p').textContent = t.modal_subtitle;
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
     document.getElementById('save-username-btn').textContent = t.save_name;
+    
+    // Update Sign out button
+    signOutBtn.textContent = t.sign_out_btn;
     
     // Update Input Labels
     dateLabel.textContent = t.date_label;
