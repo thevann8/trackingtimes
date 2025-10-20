@@ -6,6 +6,9 @@
   <title>TheVann Track Duration — v8 (Google sign-in)</title>
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3313525409837398"
+     crossorigin="anonymous"></script>
+
   <style>
     /* Clean & Modern Theme CSS */
     :root{
@@ -22,18 +25,9 @@
       --shadow:0 18px 40px rgba(0,0,0,0.4); /* Deeper shadow */
       --table-border:rgba(255,255,255,0.05);
       --input-bg:rgba(255,255,255,0.05);
-      /* --- DAY OFF NEW RED STYLE --- */
-      --dayoff-bg: #451a1a; /* Dark red background for visibility */
-      --dayoff-border: #e74c3c; /* Bright red border */
-      --dayoff-text: #ffcfcf; /* Light text */
-
-      /* NEW: Auth Page specific colors for light mode to match the image */
-      --auth-bg-light: #f0f4f8; /* Use main light background for simplicity */
-      --auth-text-light: #3d3b3c;
-      --auth-btn-bg-light: #ffffff;
-      --auth-btn-border-light: #e0e0e0;
-      --auth-btn-text-light: #3d3b3c;
-      --auth-link-light: #2b7de3;
+      --dayoff-bg: #2a1a45; /* Purple background for visibility */
+      --dayoff-border: #9b59b6; /* Purple border */
+      --dayoff-text: #f0e6ff;
     }
     body.light-mode{
       --bg:#f0f4f8;
@@ -48,13 +42,10 @@
       --shadow:0 12px 25px rgba(0,0,0,0.1);
       --table-border:rgba(0,0,0,0.1);
       --input-bg:#f9fbfd;
-      /* --- DAY OFF NEW RED STYLE --- */
-      --dayoff-bg: #fff0f0;
-      --dayoff-border: #e74c3c;
+      --dayoff-bg: #fff0f0; /* Light red/pink background */
+      --dayoff-border: #e74c3c; /* Red border */
       --dayoff-text: #cc3333;
     }
-    
-    /* Global styles */
     *{box-sizing:border-box; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:20px}
@@ -73,123 +64,22 @@
     h1.title{margin:0;font-size:24px;font-weight:700}
     .subtitle{color:var(--muted);font-size:14px;margin-top:4px}
 
-    /* Auth/Sign Area - NEW DESIGN TO MATCH REFERENCE IMAGE */
-    #auth-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 40px);
-      background: var(--bg);
-      color: var(--text);
-      text-align: center;
-      padding: 20px;
-      margin: -20px;
-    }
-    body.light-mode #auth-area {
-        background: var(--auth-bg-light);
-        color: var(--auth-text-light);
-    }
-    #auth-area .auth-title {
-        font-size: 38px;
-        font-weight: 500;
-        margin-bottom: 8px;
-        font-family: serif;
-        color: inherit;
-    }
-    #auth-area .auth-subtitle {
-        font-size: 16px;
-        color: var(--muted);
-        margin-bottom: 30px;
-    }
-    body.light-mode #auth-area .auth-subtitle {
-        color: var(--auth-text-light);
-        opacity: 0.7;
-    }
-    
-    /* Button Wrapper for Centering */
-    .auth-buttons-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-    }
-
+    /* Auth/Sign Area */
+    .auth-area{display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:20px}
     .auth-btn{
-      width: 100%;
-      max-width: 320px; 
-      padding:16px 28px;
-      border-radius:12px; 
-      border:1px solid var(--table-border);
-      background:var(--card); 
-      color:var(--text);
+      padding:12px 28px;
+      border-radius:30px;
+      border:none;
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));
+      color:#fff;
       font-weight:700;
       cursor:pointer;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1); 
-      transition:transform 0.2s, box-shadow 0.2s, background-color 0.3s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 16px;
-      margin-bottom: 12px; 
+      box-shadow:0 8px 20px rgba(0, 0, 0, 0.25);
+      transition:transform 0.2s, box-shadow 0.2s;
     }
-    body.light-mode .auth-btn {
-        background: var(--auth-btn-bg-light);
-        color: var(--auth-btn-text-light);
-        border: 1px solid var(--auth-btn-border-light);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
-    }
-    .auth-btn:hover{
-      transform:translateY(-1px); 
-      box-shadow:0 4px 8px rgba(0, 0, 0, 0.15);
-      background: var(--input-bg);
-    }
-    body.light-mode .auth-btn:hover {
-        background: #f8f8f8;
-    }
-
-    /* Google Logo (using a small space and background-image for BASE64 SVG) */
-    .google-icon {
-        width: 22px; 
-        height: 22px;
-        margin-right: 15px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        /* Base64 SVG for the standard Google G Logo */
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcgLjhsLTMuNyAzLjdjLS41LjUtLjggMS4yLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNnoiLz48cGF0aCBmaWxsPSIjM0E0M0U5IiBkPSJNMzYgMjQuM2MxLjYtLjYgMi41LTEuNSAyLjUtMi41VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjN6Ii8+PHBhdGggZmlsbD0iI0ZCQkMwNSIgZD0iTTExLjggNDMuNWMzLjMgMS45IDcgMi42IDEwLjcgMi41Yy43LS4xIDEuNC0uMSAyLjEtLjJ2LTkuM2MtLjktLjEtMS44LS4xLTIuNy0uMS0yLjIgMC00LjgtLjQtNy4yLTEuNlY0My41eiIvPjxwYXRoIGZpbGw9IiMzNEE4NTkiIGQ9Ik0zMC4yIDQ1LjhjLjctLjEgMS40LS4xIDIuMS0uMnYtOS4zYy0uOS0uMS0xLjgtLjEtMi43LS4xLTIuMiAwLTQuOC0uNC03LjItMS42VjQzLjVjMy4zIDEuOSAzIDkuMS0uMSAxMC43LjctLjEgMS40LS4xIDIuMS0uMnYtOS4zYzAtLjEtLjEtLjEtLjItLjJzLS4xLS4xLS4yLS4xVjM3LjJjMC0uMi0uMS0uMy0uMi0uNXMtLjEtLjMtLjItLjVWMzUuNWMwLS4xLS4xLS4yLS4yLS4yLS4xLS4xLS4yLS4xLS40LS4xVjI5LjZjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxOC4zYy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjQuNWMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYyOS42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzNC42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzOS45Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY0NS44eiIvPjxwYXRoIGZpbGw9IiNFQTQzMzUiIGQ9Ik0zMC4yIDMyLjJjLTEuOC0uNy00LjItMS4xLTYuMi0xLjFzLTQuNS40LTYuMiAxLjFjLS42LjItMS4yLjQtMS45LjV2LTQuNmMtLjctLjMtMS40LS40LTIuMS0uNlYyNWMtLjctLjItMS4zLS41LTEuOS0uN3YtNC41Yy0uNy0uMy0xLjQtLjYtMi4xLS43VjE3YzAtLjctLjQtMS40LS45LTEuOUw1LjUgMTBDMy45IDExLjcgMy42IDE1LjIgMy42IDE4LjhjMCAxMS4yIDcuMyAxOS45IDEwLjMgMTkuOSAxLjEgMCAyLjctLjQgMy45LTEuNWw0LjgtNC44Yy41LS41IDEuMi0uOCAxLjctLjhoNC44di0xMS4yYzAtLjcgLjQtMS4zLjktMS44bDMuNy0zLjRjLjUtLjQgMS4yLS41IDEuNy0uNVMzNCAyNC4xIDM0LjQgMjQuOHY1LjZjMCAxIC45IDEuOSAyLjUgMi41djQuNWMyLjUgLjYgMy45IDEuMyA1LjUgM1YyOS43YzAtLjctLjQtMS4zLS45LTEuOGwtMy43LTMuNWMtLjUtLjUtMS4yLS44LTEuNy0uOHMtMS4yLjItMS43LjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhIMjQuNEMxMi4zIDIwLjEgNCAyOS42IDQgMzkuOXY0LjVjLjcgLjEgMS4zLjEgMiAuMnYtNC41YzAtMTEuMiA3LjMtMTkuOSAxMC4zLTE5LjkgMS4xIDAgMi43LjQgMy45IDEuNWw0LjggNC44Yy41LjUuOCAxLjIuOCAxLjc3di01LjZ6Ii8+PHBhdGggZmlsbD0iIzNCNDMyNSIgZD0iTTQyLjggMzIuNGMtLjQtMS4xLTEtMi4yLTEuOC0zLjVsLTExLjItMTEuMmMtLjUtLjUtMS4yLS44LTEuNy0uOHMtMS4yLjItMS43LjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDM0LjJjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjc2LS40LTEuNC0uOS0xLjhsLTQuOC00LjhjLS41LS41LTEuMi0uOC0xLjctLjhoLTUuNmMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjI3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDM0LjJjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjE5YzAtLjcuNC0xLjMgLjktMS44bDMuOS0zLjljLjUtLjUgMS4yLS45IDEuNy0uOVM0My45IDIzLjQgNDQuNCAyNC4xdi00LjhjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI5LjZjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxOC4zYy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYxMi42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY2LjljLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjEuMmMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjQuNWMtLjEtLjEtLjItLjItLjQtLjNjLS4yLS4xLS4zLS4yLS41LS4yVjE4LjNjLS4xLS4xLS4yLS4yLS40LS4zLS4yLS4xLS4zLS4yLS41LS4yVjI0Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYyOS42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzNC42Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlYzOS45Yy0uMS0uMS0uMi0uMi0uNC0uMy0uMi0uMS0uMy0uMi0uNS0uMlY0NS44eiIvPjwvc3ZnPg==');
-    }
-
-    /* Signed in display area (Fixed Top Right) */
-    #signedState {
-        display: none;
-        position: fixed; 
-        top: 0;
-        right: 0;
-        padding: 10px 20px;
-        background: var(--card);
-        border-bottom-left-radius: 12px;
-        z-index: 1000;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-    }
-    .signed-as{color:var(--success);font-weight:700;font-size:15px; margin-top: 5px; white-space: nowrap;}
-    .auth-btn.secondary{
-      background:var(--input-bg); 
-      color:var(--text); 
-      box-shadow:none; 
-      border:1px solid var(--table-border);
-      padding: 8px 15px;
-      font-size: 14px;
-      margin-bottom: 0;
-      max-width: fit-content;
-    }
-    .auth-btn.secondary:hover {
-        border-color: var(--danger);
-        color: var(--danger);
-    }
+    .auth-btn:hover{transform:translateY(-2px); box-shadow:0 12px 25px rgba(0, 0, 0, 0.35);}
+    .auth-btn.secondary{background:var(--input-bg); color:var(--text); box-shadow:none; border:1px solid var(--table-border)}
+    .signed-as{color:var(--success);font-weight:700;font-size:15px}
     
     /* Loading/Sign-in Required Screen */
     #loading-screen{
@@ -197,7 +87,6 @@
         padding: 50px;
         box-shadow: var(--shadow);
         background: var(--card);
-        margin-top: 20px;
     }
     #loading-screen h2 { color:var(--accent); margin-top: 0;}
 
@@ -227,21 +116,7 @@
 
     /* Inputs / Controls */
     .controls-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}
-    
-    /* New Input Grid/Grouping */
     .entry-grid{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
-    .input-group {
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
-    }
-    .input-group label {
-        color: var(--muted);
-        font-size: 13px;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-left: 5px;
-    }
     input[type=date],input[type=time],input[type=text]{
       background:var(--input-bg);
       border:1px solid var(--table-border);
@@ -286,25 +161,21 @@
     tbody tr:nth-child(even):not(.day-off){background:var(--input-bg)}
     tbody tr:hover:not(.day-off) {background:var(--glass)}
     
-    /* --- DAY OFF NEW BRIGHT RED STYLE --- */
+    /* --- DAY OFF NEW STYLE (Enhanced Visibility) --- */
     tr.day-off {
-        background: var(--dayoff-bg) !important; 
+        background: var(--dayoff-bg) !important;
         color: var(--dayoff-text) !important;
-        font-weight: 700; 
-        border: 2px solid var(--dayoff-border) !important; 
+        font-weight: 700;
+        border: 2px solid var(--dayoff-border) !important;
     }
     tr.day-off td {
         font-style: italic;
-        border-bottom: 1px solid var(--dayoff-border) !important;
+        border-bottom: 1px solid var(--dayoff-border) !important; /* Keep borders within day-off entry */
         padding: 14px 18px;
     }
     tr.day-off:hover {
-        background: var(--dayoff-bg) !important; 
+        background: var(--dayoff-bg) !important; /* No lighter hover */
         opacity: 0.9;
-    }
-    tr.day-off td:first-child::before {
-        content: "🚨 "; 
-        margin-right: 5px;
     }
     tr.day-off td:last-child {
         text-align: right;
@@ -323,18 +194,21 @@
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
 
+    /* NEW Header Total Card Style - same as footer but placed differently */
     .total-card{
       background:var(--glass);
-      padding:12px 18px; 
+      padding:12px 18px; /* Slightly adjusted padding for header */
       border-radius:12px;
       color:var(--text);
       font-weight:700;
-      font-size:16px; 
+      font-size:16px; /* Slightly smaller font for header */
       border:1px solid var(--table-border);
+      /* margin-left: auto; */ /* Let it flow with flex-wrap */
     }
-    .total-card span { color: var(--accent-2); font-size: 18px; } 
+    .total-card span { color: var(--accent-2); font-size: 18px; } /* Highlight the number */
 
-    .footer{display:flex;justify-content:flex-end;margin-top:20px; display: none;} 
+    /* Footer - Removed the old total card style since it's now in the header */
+    .footer{display:flex;justify-content:flex-end;margin-top:20px; display: none;} /* Hide footer entirely */
 
 
     @media(max-width:768px){
@@ -345,46 +219,21 @@
       .controls-top > div { flex-wrap: nowrap !important; }
       .controls-top > div:last-child { margin-left: 0 !important; }
       .entry-grid{flex-direction:column;align-items:stretch}
-      
-      .input-group { width: 100%; }
-      input[type=date],input[type=time],input[type=text]{width:100%; min-width:unset;}
-      
-      .btn,.total-card{width:100%; min-width:unset;}
+      input[type=date],input[type=time],input[type=text],.btn,.total-card{width:100%; min-width:unset;}
       table{min-width:550px}
       
+      /* On mobile, total card gets full width */
       .total-card{ width: 100%; text-align: center; }
-
-      #auth-area {
-        min-height: calc(100vh - 20px);
-        padding: 10px;
-        margin: -10px;
-      }
-      #auth-area .auth-title { font-size: 32px; }
-      
-      /* SIGN OUT BUTTON MOBILE FIX */
-      #signedState {
-        position: absolute;
-        padding: 8px 10px;
-        margin-top: 10px;
-        top: 0;
-        right: 10px;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-        flex-direction: row;
-        gap: 10px;
-        border-radius: 8px;
-        background: var(--card);
-      }
-      #signedState .signed-as { margin-top: 0; font-size: 13px; }
-      #signedState .auth-btn.secondary { padding: 4px 8px; font-size: 12px; }
     }
 
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
       .card{background:#fff;box-shadow:none;border:none}
-      .entry-grid,button,[class*="chip"],.auth-area,#loading-screen,.right-controls,#signedState{display:none}
+      /* Hide all controls and inputs, but keep the header total for printing */
+      .entry-grid,button,[class*="chip"],.auth-area,#loading-screen,.right-controls{display:none}
       .controls-top{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-      .controls-top > div:last-child { display: none; }
+      .controls-top > div:last-child { display: none; } /* Hide export/print buttons on print view */
       table{min-width:0; margin-top: 0;}
       thead th,tbody td{border:1px solid #ccc;padding:8px}
       th{background:#f2f2f2}
@@ -393,46 +242,23 @@
 </head>
 <body>
   <div class="wrap">
-    
-<div class="auth-area" id="auth-area" style="display:none;">
-      <h1 class="auth-title">Log into TheVann</h1>
-      <p class="auth-subtitle">Or create a free account</p>
-
-    <div class="auth-buttons-wrapper">
-      
+    <div class="auth-area" id="auth-area">
       <button id="googleSignIn" class="auth-btn">
-        <div class="google-icon"></div> 
-        Continue with Google
+        <span style="font-size:18px; margin-right: 8px;">🚀</span> Sign in with Google
       </button>
-
+      <div id="signedState" style="display:none;">
+        <div class="signed-as" id="signedText"></div>
+        <button id="signOut" class="auth-btn secondary" style="margin-top:6px;">Sign out</button>
       </div>
-
-      <p class="auth-terms">
-        By creating an account, you agree to the <a href="#">Terms of Service</a> and acknowledge that you have read and
-        understood the <a href="#">Privacy Policy</a>
-      </p>
-
-</div>
-    
-    <div id="username-modal" style="display:none;">
-        <div id="username-form-card" class="card">
-            <h3 id="modal-title">Set Your Display Name</h3>
-            <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in reports.</p>
-            <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
-            <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
-        </div>
+      <div id="notSigned" style="color:var(--muted);font-size:13px">Signed out — data will be stored locally until you sign in.</div>
     </div>
+    
     <div id="loading-screen" class="card" style="display:none;">
         <h2 style="margin-top:0;">⏳ Loading...</h2>
         <p style="color:var(--muted);">Checking authentication status...</p>
     </div>
 
     <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
-      
-      <div id="signedState" style="display:none;">
-        <div class="signed-as" id="signedText"></div>
-        <button id="signOut" class="auth-btn secondary"></button>
-      </div>
       <header class="app-head">
         <div class="title-wrap">
           <h1 class="title" id="app-title">TheVann Track Duration</h1>
@@ -460,8 +286,6 @@
         </div>
         
         <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
-        
-
         <div style="margin-left:auto;display:flex;gap:12px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
@@ -469,33 +293,18 @@
       </div>
 
       <div class="entry-grid" style="margin-top:16px">
-        <div class="input-group">
-            <label id="date-label" for="date-input">Date</label>
-            <input id="date-input" type="date" />
-        </div>
-        
-        <div class="input-group">
-            <label id="start-label" for="start-input">IN</label>
-            <input id="start-input" type="time" />
-        </div>
-        
-        <div class="input-group">
-            <label id="end-label" for="end-input">OUT</label>
-            <input id="end-input" type="time" />
-        </div>
-        
-        <div class="input-group" style="flex-grow: 1;">
-            <label id="task-label" for="task-input">Task / notes (optional)</label>
-            <input id="task-input" type="text" placeholder="" />
-        </div>
-        
-        <div class="preview" id="preview" style="align-self: flex-end;">Duration: 00:00 (0.00h)</div>
+        <input id="date-input" type="date" />
+        <input id="start-input" type="time" />
+        <input id="end-input" type="time" />
+        <input id="task-input" type="text" placeholder="📝 Task / notes (optional)" />
+        <div class="preview" id="preview">Duration: 00:00 (0.00h)</div>
 
         <div style="display:flex;gap:12px;flex-wrap:wrap">
           <button id="add-btn" class="primary btn">➕ Add Entry</button>
           <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
         </div>
       </div>
+
       <div class="table-wrap">
         <table id="entries-table" aria-describedby="month-label">
           <thead>
@@ -522,7 +331,7 @@
   <script type="module">
   // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
@@ -548,17 +357,12 @@
   const googleSignInBtn = document.getElementById('googleSignIn');
   const signedState = document.getElementById('signedState');
   const signedText = document.getElementById('signedText');
+  const notSigned = document.getElementById('notSigned');
   const signOutBtn = document.getElementById('signOut');
   
-  // Username Modal DOM
-  const usernameModal = document.getElementById('username-modal');
-  const usernameInputField = document.getElementById('username-input-field');
-  const saveUsernameBtn = document.getElementById('save-username-btn');
-
   // New DOM elements for content hiding
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
-  const authArea = document.getElementById('auth-area'); // Reference to the main auth area
 
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
@@ -569,8 +373,10 @@
   const dayOffBtn = document.getElementById('dayoff-btn');
   const entriesBody = document.getElementById('entries-body');
   
+  // *** MODIFIED: Use the total element from the header ***
   const totalHeaderEl = document.getElementById('total-header'); 
-  const totalEl = totalHeaderEl.querySelector('#total'); 
+  const totalEl = totalHeaderEl.querySelector('#total'); // Get the actual span inside the header element
+  // ***
   
   const exportBtn = document.getElementById('export-csv');
   const printBtn = document.getElementById('print-btn');
@@ -580,13 +386,6 @@
   const monthLabel = document.getElementById('month-label');
   const langButtons = document.getElementById('lang-buttons');
   const themeToggle = document.getElementById('theme-toggle');
-
-  // Input Labels for dynamic translation
-  const dateLabel = document.getElementById('date-label');
-  const startLabel = document.getElementById('start-label');
-  const endLabel = document.getElementById('end-label');
-  const taskLabel = document.getElementById('task-label');
-
 
   // keys
   const STORAGE = 'vann_v8_entries';
@@ -598,14 +397,7 @@
   const translations = {
     en: { 
       app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.', 
-      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
-      // NEW LABELS
-      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
-      csv_user_label: 'User Name',
-      modal_title: 'Set Your Display Name',
-      modal_subtitle: 'This name will be used in reports.',
-      save_name: 'Save Name',
-      sign_out_btn: 'Sign out' // New button text
+      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off'
     },
     my: { 
       // Myanmar Unicode Fixed
@@ -618,25 +410,11 @@
       duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
       total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
       alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
-      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
-      // NEW LABELS
-      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
-      csv_user_label: 'အသုံးပြုသူအမည်',
-      modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
-      modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
-      save_name: 'အမည်သိမ်းမည်',
-      sign_out_btn: 'ထွက်မည်' // New button text
+      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်'
     },
     th: { 
       app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
-      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
-      // NEW LABELS
-      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
-      csv_user_label: 'ชื่อผู้ใช้',
-      modal_title: 'กำหนดชื่อแสดงผล',
-      modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
-      save_name: 'บันทึกชื่อ',
-      sign_out_btn: 'ออกจากระบบ' // New button text
+      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด'
     }
   };
 
@@ -708,50 +486,12 @@
     }
   }
 
-  // USER NAME HANDLING
-  async function handleUsernameSetup(user) {
-    // Show username modal
-    usernameModal.style.display = 'flex';
-    // Use part of email as initial name if display name is totally empty
-    usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
-    
-    // Update modal texts (since render is not called)
-    const t = translations[currentLang];
-    document.getElementById('modal-title').textContent = t.modal_title;
-    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
-    document.getElementById('save-username-btn').textContent = t.save_name;
-  }
-  
-  saveUsernameBtn.addEventListener('click', async () => {
-      const newName = usernameInputField.value.trim();
-      if (!newName) {
-          alert('Please enter a name.');
-          return;
-      }
-      if (currentUser) {
-          try {
-              // Update display name in Firebase Auth
-              await updateProfile(currentUser, {
-                  displayName: newName
-              });
-              // Force the app to re-render with the new name
-              currentUser.displayName = newName;
-              usernameModal.style.display = 'none';
-              handleUserSignedIn(currentUser); 
-          } catch (error) {
-              console.error('Error updating profile:', error);
-              alert('Failed to save name: ' + error.message);
-          }
-      }
-  });
-
-
   // UI/STATE CONTROL FUNCTION
   function showLoadingState(){
-      authArea.style.display = 'none'; // Hide auth area
-      appContent.style.display = 'none'; // Hide main app
-      signedState.style.display = 'none'; // Hide signed state
-      usernameModal.style.display = 'none'; // Hide username modal
+      appContent.style.display = 'none';
+      googleSignInBtn.style.display = 'none';
+      signedState.style.display = 'none';
+      notSigned.style.display = 'none';
       loadingScreen.style.display = 'block'; 
       loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
       loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
@@ -761,18 +501,10 @@
   async function handleUserSignedIn(user){
     currentUser = user;
     const uid = user.uid;
-    
-    // *** CHECK FOR DISPLAY NAME FIRST ***
-    if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
-        // If not set, show the setup modal and stop here
-        await handleUsernameSetup(user);
-        return; 
-    }
-    
-    // If name is set, proceed to app
-    signedText.textContent = `Signed in: ${user.displayName}`;
-    signedState.style.display = 'flex'; // Show sign out button and signed text
-    authArea.style.display = 'none'; // Hide the full auth screen
+    signedText.textContent = `Signed in: ${user.displayName || user.email}`;
+    signedState.style.display = 'block';
+    notSigned.style.display = 'none';
+    googleSignInBtn.style.display = 'none';
     
     // Show the main app content
     appContent.style.display = 'block';
@@ -800,17 +532,20 @@
 
   function handleUserSignedOut(){
     currentUser = null;
-    signedState.style.display = 'none'; // Hide sign out button and signed text
-    usernameModal.style.display = 'none'; // Hide username modal
-    authArea.style.display = 'flex'; // Show the new auth screen
+    signedState.style.display = 'none';
+    googleSignInBtn.style.display = 'inline-block';
+    notSigned.style.display = 'block';
+    signedText.textContent = '';
     
-    // Hide the main app content
+    // Hide the main app content and show sign-in prompt
     appContent.style.display = 'none';
-    loadingScreen.style.display = 'none'; // Ensure loading screen is hidden
-
+    loadingScreen.style.display = 'block';
+    loadingScreen.querySelector('h2').innerHTML = '🔒 Please Sign In to Start Tracking';
+    loadingScreen.querySelector('p').textContent = 'Your data is stored securely via Google login.';
+    
     // keep local data (no deletion)
     loadLocal();
-    render(); // Re-render to clear any app data
+    render();
   }
 
   // auth events
@@ -824,16 +559,13 @@
 
   // sign in/out UI
   googleSignInBtn.addEventListener('click', async ()=>{
-    showLoadingState(); // Show loading state when attempting sign-in
     try{
       await signInWithPopup(auth, provider);
-      // onAuthStateChanged will handle loading and UI
+      // onAuthStateChanged will handle loading
     }catch(err){
       alert('Google sign-in failed: ' + err.message);
-      handleUserSignedOut(); // Go back to sign-out state if sign-in fails
     }
   });
-  
   signOutBtn.addEventListener('click', async ()=>{
     try{
       await signOut(auth);
@@ -869,6 +601,7 @@
       const duration = row.isDayOff? dayOffText : row.duration;
       const rounded = row.isDayOff? 0 : row.rounded;
       
+      // Update: Task column for day off now shows the Day Off text if the task field is empty/Day Off text
       const taskDisplay = row.isDayOff ? dayOffText : row.task || '';
 
       tr.innerHTML = `
@@ -884,7 +617,10 @@
       total += rounded;
     }
 
+    // *** MODIFIED: Update the header total element ***
     totalEl.textContent = total.toFixed(2);
+    // ***
+    
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
     applyLanguageTexts();
   }
@@ -921,10 +657,6 @@
     startEl.value=''; 
     endEl.value=''; 
     taskEl.value=''; 
-    
-    // Task input placeholder needs to be set based on current language
-    taskEl.placeholder = translations[currentLang].task_placeholder;
-    
     previewEl.textContent = translations[currentLang].duration_default; 
     addBtn.textContent = '➕ ' + translations[currentLang].add_entry; 
     editId = null; // Ensure editId is reset
@@ -994,20 +726,13 @@
   exportBtn.addEventListener('click', ()=>{
     const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     if(filtered.length===0) return alert('No data to export for this month');
-    
     const t = translations['en']; // Use English headers for CSV compatibility
-    const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
-    const userLabel = translations[currentLang].csv_user_label || 'User Name';
-    
-    const header=['Date','Start','End','Duration','Rounded Hours','Task'];
-    let csv = `${userLabel}:,${userName}\n\n`; // ADD USER NAME TO TOP OF CSV
-    csv += header.join(',') + '\n';
-    
+    const header=[t.date,t.start,t.end,'Duration','Rounded Hours','Task'];
+    let csv = header.join(',') + '\n';
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
-    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
-    
+    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`; // Use totalEl from header
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
 
   printBtn.addEventListener('click', ()=> window.print());
@@ -1018,22 +743,8 @@
   todayMonthBtn.addEventListener('click', ()=>{ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); localStorage.setItem(MONTH, JSON.stringify({y:selectedYear,m:selectedMonth})); render(); });
 
   // theme
-  function applyTheme(){ 
-    const t = localStorage.getItem(THEME) || 'dark'; 
-    if(t==='light'){ 
-      document.body.classList.add('light-mode'); 
-      themeToggle.textContent='☀️'; 
-    } else { 
-      document.body.classList.remove('light-mode'); 
-      themeToggle.textContent='🌙'; 
-    } 
-    // Since Google logo uses SVG Base64, we don't need explicit JS filter here.
-  }
-  themeToggle.addEventListener('click', ()=>{ 
-    const now = document.body.classList.toggle('light-mode')? 'light':'dark'; 
-    localStorage.setItem(THEME, now); 
-    applyTheme(); 
-  });
+  function applyTheme(){ const t = localStorage.getItem(THEME) || 'dark'; if(t==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️'; } else { document.body.classList.remove('light-mode'); themeToggle.textContent='🌙'; } }
+  themeToggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
 
   // language
   function applyLanguageTexts(){
@@ -1041,25 +752,6 @@
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
     
-    // Update Username Modal
-    document.getElementById('modal-title').textContent = t.modal_title;
-    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
-    document.getElementById('save-username-btn').textContent = t.save_name;
-    
-    // Update Sign out button
-    signOutBtn.textContent = t.sign_out_btn;
-    
-    // Update Input Labels
-    dateLabel.textContent = t.date_label;
-    startLabel.textContent = t.in_label;
-    endLabel.textContent = t.out_label;
-    taskLabel.textContent = t.task_placeholder;
-    taskEl.placeholder = t.task_placeholder;
-    
-    if (currentUser && currentUser.displayName) {
-        signedText.textContent = `${t.sign_out_btn} in: ${currentUser.displayName}`;
-    }
-
     // Check if we are in edit mode
     if (editId) {
       addBtn.textContent = '💾 Save';
@@ -1070,7 +762,7 @@
     dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
     exportBtn.textContent = '💾 ' + t.export_csv;
     printBtn.textContent = '🖨️ ' + t.print;
-    
+    // Do not reset preview if times are set
     if (!startEl.value || !endEl.value) {
         previewEl.textContent = t.duration_default;
     }
@@ -1089,8 +781,7 @@
 
   // init
   function init(){
-    // Initial state: show loading and then auth area or app content
-    showLoadingState(); 
+    showLoadingState(); // Show loading state immediately
 
     loadLocal();
     const saved = localStorage.getItem(MONTH);
@@ -1099,8 +790,7 @@
     dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
     currentLang = localStorage.getItem(LANG) || currentLang;
     applyTheme();
-    // render is called by onAuthStateChanged, which runs after init.
-    // This ensures translations and styles are applied correctly
+    // render will be called by onAuthStateChanged
   }
   init();
 
