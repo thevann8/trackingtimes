@@ -7,230 +7,76 @@
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
   <style>
-    /* ===================================================
-    ORIGINAL DESIGN THEME - REFINED COLORS & NICE STYLE
-    ===================================================
-    */
+    /* ORIGINAL THEME STYLES (Cleaned up slightly for better rendering) */
     :root{
-      --bg:#071226; /* Original Dark Blue */
-      --card:#0b1724; /* Original Card Color */
-      --text:#eaf6fb;
-      --muted:#9fb7c6;
-      --accent:#06c2d6; /* Primary Blue Accent */
-      --accent-2:#2dd4bf; /* Secondary Cyan/Green Accent */
-      --success:#16a34a;
-      --danger:#ef4444;
-      --glass:rgba(255,255,255,0.08); /* Stronger glass effect */
-      --radius:12px;
-      --shadow:0 10px 20px rgba(3,8,20,0.6);
-      --table-border:rgba(255,255,255,0.08); /* Thicker border for clarity */
-      --input-bg:rgba(255,255,255,0.04);
-      
-      /* Day Off Red Tone */
-      --dayoff-bg: rgba(239, 68, 68, 0.15); /* Light red background */
-      --dayoff-border: #ef4444; /* Bright red border */
+      --bg:#071226;--card:#0b1724;--text:#eaf6fb;--muted:#9fb7c6;--accent:#06c2d6;--accent-2:#2dd4bf;--success:#16a34a;--danger:#ef4444;
+      --glass:rgba(255,255,255,0.03);--radius:12px;--shadow:0 12px 30px rgba(3,8,20,0.6);--table-border:rgba(255,255,255,0.04);
+      /* FIXED Day Off Style to be visible */
+      --dayoff-bg: rgba(239, 68, 68, 0.15); 
+      --dayoff-border: #ef4444;
       --dayoff-text: #ffcfcf;
     }
     body.light-mode{
-      --bg:#f7fbfc;
-      --card:#fff;
-      --text:#06202a;
-      --muted:#4b5963;
-      --accent:#0ea5a3;
-      --accent-2:#7dd3fc;
-      --glass:rgba(2,6,23,0.06);
-      --shadow:0 8px 15px rgba(2,6,23,0.1);
-      --table-border:rgba(2,6,23,0.1);
-      --input-bg:#f3f7f8;
-      
+      --bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06);
       --dayoff-bg: #fff0f0;
       --dayoff-border: #cc3333;
       --dayoff-text: #cc3333;
     }
     
-    /* Global styles */
-    *{box-sizing:border-box; transition: all 0.3s ease-in-out;}
+    *{box-sizing:border-box; transition: none;} /* Removed all transitions for stability */
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:14px}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
     .wrap{max-width:980px;margin:0 auto}
-    
-    /* Card/Container Styling */
-    .card{
-      background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
-      padding:16px;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      border:1px solid var(--glass);
-      margin-bottom:14px;
-    }
-    header.app-head{
-        display:flex;
-        flex-wrap:wrap;
-        align-items:center;
-        justify-content:space-between;
-        gap:8px;
-        position: relative; 
-    }
-    h1.title{margin:0;font-size:18px;font-weight:700}
+    .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;} /* Added padding-top for fixed sign-in button */
+    .title-wrap{flex:1;min-width:180px}
+    h1.title{margin:0;font-size:18px}
     .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
 
-    /* Auth/Sign Area - LOGIN SCREEN */
-    #auth-area {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 28px);
-      background: var(--bg);
-      color: var(--text);
-      text-align: center;
-      padding: 20px;
-      margin: -14px; /* Offset body padding */
-    }
-    #auth-area .auth-title {
-        font-size: 30px;
-        font-weight: 500;
-        margin-bottom: 8px;
-        font-family: serif;
-        color: inherit;
-    }
-    .auth-buttons-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-    }
-    .auth-btn{
-      width: 100%;
-      max-width: 280px; 
-      padding:10px 18px;
-      border-radius:18px; 
-      border:none;
-      background:#fff;
-      color:#022;
-      font-weight:700;
-      cursor:pointer;
-      box-shadow:0 6px 15px rgba(0,0,0,0.25);
-      transition:transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      margin-bottom: 12px; 
-    }
-    .auth-btn:hover{
-      transform:translateY(-1px); 
-      box-shadow:0 8px 18px rgba(0, 0, 0, 0.35);
-    }
-    
-    .google-icon {
-        width: 18px; 
-        height: 18px;
-        margin-right: 10px;
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        /* Base64 SVG for the standard Google G Logo */
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy.3...9...l-3.7...3.7c1.5-3.5 3.9-6.3 6.3-8.7l3.7-3.7c2.5-2.5 5.3-3.8 8.9-3.8h7.2m14.3 26c0 6.2-2.5 10.3-5.3 12.6l-3.7 3.7c-1.6 1.5-3.7 2.6-8.9 5.3h-3.8v-19.5h2.6c4.2 0 7.6 3 9.4 6.5L43 29.6c.5.9.7 1.8.7 2.8m-8.2-3.5c-.6 0-1.2-.1-1.7-.3-1.6-.6-2.5-1.5-2.5-2.5V27c0-1 .9-1.9 2.5-2.5v-.5c0-.6-.3-1.2-.8-1.7L36 23.5c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.2 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V13c0-.7-.4-1.3-.9-1.7l-3.9-3.9c-.5-.5-1.2-.8-1.7-.8H34c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V17c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 24.3c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7.4-1.3.9-1.8l3.9-3.9c.5-.5 1.2-.9 1.7-.9S43.9 23.4 44.4 24.1v-4.8c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V12.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V6.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V1.2c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V4.5c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V34.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V39.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V45.8z');
-    }
-
-    .auth-btn img {
-        display: none; 
-    }
-    
+    /* AUTH AREA (SIMPLIFIED FOR GOOGLE ONLY) */
+    .auth-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
+    .auth-area .auth-title {font-size: 24px; margin-bottom: 20px;}
+    .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25); display: flex; align-items: center; max-width: 280px;}
     .auth-btn .google-icon {
-        display: block; 
+        width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
+        /* Base64 SVG for the standard Google G Logo */
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS.3...9...l-3.7...3.7c1.5-3.5 3.9-6.3 6.3-8.7l3.7-3.7c2.5-2.5 5.3-3.8 8.9-3.8h7.2m14.3 26c0 6.2-2.5 10.3-5.3 12.6l-3.7 3.7c-1.6 1.5-3.7 2.6-8.9 5.3h-3.8v-19.5h2.6c4.2 0 7.6 3 9.4 6.5L43 29.6c.5.9.7 1.8.7 2.8m-8.2-3.5c-.6 0-1.2-.1-1.7-.3-1.6-.6-2.5-1.5-2.5-2.5V27c0-1 .9-1.9 2.5-2.5v-.5c0-.6-.3-1.2-.8-1.7L36 23.5c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.2 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V13c0-.7-.4-1.3-.9-1.7l-3.9-3.9c-.5-.5-1.2-.8-1.7-.8H34c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V17c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 24.3c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7.4-1.3.9-1.8l3.9-3.9c.5-.5 1.2-.9 1.7-.9S43.9 23.4 44.4 24.1v-4.8c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V12.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V6.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V1.2c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V4.5c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V34.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V39.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V45.8z');
     }
-
     
-    .auth-terms {
-        font-size: 12px;
-        color: var(--muted);
-        margin-top: 30px;
-        max-width: 320px;
-        line-height: 1.5;
-    }
-
-    /* Username Setup Modal Styling (Same as before) */
-    #username-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 2000;
-        display: none;
-        justify-content: center;
-        align-items: center;
-    }
-    #username-form-card {
-        background: var(--card);
-        padding: 30px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        width: 90%;
-        max-width: 400px;
-        text-align: center;
-    }
-    #username-form-card h3 {
-        margin-top: 0;
-        color: var(--accent);
-    }
-    #username-input-field {
-        width: 100%;
-        margin-bottom: 15px;
-        background:var(--input-bg);
-        border:1px solid var(--table-border);
-        padding:12px 14px;
-        border-radius:12px;
-        color:var(--text);
-        font-size:16px;
-        outline:none;
-    }
-    #save-username-btn {
-        width: 100%;
-    }
-
-
-    /* Signed in display area (Desktop View) */
+    /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
     #signedState {
         display: none;
         position: absolute; 
-        top: 10px;
-        right: 0;
-        padding: 8px 15px; /* Compact padding */
-        background: var(--input-bg); /* Use input background for clean look */
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+        top: 0px; 
+        right: 0px;
+        padding: 8px 12px;
+        background: var(--card);
+        border-bottom-left-radius: 12px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
         flex-direction: row;
         align-items: center;
         gap: 8px;
-        z-index: 10;
-        transform: translateX(10px); 
+        z-index: 1000;
     }
-    .signed-as{color:var(--text);font-weight:600;font-size:14px; white-space: nowrap;}
+    .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
     .auth-btn.secondary{
-      background:var(--card); /* Slightly different color for button */
-      color:var(--danger); 
-      border:1px solid var(--danger); /* Red border for sign out */
-      padding: 3px 8px; /* Compact button */
+      background:var(--input-bg); 
+      color:var(--text); 
+      border:1px solid var(--table-border);
+      padding: 4px 8px; 
       font-size: 12px;
       margin-bottom: 0;
-      max-width: fit-content;
     }
-    
-    /* Loading/Sign-in Required Screen (Same as before) */
-    #loading-screen{
-        text-align:center;
-        padding: 50px;
-        box-shadow: var(--shadow);
-        background: var(--card);
-        margin-top: 14px;
-    }
-    
-    /* Inputs / Controls - Adjusted padding/style to fit original design */
+
+    /* language + theme */
+    .right-controls{display:flex;align-items:center;gap:8px}
+    .lang-select{display:flex;gap:6px}
+    .lang-select button{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;color:var(--text);cursor:pointer;font-size:13px}
+    .toggle{background:transparent;border:1px solid var(--table-border);padding:6px 8px;border-radius:8px;cursor:pointer}
+
+    /* inputs / controls */
+    .controls-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+    .entry-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
     .input-group label {
         color: var(--muted);
         font-size: 12px;
@@ -239,78 +85,83 @@
         margin-left: 0;
     }
     .input-group {
+        display: flex;
+        flex-direction: column;
         gap: 0;
     }
-    input[type=date],input[type=time],input[type=text]{
-        min-width: 120px;
-        padding: 8px 10px;
-        border-radius: 8px;
-    }
+    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
+    .preview{color:var(--muted);font-size:13px}
 
-    /* Buttons/Chips */
-    .btn{
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-weight: 700;
-        font-size: 14px;
-    }
-    .chip{
-        padding: 5px 10px;
-        border-radius: 6px;
-    }
+    .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
     .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022}
     .ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
 
+    /* table */
+    .table-wrap{overflow:auto;margin-top:14px;border-radius:10px}
+    table{width:100%;border-collapse:collapse;min-width:700px}
+    thead th{padding:10px 12px;text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;border-bottom:1px solid var(--table-border)}
+    tbody td{padding:10px 12px;border-bottom:1px solid var(--table-border)}
+    tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
+    
+    /* DAY OFF Style */
+    tr.day-off {
+        background: var(--dayoff-bg) !important;
+        color: var(--dayoff-text) !important;
+        font-weight: 600;
+        border: 1px solid var(--dayoff-border) !important;
+    }
+    tr.day-off td {
+        font-style: italic;
+        border-bottom: 1px solid var(--dayoff-border) !important;
+        padding: 10px 12px;
+    }
+    tr.day-off td:first-child::before {
+        content: "🚨 ";
+        margin-right: 5px;
+    }
 
-    /* ================================================= */
-    /* ======== MOBILE OPTIMIZATION (MAX 768PX) ======== */
-    /* ================================================= */
+    .actions{display:flex;gap:8px}
+    .chip{padding:6px 10px;border-radius:8px;font-weight:600;cursor:pointer}
+    .chip.edit{background:var(--success);color:#fff}
+    .chip.del{background:var(--danger);color:#fff}
 
-    @media(max-width:768px){
-      body { padding: 10px; }
-      .card { padding: 12px; border-radius: 10px; }
+    .footer{display:flex;justify-content:flex-end;margin-top:12px; display: none;} /* HIDDEN */
+    .total-card{background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700; font-size: 15px;}
+    .total-card span { color: var(--accent); font-size: 16px;}
+
+    /* GENERAL MOBILE FIXES */
+    @media(max-width:640px){
+      .entry-grid{flex-direction:column;align-items:stretch}
+      input[type=date],input[type=time],input[type=text],.btn{width:100%; min-width: unset;}
+      .input-group { width: 100%; }
+      table{min-width:600px}
+      .total-card{width:100%;text-align:center}
+      .controls-top > div { flex-wrap: nowrap !important; }
       
-      /* Header Stack Fix */
-      header.app-head {
-          flex-direction: column;
-          align-items: flex-start;
-          gap: 10px;
-          padding-top: 50px; /* Push content down to avoid collision */
-      }
-      
-      /* SIGN OUT BUTTON MOBILE FIX: Positioned on Top of the Header */
+      /* MOBILE HEADER FIX */
+      header.app-head { padding-top: 50px; }
       #signedState {
-        position: absolute;
         top: 0;
-        right: 0;
         left: 0;
         width: 100%;
-        padding: 8px 12px;
-        margin-top: 0;
         border-radius: 0;
         border-bottom: 1px solid var(--table-border);
         box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-        flex-direction: row;
-        justify-content: flex-end; /* Push to the right */
-        gap: 10px;
-        z-index: 1000;
-        transform: none; /* Remove desktop transform */
+        justify-content: flex-end; 
       }
-      /* Hide Title elements when signedState is active to give it space */
       .title-wrap {
-          margin-top: 0;
-          width: 100%;
+          margin-top: 0; 
       }
+    }
 
-      /* Control Flow Fixes */
-      .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
-      .controls-top > div { flex-wrap: wrap !important; justify-content: space-between; }
-      .input-group { width: 100%; }
-      
-      /* Make inputs look better on mobile */
-      input[type=date],input[type=time],input[type=text]{width:100%;}
-      .entry-grid{flex-direction:column;align-items:stretch}
-      .btn,.total-card{width:100%;}
+    @media print{
+      @page{size:A4 landscape;margin:12mm}
+      body,html{background:#fff;color:#000}
+      .card{background:#fff;box-shadow:none;border:none}
+      .controls-top,.entry-grid,button,[class*="chip"],#auth-area,#loading-screen,.right-controls,#signedState{display:none}
+      table{min-width:0}
+      thead th,tbody td{border:1px solid #ccc;padding:8px}
+      th{background:#f2f2f2}
     }
   </style>
 </head>
@@ -327,7 +178,7 @@
         Continue with Google
       </button>
 
-    </div>
+      </div>
 
       <p class="auth-terms">
         Data is synced to the cloud via your Google Account.
@@ -376,7 +227,7 @@
       </header>
 
       <div class="controls-top">
-        <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;align-items:center">
           <button id="prev-month" class="ghost btn">◀</button>
           <div id="month-label" style="font-weight:700;min-width:160px;text-align:center;">Month</div>
           <button id="next-month" class="ghost btn">▶</button>
@@ -386,13 +237,13 @@
         <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
         
 
-        <div style="margin-left:auto;display:flex;gap:12px">
+        <div style="margin-left:auto;display:flex;gap:8px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
         </div>
       </div>
 
-      <div class="entry-grid" style="margin-top:16px">
+      <div class="entry-grid" style="margin-top:12px">
         <div class="input-group">
             <label id="date-label" for="date-input">Date</label>
             <input id="date-input" type="date" />
@@ -415,7 +266,7 @@
         
         <div class="preview" id="preview" style="align-self: flex-end;">Duration: 00:00 (0.00h)</div>
 
-        <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button id="add-btn" class="primary btn">➕ Add Entry</button>
           <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
         </div>
