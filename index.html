@@ -7,77 +7,72 @@
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
   <style>
-    /* Clean & Modern Theme CSS */
+    /* ===================================================
+    ORIGINAL DESIGN THEME - REFINED COLORS & NICE STYLE
+    ===================================================
+    */
     :root{
-      --bg:#0c152a; /* Darker, richer blue-black */
-      --card:#142036; /* Slightly lighter card background */
-      --text:#e3eafc;
-      --muted:#9ab8c9;
-      --accent:#4e89ff; /* Primary blue accent */
-      --accent-2:#4dcbff; /* Secondary bright blue */
-      --success:#39c16d; /* Green */
-      --danger:#ff6b6b; /* Red */
+      --bg:#071226; /* Original Dark Blue */
+      --card:#0b1724; /* Original Card Color */
+      --text:#eaf6fb;
+      --muted:#9fb7c6;
+      --accent:#06c2d6; /* Primary Blue Accent */
+      --accent-2:#2dd4bf; /* Secondary Cyan/Green Accent */
+      --success:#16a34a;
+      --danger:#ef4444;
       --glass:rgba(255,255,255,0.08); /* Stronger glass effect */
-      --radius:16px; /* Larger radius for a softer look */
-      --shadow:0 18px 40px rgba(0,0,0,0.4); /* Deeper shadow */
-      --table-border:rgba(255,255,255,0.05);
-      --input-bg:rgba(255,255,255,0.05);
-      /* --- DAY OFF NEW RED STYLE --- */
-      --dayoff-bg: #451a1a; /* Dark red background for visibility */
-      --dayoff-border: #e74c3c; /* Bright red border */
-      --dayoff-text: #ffcfcf; /* Light text */
-
-      /* NEW: Auth Page specific colors for light mode to match the image */
-      --auth-bg-light: #f0f4f8; /* Use main light background for simplicity */
-      --auth-text-light: #3d3b3c;
-      --auth-btn-bg-light: #ffffff;
-      --auth-btn-border-light: #e0e0e0;
-      --auth-btn-text-light: #3d3b3c;
-      --auth-link-light: #2b7de3;
+      --radius:12px;
+      --shadow:0 10px 20px rgba(3,8,20,0.6);
+      --table-border:rgba(255,255,255,0.08); /* Thicker border for clarity */
+      --input-bg:rgba(255,255,255,0.04);
+      
+      /* Day Off Red Tone */
+      --dayoff-bg: rgba(239, 68, 68, 0.15); /* Light red background */
+      --dayoff-border: #ef4444; /* Bright red border */
+      --dayoff-text: #ffcfcf;
     }
     body.light-mode{
-      --bg:#f0f4f8;
-      --card:#ffffff;
-      --text:#102a43;
-      --muted:#657d9d;
-      --accent:#2b7de3;
-      --accent-2:#56c5ff;
-      --success:#16a34a;
-      --danger:#cc3333;
-      --glass:rgba(0,0,0,0.05);
-      --shadow:0 12px 25px rgba(0,0,0,0.1);
-      --table-border:rgba(0,0,0,0.1);
-      --input-bg:#f9fbfd;
-      /* --- DAY OFF NEW RED STYLE --- */
+      --bg:#f7fbfc;
+      --card:#fff;
+      --text:#06202a;
+      --muted:#4b5963;
+      --accent:#0ea5a3;
+      --accent-2:#7dd3fc;
+      --glass:rgba(2,6,23,0.06);
+      --shadow:0 8px 15px rgba(2,6,23,0.1);
+      --table-border:rgba(2,6,23,0.1);
+      --input-bg:#f3f7f8;
+      
       --dayoff-bg: #fff0f0;
-      --dayoff-border: #e74c3c;
+      --dayoff-border: #cc3333;
       --dayoff-text: #cc3333;
     }
     
     /* Global styles */
-    *{box-sizing:border-box; transition: background-color 0.3s, color 0.3s, box-shadow 0.3s, border-color 0.3s}
+    *{box-sizing:border-box; transition: all 0.3s ease-in-out;}
     html,body{height:100%}
-    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:20px}
-    .wrap{max-width:1080px;margin:0 auto}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;padding:14px}
+    .wrap{max-width:980px;margin:0 auto}
     
     /* Card/Container Styling */
     .card{
-      background:var(--card);
-      padding:24px;
+      background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));
+      padding:16px;
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      margin-bottom:20px;
+      border:1px solid var(--glass);
+      margin-bottom:14px;
     }
     header.app-head{
         display:flex;
         flex-wrap:wrap;
         align-items:center;
         justify-content:space-between;
-        gap:12px;
+        gap:8px;
         position: relative; 
     }
-    h1.title{margin:0;font-size:24px;font-weight:700}
-    .subtitle{color:var(--muted);font-size:14px;margin-top:4px}
+    h1.title{margin:0;font-size:18px;font-weight:700}
+    .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
 
     /* Auth/Sign Area - LOGIN SCREEN */
     #auth-area {
@@ -85,26 +80,20 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: calc(100vh - 40px);
+      min-height: calc(100vh - 28px);
       background: var(--bg);
       color: var(--text);
       text-align: center;
       padding: 20px;
-      margin: -20px;
-    }
-    body.light-mode #auth-area {
-        background: var(--auth-bg-light);
-        color: var(--auth-text-light);
+      margin: -14px; /* Offset body padding */
     }
     #auth-area .auth-title {
-        font-size: 38px;
+        font-size: 30px;
         font-weight: 500;
         margin-bottom: 8px;
         font-family: serif;
         color: inherit;
     }
-    
-    /* Button Styles (Google Sign-in) */
     .auth-buttons-wrapper {
         display: flex;
         flex-direction: column;
@@ -112,42 +101,33 @@
         width: 100%;
         margin-top: 20px;
     }
-
     .auth-btn{
       width: 100%;
-      max-width: 320px; 
-      padding:16px 28px;
-      border-radius:12px; 
-      border:1px solid var(--table-border);
-      background:var(--card); 
-      color:var(--text);
+      max-width: 280px; 
+      padding:10px 18px;
+      border-radius:18px; 
+      border:none;
+      background:#fff;
+      color:#022;
       font-weight:700;
       cursor:pointer;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1); 
-      transition:transform 0.2s, box-shadow 0.2s, background-color 0.3s;
+      box-shadow:0 6px 15px rgba(0,0,0,0.25);
+      transition:transform 0.2s, box-shadow 0.2s;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 16px;
+      font-size: 14px;
       margin-bottom: 12px; 
-    }
-    body.light-mode .auth-btn {
-        background: var(--auth-btn-bg-light);
-        color: var(--auth-btn-text-light);
-        border: 1px solid var(--auth-btn-border-light);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
     .auth-btn:hover{
       transform:translateY(-1px); 
-      box-shadow:0 4px 8px rgba(0, 0, 0, 0.15);
-      background: var(--input-bg);
+      box-shadow:0 8px 18px rgba(0, 0, 0, 0.35);
     }
     
-    /* Google Logo (using a small space and background-image for BASE64 SVG) */
     .google-icon {
-        width: 22px; 
-        height: 22px;
-        margin-right: 15px;
+        width: 18px; 
+        height: 18px;
+        margin-right: 10px;
         background-size: contain;
         background-repeat: no-repeat;
         background-position: center;
@@ -172,7 +152,7 @@
         line-height: 1.5;
     }
 
-    /* Username Setup Modal Styling */
+    /* Username Setup Modal Styling (Same as before) */
     #username-modal {
         position: fixed;
         top: 0;
@@ -181,7 +161,7 @@
         bottom: 0;
         background: rgba(0, 0, 0, 0.7);
         z-index: 2000;
-        display: none; 
+        display: none;
         justify-content: center;
         align-items: center;
     }
@@ -220,58 +200,66 @@
         position: absolute; 
         top: 10px;
         right: 0;
-        padding: 10px 20px;
-        background: var(--card);
-        border-radius: 12px;
-        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        padding: 8px 15px; /* Compact padding */
+        background: var(--input-bg); /* Use input background for clean look */
+        border-radius: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.15);
         flex-direction: row;
         align-items: center;
-        gap: 10px;
+        gap: 8px;
         z-index: 10;
         transform: translateX(10px); 
     }
-    .signed-as{color:var(--success);font-weight:700;font-size:15px; white-space: nowrap;}
+    .signed-as{color:var(--text);font-weight:600;font-size:14px; white-space: nowrap;}
     .auth-btn.secondary{
-      background:var(--input-bg); 
-      color:var(--text); 
-      box-shadow:none; 
-      border:1px solid var(--table-border);
-      padding: 4px 8px; 
-      font-size: 13px;
+      background:var(--card); /* Slightly different color for button */
+      color:var(--danger); 
+      border:1px solid var(--danger); /* Red border for sign out */
+      padding: 3px 8px; /* Compact button */
+      font-size: 12px;
       margin-bottom: 0;
       max-width: fit-content;
     }
     
-    /* Loading/Sign-in Required Screen */
+    /* Loading/Sign-in Required Screen (Same as before) */
     #loading-screen{
         text-align:center;
         padding: 50px;
         box-shadow: var(--shadow);
         background: var(--card);
-        margin-top: 20px;
+        margin-top: 14px;
     }
-    #loading-screen h2 { color:var(--accent); margin-top: 0;}
-
-
-    /* Language + Theme */
-    .right-controls{display:flex;align-items:center;gap:12px}
-
-    /* Inputs / Controls */
-    .controls-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:20px}
     
-    /* table & day off (same as before) */
-    .total-card{
-      background:var(--glass);
-      padding:12px 18px; 
-      border-radius:12px;
-      color:var(--text);
-      font-weight:700;
-      font-size:16px; 
-      border:1px solid var(--table-border);
+    /* Inputs / Controls - Adjusted padding/style to fit original design */
+    .input-group label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-left: 0;
     }
-    .total-card span { color: var(--accent-2); font-size: 18px; } 
+    .input-group {
+        gap: 0;
+    }
+    input[type=date],input[type=time],input[type=text]{
+        min-width: 120px;
+        padding: 8px 10px;
+        border-radius: 8px;
+    }
 
-    .footer{display:flex;justify-content:flex-end;margin-top:20px; display: none;} 
+    /* Buttons/Chips */
+    .btn{
+        padding: 8px 12px;
+        border-radius: 8px;
+        font-weight: 700;
+        font-size: 14px;
+    }
+    .chip{
+        padding: 5px 10px;
+        border-radius: 6px;
+    }
+    .primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#022}
+    .ghost{background:transparent;border:1px solid var(--table-border);color:var(--text)}
 
 
     /* ================================================= */
@@ -280,70 +268,49 @@
 
     @media(max-width:768px){
       body { padding: 10px; }
-      .card { padding: 16px; border-radius: 12px; }
-      h1.title { font-size: 20px; }
+      .card { padding: 12px; border-radius: 10px; }
       
-      /* NEW FIX: Make Header content stack without position issues */
+      /* Header Stack Fix */
       header.app-head {
           flex-direction: column;
           align-items: flex-start;
           gap: 10px;
-          padding-top: 0; /* Remove padding top */
+          padding-top: 50px; /* Push content down to avoid collision */
       }
       
-      /* NEW MOBILE SIGNED STATE LOCATION (Full Width Bar on Top) */
+      /* SIGN OUT BUTTON MOBILE FIX: Positioned on Top of the Header */
       #signedState {
-        /* Remove absolute positioning and let it flow naturally */
-        position: relative; 
-        top: unset;
-        right: unset;
+        position: absolute;
+        top: 0;
+        right: 0;
+        left: 0;
         width: 100%;
         padding: 8px 12px;
         margin-top: 0;
-        margin-bottom: 15px; /* Push content down */
-        border-radius: 8px;
-        box-shadow: none;
-        background: var(--input-bg); /* Use a distinct color */
-        justify-content: space-between; /* Space out the signed-as text and sign-out button */
+        border-radius: 0;
+        border-bottom: 1px solid var(--table-border);
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        flex-direction: row;
+        justify-content: flex-end; /* Push to the right */
+        gap: 10px;
+        z-index: 1000;
+        transform: none; /* Remove desktop transform */
       }
-      /* Ensure title is not pushed down by absolute positioning */
+      /* Hide Title elements when signedState is active to give it space */
       .title-wrap {
-          margin-top: 0; 
+          margin-top: 0;
+          width: 100%;
       }
-      
-      #signedState .signed-as { font-size: 13px; }
-      #signedState .auth-btn.secondary { padding: 3px 6px; font-size: 12px; }
 
-      .controls-top{flex-direction:column; align-items:stretch; gap: 10px;}
+      /* Control Flow Fixes */
+      .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
       .controls-top > div { flex-wrap: wrap !important; justify-content: space-between; }
-      .controls-top > div:last-child { margin-left: 0 !important; }
-      .entry-grid{flex-direction:column;align-items:stretch}
-      
       .input-group { width: 100%; }
-      input[type=date],input[type=time],input[type=text]{width:100%; min-width:unset;}
       
-      .btn,.total-card{width:100%; min-width:unset;}
-      table{min-width:550px}
-      
-      .total-card{ width: 100%; text-align: center; }
-
-      #auth-area {
-        min-height: calc(100vh - 20px);
-        padding: 10px;
-        margin: -10px;
-      }
-    }
-
-    @media print{
-      @page{size:A4 landscape;margin:12mm}
-      body,html{background:#fff;color:#000}
-      .card{background:#fff;box-shadow:none;border:none}
-      .entry-grid,button,[class*="chip"],.auth-area,#loading-screen,.right-controls,#signedState{display:none}
-      .controls-top{ display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-      .controls-top > div:last-child { display: none; }
-      table{min-width:0; margin-top: 0;}
-      thead th,tbody td{border:1px solid #ccc;padding:8px}
-      th{background:#f2f2f2}
+      /* Make inputs look better on mobile */
+      input[type=date],input[type=time],input[type=text]{width:100%;}
+      .entry-grid{flex-direction:column;align-items:stretch}
+      .btn,.total-card{width:100%;}
     }
   </style>
 </head>
@@ -360,7 +327,7 @@
         Continue with Google
       </button>
 
-      </div>
+    </div>
 
       <p class="auth-terms">
         Data is synced to the cloud via your Google Account.
