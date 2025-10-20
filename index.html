@@ -28,12 +28,12 @@
       --dayoff-text: #ffcfcf; /* Light text */
 
       /* NEW: Auth Page specific colors for light mode to match the image */
-      --auth-bg-light: #fefcfb; /* Very light beige/pink */
-      --auth-text-light: #3d3b3c; /* Dark text for auth page */
-      --auth-btn-bg-light: #ffffff; /* White buttons */
-      --auth-btn-border-light: #e0e0e0; /* Light grey border */
-      --auth-btn-text-light: #3d3b3c; /* Dark text for buttons */
-      --auth-link-light: #a45a8e; /* Pinkish-purple for links */
+      --auth-bg-light: #f0f4f8; /* Use main light background for simplicity */
+      --auth-text-light: #3d3b3c;
+      --auth-btn-bg-light: #ffffff;
+      --auth-btn-border-light: #e0e0e0;
+      --auth-btn-text-light: #3d3b3c;
+      --auth-link-light: #2b7de3;
     }
     body.light-mode{
       --bg:#f0f4f8;
@@ -49,8 +49,8 @@
       --table-border:rgba(0,0,0,0.1);
       --input-bg:#f9fbfd;
       /* --- DAY OFF NEW RED STYLE --- */
-      --dayoff-bg: #fff0f0; /* Light red/pink background */
-      --dayoff-border: #e74c3c; /* Red border */
+      --dayoff-bg: #fff0f0;
+      --dayoff-border: #e74c3c;
       --dayoff-text: #cc3333;
     }
     
@@ -79,22 +79,22 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: calc(100vh - 40px); /* Fill most of the viewport height */
-      background: var(--bg); /* Use main background by default */
+      min-height: calc(100vh - 40px);
+      background: var(--bg);
       color: var(--text);
       text-align: center;
       padding: 20px;
-      margin: -20px; /* Offset body padding for full screen effect */
+      margin: -20px;
     }
     body.light-mode #auth-area {
         background: var(--auth-bg-light);
         color: var(--auth-text-light);
     }
     #auth-area .auth-title {
-        font-size: 38px; /* Larger title */
+        font-size: 38px;
         font-weight: 500;
         margin-bottom: 8px;
-        font-family: serif; /* To match the 'Suno' font style */
+        font-family: serif;
         color: inherit;
     }
     #auth-area .auth-subtitle {
@@ -106,24 +106,32 @@
         color: var(--auth-text-light);
         opacity: 0.7;
     }
+    
+    /* Button Wrapper for Centering */
+    .auth-buttons-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
 
     .auth-btn{
       width: 100%;
-      max-width: 320px; /* Slightly wider buttons */
-      padding:16px 28px; /* More padding */
+      max-width: 320px; 
+      padding:16px 28px;
       border-radius:12px; 
       border:1px solid var(--table-border);
       background:var(--card); 
       color:var(--text);
       font-weight:700;
       cursor:pointer;
-      box-shadow:0 2px 5px rgba(0,0,0,0.1); /* Lighter shadow */
+      box-shadow:0 2px 5px rgba(0,0,0,0.1); 
       transition:transform 0.2s, box-shadow 0.2s, background-color 0.3s;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 16px;
-      margin-bottom: 12px; /* Spacing between buttons */
+      margin-bottom: 12px; 
     }
     body.light-mode .auth-btn {
         background: var(--auth-btn-bg-light);
@@ -134,27 +142,20 @@
     .auth-btn:hover{
       transform:translateY(-1px); 
       box-shadow:0 4px 8px rgba(0, 0, 0, 0.15);
-      background: var(--input-bg); /* Slight hover effect */
+      background: var(--input-bg);
     }
     body.light-mode .auth-btn:hover {
         background: #f8f8f8;
     }
 
     .auth-btn img {
-        width: 22px; /* Slightly larger icons */
+        width: 22px; 
         height: 22px;
         margin-right: 15px;
-        object-fit: contain; /* Ensure icons look good */
+        object-fit: contain; 
+        filter: none !important; /* Force no filter on Google logo */
     }
-    .auth-divider {
-        margin: 20px 0;
-        color: var(--muted);
-        font-size: 14px;
-    }
-    body.light-mode .auth-divider {
-        color: var(--auth-text-light);
-        opacity: 0.6;
-    }
+    
     .auth-terms {
         font-size: 12px;
         color: var(--muted);
@@ -162,32 +163,52 @@
         max-width: 320px;
         line-height: 1.5;
     }
-    body.light-mode .auth-terms {
-        color: var(--auth-text-light);
-        opacity: 0.8;
+
+    /* Username Setup Modal Styling */
+    #username-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 2000;
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
     }
-    .auth-terms a {
-        color: var(--accent); /* Default accent for links */
-        text-decoration: none;
-        font-weight: 600;
+    #username-form-card {
+        background: var(--card);
+        padding: 30px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
     }
-    body.light-mode .auth-terms a {
-        color: var(--auth-link-light);
+    #username-form-card h3 {
+        margin-top: 0;
+        color: var(--accent);
     }
-    .auth-terms a:hover {
-        text-decoration: underline;
+    #username-input {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    #save-username-btn {
+        width: 100%;
     }
 
-    /* Signed in display area */
+
+    /* Signed in display area (Fixed Top Right) */
     #signedState {
         display: none;
-        position: fixed; /* Keep it fixed at the top */
+        position: fixed; 
         top: 0;
         right: 0;
         padding: 10px 20px;
         background: var(--card);
         border-bottom-left-radius: 12px;
-        z-index: 1000; /* Ensure it stays above app content */
+        z-index: 1000;
         box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         display: flex;
         flex-direction: column;
@@ -215,7 +236,7 @@
         padding: 50px;
         box-shadow: var(--shadow);
         background: var(--card);
-        margin-top: 20px; /* Re-add margin for regular content */
+        margin-top: 20px;
     }
     #loading-screen h2 { color:var(--accent); margin-top: 0;}
 
@@ -250,8 +271,8 @@
     .entry-grid{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:16px}
     .input-group {
         display: flex;
-        flex-direction: column; /* Label on top */
-        gap: 4px; /* Space between label and input */
+        flex-direction: column;
+        gap: 4px;
     }
     .input-group label {
         color: var(--muted);
@@ -321,7 +342,7 @@
         opacity: 0.9;
     }
     tr.day-off td:first-child::before {
-        content: "🚨 "; /* Using a different emoji to emphasize alert/off */
+        content: "🚨 "; 
         margin-right: 5px;
     }
     tr.day-off td:last-child {
@@ -364,36 +385,35 @@
       .controls-top > div:last-child { margin-left: 0 !important; }
       .entry-grid{flex-direction:column;align-items:stretch}
       
-      /* Make input groups take full width on mobile */
       .input-group { width: 100%; }
       input[type=date],input[type=time],input[type=text]{width:100%; min-width:unset;}
       
       .btn,.total-card{width:100%; min-width:unset;}
       table{min-width:550px}
       
-      /* On mobile, total card gets full width */
       .total-card{ width: 100%; text-align: center; }
 
       #auth-area {
-        min-height: calc(100vh - 20px); /* Adjust for smaller mobile padding */
+        min-height: calc(100vh - 20px);
         padding: 10px;
         margin: -10px;
       }
       #auth-area .auth-title { font-size: 32px; }
       
-      /* Move signout state to be part of the app content on mobile for space */
       #signedState {
-        position: relative;
-        padding: 0;
-        margin-top: 20px;
-        margin-bottom: 20px;
-        box-shadow: none;
-        border: none;
-        background: transparent;
-        align-items: center;
-        width: 100%;
+        position: absolute;
+        padding: 8px 10px;
+        margin-top: 10px;
+        top: 0;
+        right: 10px;
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        flex-direction: row;
+        gap: 10px;
+        border-radius: 8px;
+        background: var(--card);
       }
-      #signedState .signed-as { margin-top: 0; }
+      #signedState .signed-as { margin-top: 0; font-size: 13px; }
+      #signedState .auth-btn.secondary { padding: 4px 8px; font-size: 12px; }
     }
 
     @media print{
@@ -416,19 +436,13 @@
       <h1 class="auth-title">Log into TheVann</h1>
       <p class="auth-subtitle">Or create a free account</p>
 
-      <button id="googleSignIn" class="auth-btn">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo-google.png" alt="Google logo"/> Continue with Google
-      </button>
-
-      <button class="auth-btn">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg" alt="Apple logo"/> Sign up with email
-      </button>
+    <div class="auth-buttons-wrapper">
       
-      <div class="auth-divider">or</div>
-
-      <button class="auth-btn">
-        <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="Phone icon" style="filter: invert(var(--text-filter, 0));"/> Use my phone number
+      <button id="googleSignIn" class="auth-btn">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="Google logo"/> Continue with Google
       </button>
+
+      </div>
 
       <p class="auth-terms">
         By creating an account, you agree to the <a href="#">Terms of Service</a> and acknowledge that you have read and
@@ -437,6 +451,14 @@
 
 </div>
     
+    <div id="username-modal" style="display:none;">
+        <div id="username-form-card" class="card">
+            <h3>Set Your Display Name</h3>
+            <p style="color:var(--muted); font-size: 14px;">This name will be used in the printed reports to identify your data.</p>
+            <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
+            <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
+        </div>
+    </div>
     <div id="loading-screen" class="card" style="display:none;">
         <h2 style="margin-top:0;">⏳ Loading...</h2>
         <p style="color:var(--muted);">Checking authentication status...</p>
@@ -537,7 +559,7 @@
   <script type="module">
   // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
@@ -565,6 +587,11 @@
   const signedText = document.getElementById('signedText');
   const signOutBtn = document.getElementById('signOut');
   
+  // Username Modal DOM
+  const usernameModal = document.getElementById('username-modal');
+  const usernameInputField = document.getElementById('username-input-field');
+  const saveUsernameBtn = document.getElementById('save-username-btn');
+
   // New DOM elements for content hiding
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
@@ -610,7 +637,11 @@
       app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.', 
       edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
       // NEW LABELS
-      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)'
+      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
+      csv_user_label: 'User Name',
+      modal_title: 'Set Your Display Name',
+      modal_subtitle: 'This name will be used in reports.',
+      save_name: 'Save Name'
     },
     my: { 
       // Myanmar Unicode Fixed
@@ -625,13 +656,21 @@
       alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
       edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
       // NEW LABELS
-      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)'
+      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
+      csv_user_label: 'အသုံးပြုသူအမည်',
+      modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
+      modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
+      save_name: 'အမည်သိမ်းမည်'
     },
     th: { 
       app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
       edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
       // NEW LABELS
-      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)'
+      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
+      csv_user_label: 'ชื่อผู้ใช้',
+      modal_title: 'กำหนดชื่อแสดงผล',
+      modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
+      save_name: 'บันทึกชื่อ'
     }
   };
 
@@ -703,11 +742,47 @@
     }
   }
 
+  // USER NAME HANDLING
+  async function handleUsernameSetup(user) {
+    // Check if the user has a display name
+    if (user && !user.displayName) {
+        usernameModal.style.display = 'flex';
+        usernameInputField.value = user.email ? user.email.split('@')[0] : '';
+    } else {
+        usernameModal.style.display = 'none';
+    }
+  }
+  
+  saveUsernameBtn.addEventListener('click', async () => {
+      const newName = usernameInputField.value.trim();
+      if (!newName) {
+          alert('Please enter a name.');
+          return;
+      }
+      if (currentUser) {
+          try {
+              // Update display name in Firebase Auth
+              await updateProfile(currentUser, {
+                  displayName: newName
+              });
+              // Force the app to re-render with the new name
+              currentUser.displayName = newName;
+              usernameModal.style.display = 'none';
+              handleUserSignedIn(currentUser); 
+          } catch (error) {
+              console.error('Error updating profile:', error);
+              alert('Failed to save name: ' + error.message);
+          }
+      }
+  });
+
+
   // UI/STATE CONTROL FUNCTION
   function showLoadingState(){
       authArea.style.display = 'none'; // Hide auth area
       appContent.style.display = 'none'; // Hide main app
       signedState.style.display = 'none'; // Hide signed state
+      usernameModal.style.display = 'none'; // Hide username modal
       loadingScreen.style.display = 'block'; 
       loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
       loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
@@ -717,7 +792,16 @@
   async function handleUserSignedIn(user){
     currentUser = user;
     const uid = user.uid;
-    signedText.textContent = `Signed in: ${user.displayName || user.email}`;
+    
+    // Check if user needs to set up name first
+    if (!user.displayName || user.displayName === '') {
+        // If not set, show the setup modal and stop here
+        await handleUsernameSetup(user);
+        return; 
+    }
+    
+    // If name is set, proceed to app
+    signedText.textContent = `Signed in: ${user.displayName || 'Van Noon'}`;
     signedState.style.display = 'flex'; // Show sign out button and signed text
     authArea.style.display = 'none'; // Hide the full auth screen
     
@@ -748,6 +832,7 @@
   function handleUserSignedOut(){
     currentUser = null;
     signedState.style.display = 'none'; // Hide sign out button and signed text
+    usernameModal.style.display = 'none'; // Hide username modal
     authArea.style.display = 'flex'; // Show the new auth screen
     
     // Hide the main app content
@@ -779,6 +864,9 @@
       handleUserSignedOut(); // Go back to sign-out state if sign-in fails
     }
   });
+  
+  // Email and Phone buttons are removed from HTML, keeping only Google logic
+  
   signOutBtn.addEventListener('click', async ()=>{
     try{
       await signOut(auth);
@@ -939,13 +1027,20 @@
   exportBtn.addEventListener('click', ()=>{
     const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     if(filtered.length===0) return alert('No data to export for this month');
+    
     const t = translations['en']; // Use English headers for CSV compatibility
-    const header=[t.date,t.start,t.end,'Duration','Rounded Hours','Task'];
-    let csv = header.join(',') + '\n';
+    const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
+    const userLabel = translations[currentLang].csv_user_label || 'User Name';
+    
+    const header=['Date','Start','End','Duration','Rounded Hours','Task'];
+    let csv = `${userLabel}:,${userName}\n\n`; // ADD USER NAME TO TOP OF CSV
+    csv += header.join(',') + '\n';
+    
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
     csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
+    
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
 
   printBtn.addEventListener('click', ()=> window.print());
@@ -961,15 +1056,15 @@
     if(t==='light'){ 
       document.body.classList.add('light-mode'); 
       themeToggle.textContent='☀️'; 
-      // Adjust phone icon filter for light mode
-      const phoneIcon = document.querySelector('.auth-btn img[alt="Phone icon"]');
-      if (phoneIcon) { phoneIcon.style.filter = 'invert(0)'; }
+      // Set icon filter for light mode (icons should be dark)
+      document.querySelector('.auth-btn img[alt="Email icon"]').style.filter = 'invert(0)'; 
+      document.querySelector('.auth-btn img[alt="Phone icon"]').style.filter = 'invert(0)'; 
     } else { 
       document.body.classList.remove('light-mode'); 
       themeToggle.textContent='🌙'; 
-      // Adjust phone icon filter for dark mode
-      const phoneIcon = document.querySelector('.auth-btn img[alt="Phone icon"]');
-      if (phoneIcon) { phoneIcon.style.filter = 'invert(1)'; }
+      // Set icon filter for dark mode (icons should be light)
+      document.querySelector('.auth-btn img[alt="Email icon"]').style.filter = 'invert(1)'; 
+      document.querySelector('.auth-btn img[alt="Phone icon"]').style.filter = 'invert(1)'; 
     } 
   }
   themeToggle.addEventListener('click', ()=>{ 
@@ -983,6 +1078,11 @@
     const t = translations[currentLang];
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
+    
+    // Update Username Modal
+    document.querySelector('#username-form-card h3').textContent = t.modal_title;
+    document.querySelector('#username-form-card p').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
     
     // Update Input Labels
     dateLabel.textContent = t.date_label;
