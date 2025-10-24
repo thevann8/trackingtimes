@@ -8,17 +8,31 @@
 
   <style>
     /* ===================================================
-    ORIGINAL DESIGN THEME (STABLE & ORIGINAL STYLE)
+    ORIGINAL DESIGN THEME - REFINED COLORS & NICE STYLE
     ===================================================
     */
     :root{
-      --bg:#071226;--card:#0b1724;--text:#eaf6fb;--muted:#9fb7c6;--accent:#06c2d6;--accent-2:#2dd4bf;--success:#16a34a;--danger:#ef4444;
-      --glass:rgba(255,255,255,0.03);--radius:12px;--shadow:0 12px 30px rgba(3,8,20,0.6);--table-border:rgba(255,255,255,0.04);
+      --bg:#071226; /* Original Dark Blue */
+      --card:#0b1724; /* Original Card Color */
+      --text:#eaf6fb;
+      --muted:#9fb7c6;
+      --accent:#06c2d6; /* Primary Blue Accent */
+      --accent-2:#2dd4bf; /* Secondary Cyan/Green Accent */
+      --success:#16a34a;
+      --danger:#ef4444;
+      --glass:rgba(255,255,255,0.03);
+      --radius:12px;
+      --shadow:0 12px 30px rgba(3,8,20,0.6);
+      --table-border:rgba(255,255,255,0.04);
       --input-bg:rgba(255,255,255,0.04);
-      --dayoff-bg: rgba(239, 68, 68, 0.15); /* VISIBLE RED TONE */
-      --dayoff-border: #ef4444;
+      
+      /* Day Off Red Tone */
+      --dayoff-bg: rgba(239, 68, 68, 0.15); /* Light red background */
+      --dayoff-border: #ef4444; /* Bright red border */
       --dayoff-text: #ffcfcf;
-      --earnings-color: #fbbd0a; /* GOLD FOR EARNINGS */
+      
+      /* NEW EARNINGS COLOR */
+      --earnings-color: #fbbd0a; /* Gold/Yellow for money */
     }
     body.light-mode{
       --bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06);
@@ -29,34 +43,30 @@
     }
     
     /* General Styles */
-    *{box-sizing:border-box; transition: none;}
+    *{box-sizing:border-box; transition: all 0.3s ease-in-out;}
     html,body{height:100%}
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
     .wrap{max-width:980px;margin:0 auto}
     .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
-    
-    /* HEADER & SIGNED STATE FIX (STABLE MOBILE/DESKTOP) */
-    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;}
-    .title-wrap{flex:1;min-width:180px; display: flex; align-items: center; gap: 10px;}
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;} /* Added padding-top for fixed sign-in button */
+    .title-wrap{flex:1;min-width:180px}
     h1.title{margin:0;font-size:18px}
-    .subtitle{color:var(--muted);font-size:12px;margin-top:4px; margin-left: 35px;}
+    .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
 
-    /* AUTH SCREEN (Cleaned up) */
-    #auth-area {display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
-    .auth-area .auth-title {font-size: 24px; margin-bottom: 20px;}
+    /* AUTH AREA (SIMPLIFIED FOR GOOGLE ONLY) */
+    .auth-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
+    .auth-area .auth-title {font-size: 30px; margin-bottom: 20px;}
     .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25); display: flex; align-items: center; max-width: 280px;}
-    .auth-area .auth-terms {font-size: 12px;color: var(--muted);margin-top: 30px;max-width: 320px;line-height: 1.5;}
-
-    /* GOOGLE ICON (BASE64 FIXED) */
-    .google-icon {
+    .auth-btn .google-icon {
         width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy.3...9...l-3.7...3.7c1.1 1.1 2.7 1.1 3.8 0l4.3-4.3c1.1-1.1 2.8-1.1 3.9 0l3.8 3.8c1.1 1.1 2.7 1.1 3.8 0l4.3-4.3c1.1-1.1 2.8-1.1 3.9 0l2.6-2.6c1.1-1.1 1.1-2.7 0-3.8L40.9 22c-1.1-1.1-2.7-1.1-3.8 0L34.3 19.1c-1.1-1.1-2.8-1.1-3.9 0l-3.8 3.8c-1.1 1.1-2.8 1.1-3.9 0l-4.3-4.3c-1.1-1.1-2.7-1.1-3.8 0L22.4 12c-1.1-1.1-2.7-1.1-3.8 0l-3.8 3.8c-1.1 1.1-2.8 1.1-3.9 0l-2.6-2.6c-1.1-1.1-1.1-2.7 0-3.8l3.7-3.7c1.5-3.5 3.9-6.3 6.3-8.7l3.7-3.7c2.5-2.5 5.3-3.8 8.9-3.8h7.2m14.3 26c0 6.2-2.5 10.3-5.3 12.6l-3.7 3.7c-1.6 1.5-3.7 2.6-8.9 5.3h-3.8v-19.5h2.6c4.2 0 7.6 3 9.4 6.5L43 29.6c.5.9.7 1.8.7 2.8m-8.2-3.5c-.6 0-1.2-.1-1.7-.3-1.6-.6-2.5-1.5-2.5-2.5V27c0-1 .9-1.9 2.5-2.5v-.5c0-.6-.3-1.2-.8-1.7L36 23.5c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.2 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V13c0-.7-.4-1.3-.9-1.7l-3.9-3.9c-.5-.5-1.2-.8-1.7-.8H34c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V17c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 24.3c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7.4-1.3.9-1.8l3.9-3.9c.5-.5 1.2-.9 1.7-.9S43.9 23.4 44.4 24.1v-4.8c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V12.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V6.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V1.2c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V4.5c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V34.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V39.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V45.8z');
+        /* Base64 SVG for the standard Google G Logo */
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
     
     /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
     #signedState {
         display: none;
-        position: fixed; /* Use FIXED for stable Mobile/Desktop Top Right */
+        position: absolute; 
         top: 0px; 
         right: 0px;
         padding: 8px 12px;
@@ -70,12 +80,17 @@
     }
     .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
     .auth-btn.secondary{
-      background:var(--danger); /* Red Button */
+      /* FIXED: Sign out button to RED design */
+      background: var(--danger); 
       color: #fff; 
-      border:1px solid var(--danger); 
+      border: 1px solid var(--danger); 
       padding: 4px 8px; 
       font-size: 12px;
       margin-bottom: 0;
+    }
+    .auth-btn.secondary:hover {
+        background: #cc3333;
+        border-color: #cc3333;
     }
 
     /* language + theme */
@@ -176,7 +191,7 @@
       .input-group { width: 100%; }
       table{min-width:600px}
       
-      /* MOBILE HEADER FIX: Fixed position for signedState */
+      /* MOBILE HEADER FIX */
       header.app-head { padding-top: 50px; }
       #signedState {
         position: fixed; 
@@ -246,9 +261,9 @@
             <button id="signOut" class="auth-btn secondary"></button>
         </div>
         <div class="title-wrap">
-          <div class="app-icon"></div> 
           <h1 class="title" id="app-title">TheVann Track Duration</h1>
-          </div>
+          <div class="subtitle" id="app-sub">Auto rounding, monthly view, multi-language</div>
+        </div>
 
         <div class="right-controls">
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
@@ -335,7 +350,7 @@
   <script type="module">
   // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
@@ -366,9 +381,11 @@
   const signedText = document.getElementById('signedText');
   const signOutBtn = document.getElementById('signOut');
   
-  // Username Modal DOM is REMOVED for simplicity
+  // Username Modal DOM
   const usernameModal = document.getElementById('username-modal');
-  
+  const usernameInputField = document.getElementById('username-input-field');
+  const saveUsernameBtn = document.getElementById('save-username-btn');
+
   // New DOM elements for content hiding
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
@@ -410,14 +427,19 @@
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
-  // translations (FINAL VERSION)
+  // translations (Myanmar Unicode fixed & Earnings Label fixed)
   const translations = {
     en: { 
       app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', 
       edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
+      // NEW LABELS
       date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
       csv_user_label: 'User Name',
+      modal_title: 'Set Your Display Name',
+      modal_subtitle: 'This name will be used in reports.',
+      save_name: 'Save Name',
       sign_out_btn: 'Sign out',
+      // NEW: Earnings
       earnings_label: 'Total Earnings',
       currency: '฿'
     },
@@ -434,7 +456,11 @@
       edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
       date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
       csv_user_label: 'အသုံးပြုသူအမည်',
+      modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
+      modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
+      save_name: 'အမည်သိမ်းမည်',
       sign_out_btn: 'ထွက်မည်',
+      // NEW: Earnings
       earnings_label: 'ရရှိမည့်ငွေ',
       currency: 'ကျပ်' 
     },
@@ -443,7 +469,11 @@
       edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
       date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
       csv_user_label: 'ชื่อผู้ใช้',
+      modal_title: 'กำหนดชื่อแสดงผล',
+      modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
+      save_name: 'บันทึกชื่อ',
       sign_out_btn: 'ออกจากระบบ',
+      // NEW: Earnings
       earnings_label: 'รายได้รวม',
       currency: '฿'
     }
@@ -479,6 +509,7 @@
     
     return +(H).toFixed(2);
   }
+  // *********************************************************
 
   // local storage
   function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
@@ -490,6 +521,7 @@
     try{
       const d = doc(db, 'users', uid);
       await setDoc(d, { entries }, { merge: true });
+      // console.log('Saved to Firestore');
     }catch(err){
       console.error('saveToFirestore error:', err);
     }
@@ -515,13 +547,50 @@
     }
   }
 
-  // NOTE: Username setup logic is REMOVED for simplicity/stability. Google display name is used.
+  // USER NAME HANDLING
+  async function handleUsernameSetup(user) {
+    // Show username modal
+    usernameModal.style.display = 'flex';
+    // Use part of email as initial name if display name is totally empty
+    usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
+    
+    // Update modal texts (since render is not called)
+    const t = translations[currentLang];
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+  }
   
+  saveUsernameBtn.addEventListener('click', async () => {
+      const newName = usernameInputField.value.trim();
+      if (!newName) {
+          alert('Please enter a name.');
+          return;
+      }
+      if (currentUser) {
+          try {
+              // Update display name in Firebase Auth
+              await updateProfile(currentUser, {
+                  displayName: newName
+              });
+              // Force the app to re-render with the new name
+              currentUser.displayName = newName;
+              usernameModal.style.display = 'none';
+              handleUserSignedIn(currentUser); 
+          } catch (error) {
+              console.error('Error updating profile:', error);
+              alert('Failed to save name: ' + error.message);
+          }
+      }
+  });
+
+
   // UI/STATE CONTROL FUNCTION
   function showLoadingState(){
-      authArea.style.display = 'none'; 
-      appContent.style.display = 'none'; 
-      signedState.style.display = 'none'; 
+      authArea.style.display = 'none'; // Hide auth area
+      appContent.style.display = 'none'; // Hide main app
+      signedState.style.display = 'none'; // Hide signed state
+      usernameModal.style.display = 'none'; // Hide username modal
       loadingScreen.style.display = 'block'; 
       loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
       loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
@@ -532,23 +601,29 @@
     currentUser = user;
     const uid = user.uid;
     
-    // Use Google Name or default to email prefix
-    const userName = user.displayName || (user.email ? user.email.split('@')[0] : 'User');
-    signedText.textContent = `Signed in: ${userName}`;
+    // *** CHECK FOR DISPLAY NAME FIRST ***
+    if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
+        await handleUsernameSetup(user);
+        return; 
+    }
     
-    signedState.style.display = 'flex'; 
-    authArea.style.display = 'none'; 
+    // If name is set, proceed to app
+    signedText.textContent = `Signed in: ${user.displayName}`;
+    signedState.style.display = 'flex'; // Show sign out button and signed text
+    authArea.style.display = 'none'; // Hide the full auth screen
+    
+    // Show the main app content
     appContent.style.display = 'block';
     loadingScreen.style.display = 'none';
 
-    // Load cloud data
+    // try load from cloud
     const cloud = await loadFromFirestore(uid);
     if(cloud === null){
       console.warn('Could not read from Firestore — using local data');
       loadLocal();
     } else if(Array.isArray(cloud) && cloud.length>0){
       entries = cloud;
-      saveLocal(); 
+      saveLocal(); // update local
     } else {
       loadLocal();
       if(Array.isArray(entries) && entries.length>0){
@@ -560,11 +635,13 @@
 
   function handleUserSignedOut(){
     currentUser = null;
-    signedState.style.display = 'none'; 
-    authArea.style.display = 'flex'; 
+    signedState.style.display = 'none'; // Hide sign out button and signed text
+    usernameModal.style.display = 'none'; // Hide username modal
+    authArea.style.display = 'flex'; // Show the new auth screen
     
+    // Hide the main app content
     appContent.style.display = 'none';
-    loadingScreen.style.display = 'none'; 
+    loadingScreen.style.display = 'none'; // Ensure loading screen is hidden
 
     // *** THE FIX: Clear only the user's data from local storage on sign-out ***
     localStorage.removeItem(STORAGE); 
@@ -651,11 +728,12 @@
     // FIXED: Ensure month name displays correctly using the appropriate locale format
     const localeCode = {
         en: 'en-US',
-        my: 'my-MM', 
+        my: 'my-MM', // Attempt Myanmar locale code
         th: 'th-TH'
-    }[currentLang] || 'en-US';
+    }[currentLang];
     
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
+    // *****************************************
     
     applyLanguageTexts();
   }
@@ -816,6 +894,11 @@
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
     
+    // Update Username Modal
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+    
     // Update Sign out button
     signOutBtn.textContent = t.sign_out_btn;
     
@@ -844,6 +927,15 @@
     if (!startEl.value || !endEl.value) {
         previewEl.textContent = t.duration_default;
     }
+    
+    // FIXED: Month Label Update Logic
+    const localeCode = {
+        en: 'en-US',
+        my: 'my-MM', 
+        th: 'th-TH'
+    }[currentLang] || 'en-US';
+
+    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     
     // total label for header
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
