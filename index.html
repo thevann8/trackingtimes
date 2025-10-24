@@ -48,7 +48,7 @@
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
     .wrap{max-width:980px;margin:0 auto}
     .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
-    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;}
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;} /* Added padding-top for fixed sign-in button */
     .title-wrap{flex:1;min-width:180px}
     h1.title{margin:0;font-size:18px}
     .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
@@ -60,7 +60,7 @@
     .auth-btn .google-icon {
         width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
         /* Base64 SVG for the standard Google G Logo */
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43L.N2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy.3...9...l-3.7...3.7c1.5-3.5 3.9-6.3 6.3-8.7l3.7-3.7c2.5-2.5 5.3-3.8 8.9-3.8h7.2m14.3 26c0 6.2-2.5 10.3-5.3 12.6l-3.7 3.7c-1.6 1.5-3.7 2.6-8.9 5.3h-3.8v-19.5h2.6c4.2 0 7.6 3 9.4 6.5L43 29.6c.5.9.7 1.8.7 2.8m-8.2-3.5c-.6 0-1.2-.1-1.7-.3-1.6-.6-2.5-1.5-2.5-2.5V27c0-1 .9-1.9 2.5-2.5v-.5c0-.6-.3-1.2-.8-1.7L36 23.5c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.2 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V13c0-.7-.4-1.3-.9-1.7l-3.9-3.9c-.5-.5-1.2-.8-1.7-.8H34c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V17c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 24.3c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7-.4-1.3-.9-1.8l-4.8-4.8c-.5-.5-1.2-.8-1.7-.8h-5.6c-.6 0-1.1.3-1.7.8l-3.7 3.7c-.5.5-.8 1.2-.8 1.7V27c0 1 .9 1.9 2.5 2.5v-.5c0-.6-.3-1.2-.8-1.7L36 34.2c-.5.5-.8 1.1-.8 1.7v1.2c0 .5.1 1.1.7 1.6l5.4 5.4c1.5 1.5 2.2 3.3 2.2 5.8s1.2 4.3 2.8 6.5l1.7 1.7c.9.9 2.3 1.3 3.8 1.3V19c0-.7.4-1.3.9-1.8l3.9-3.9c.5-.5 1.2-.9 1.7-.9S43.9 23.4 44.4 24.1v-4.8c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V12.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V6.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V1.2c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V4.5c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V18.3c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V24c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V29.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V34.6c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V39.9c-.1-.1-.2-.2-.4-.3-.2-.1-.3-.2-.5-.2V45.8z');
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
     
     /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
@@ -80,12 +80,17 @@
     }
     .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
     .auth-btn.secondary{
-      background:var(--input-bg); 
-      color:var(--text); 
-      border:1px solid var(--table-border);
+      /* FIXED: Sign out button to RED design */
+      background: var(--danger); 
+      color: #fff; 
+      border: 1px solid var(--danger); 
       padding: 4px 8px; 
       font-size: 12px;
       margin-bottom: 0;
+    }
+    .auth-btn.secondary:hover {
+        background: #cc3333;
+        border-color: #cc3333;
     }
 
     /* language + theme */
@@ -167,8 +172,8 @@
     
     /* Earnings Position Fix */
     .controls-top .earnings-wrapper {
-        order: 3; /* Push to the end of the top row (after total) on desktop */
-        margin-left: 10px;
+        order: 3; 
+        margin-left: 8px;
     }
 
 
@@ -178,18 +183,18 @@
       .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
       .controls-top > div { flex-wrap: nowrap !important; }
       
-      .total-card { order: 1; margin-bottom: 5px; } /* Place Total first on mobile */
-      .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;} /* Place Earnings second */
-      .controls-top div:last-child { order: 3; margin-left: 0 !important; } /* Place Export/Print last */
+      .total-card { order: 1; margin-bottom: 5px; } 
+      .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;} 
+      .controls-top div:last-child { order: 3; margin-left: 0 !important; }
 
       input[type=date],input[type=time],input[type=text],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
       .input-group { width: 100%; }
       table{min-width:600px}
       
-      /* MOBILE HEADER FIX: Fixed position for signedState */
+      /* MOBILE HEADER FIX */
       header.app-head { padding-top: 50px; }
       #signedState {
-        position: fixed; /* Use fixed on mobile to prevent scrolling issues */
+        position: fixed; 
         top: 0;
         left: 0;
         width: 100%;
@@ -223,8 +228,8 @@
         <div class="google-icon"></div> 
         Continue with Google
       </button>
-      
-    </div>
+
+      </div>
 
       <p class="auth-terms">
         Data is synced to the cloud via your Google Account.
@@ -263,7 +268,7 @@
         <div class="right-controls">
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
             <button data-lang="en">🇺🇸 EN</button>
-            <button data-lang="my">🇲🇲 ျမန္မာ</button>
+            <button data-lang="my">🇲🇲 မြန်မာ</button>
             <button data-lang="th">🇹🇭 ไทย</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
@@ -369,7 +374,6 @@
 
   // --- CONSTANTS ---
   const HOURLY_RATE = 40.00; // 40 Baht per hour
-  const CURRENCY_SYMBOL = '฿';
   
   // --- DOM ---
   const googleSignInBtn = document.getElementById('googleSignIn');
@@ -423,10 +427,10 @@
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
-  // translations (Myanmar Unicode fixed)
+  // translations (Myanmar Unicode fixed & Earnings Label fixed)
   const translations = {
     en: { 
-      app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours:', alert_fill:'Please fill Date, Start and End.', 
+      app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', 
       edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
       // NEW LABELS
       date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
@@ -440,7 +444,6 @@
       currency: '฿'
     },
     my: { 
-      // Myanmar Unicode Fixed
       app_title:'Thevann အချိန်မှတ်တမ်း', 
       sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
       add_entry:'မှတ်တမ်းထည့်မည်', 
@@ -448,10 +451,9 @@
       export_csv:'CSV ထုတ်ယူမည်', 
       print:'ပုံနှိပ်', 
       duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
-      total_label:'စုစုပေါင်း ပတ်လည်နာရီ:', 
+      total_label:'စုစုပေါင်း ပတ်လည်နာရီ', 
       alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
       edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
-      // NEW LABELS
       date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
       csv_user_label: 'အသုံးပြုသူအမည်',
       modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
@@ -460,12 +462,11 @@
       sign_out_btn: 'ထွက်မည်',
       // NEW: Earnings
       earnings_label: 'ရရှိမည့်ငွေ',
-      currency: '฿'
+      currency: 'ကျပ်' 
     },
     th: { 
-      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ:', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
+      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
       edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
-      // NEW LABELS
       date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
       csv_user_label: 'ชื่อผู้ใช้',
       modal_title: 'กำหนดชื่อแสดงผล',
@@ -721,12 +722,19 @@
     totalEl.textContent = total.toFixed(2);
     
     // *** NEW: Calculate and Display Earnings ***
-    const totalEarnings = (total * HOURLY_RATE).toFixed(2);
+    const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
     earningsAmount.textContent = `${totalEarnings} ${t.currency}`;
-    earningsDisplay.querySelector('div').textContent = `${t.earnings_label}: `;
+    
+    // FIXED: Ensure month name displays correctly using the appropriate locale format
+    const localeCode = {
+        en: 'en-US',
+        my: 'my-MM', // Attempt Myanmar locale code
+        th: 'th-TH'
+    }[currentLang];
+    
+    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     // *****************************************
     
-    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang==='my'?'en-US':currentLang, { month: 'long', year: 'numeric' });
     applyLanguageTexts();
   }
 
@@ -840,14 +848,15 @@
     const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
     const userLabel = translations[currentLang].csv_user_label || 'User Name';
     const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
+    const currency = translations[currentLang].currency || '฿';
     
     const header=['Date','Start','End','Duration','Rounded Hours','Task'];
-    let csv = `${userLabel}:,${userName}\n\n`; 
+    let csv = `${userLabel}:,${userName}\n\n`; // ADD USER NAME TO TOP OF CSV
     csv += header.join(',') + '\n';
     
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
     csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
-    csv += `${translations[currentLang].earnings_label},,, ,${totalEarnings} ${t.currency}\n`; // ADD EARNINGS TO CSV
+    csv += `${translations[currentLang].earnings_label},,, ,${totalEarnings} ${currency}\n`;
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
@@ -880,6 +889,8 @@
   // language
   function applyLanguageTexts(){
     const t = translations[currentLang];
+    const currency = t.currency || '฿';
+    
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
     
@@ -917,12 +928,21 @@
         previewEl.textContent = t.duration_default;
     }
     
+    // FIXED: Month Label Update Logic
+    const localeCode = {
+        en: 'en-US',
+        my: 'my-MM', 
+        th: 'th-TH'
+    }[currentLang] || 'en-US';
+
+    monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
+    
     // total label for header
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
     
     // Earnings label update
-    const currentEarnings = earningsAmount.textContent.replace(/[^\d.]/g, '');
-    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${currentEarnings} ${t.currency}</span>`;
+    const currentEarnings = parseFloat(earningsAmount.textContent.replace(/[^\d.]/g, '')) || 0;
+    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${currentEarnings.toFixed(2)} ${currency}</span>`;
   }
   langButtons.addEventListener('click', (ev)=>{ 
     const b=ev.target; 
