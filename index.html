@@ -3,28 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
-  <title>TheVann Track Duration — v8 (Admin/User System)</title>
+  <title>TheVann Track Duration — v8 (Google sign-in)</title>
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
-
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
   <style>
     /* ===================================================
-    ORIGINAL DESIGN THEME (STABLE & ORIGINAL STYLE)
+    ORIGINAL DESIGN THEME - REFINED COLORS & NICE STYLE
     ===================================================
     */
     :root{
-      --bg:#071226;--card:#0b1724;--text:#eaf6fb;--muted:#9fb7c6;--accent:#06c2d6;--accent-2:#2dd4bf;--success:#16a34a;--danger:#ef4444;
-      --glass:rgba(255,255,255,0.03);--radius:12px;--shadow:0 12px 30px rgba(3,8,20,0.6);--table-border:rgba(255,255,255,0.04);
+      --bg:#071226; /* Original Dark Blue */
+      --card:#0b1724; /* Original Card Color */
+      --text:#eaf6fb;
+      --muted:#9fb7c6;
+      --accent:#06c2d6; /* Primary Blue Accent */
+      --accent-2:#2dd4bf; /* Secondary Cyan/Green Accent */
+      --success:#16a34a;
+      --danger:#ef4444;
+      --glass:rgba(255,255,255,0.03);
+      --radius:12px;
+      --shadow:0 12px 30px rgba(3,8,20,0.6);
+      --table-border:rgba(255,255,255,0.04);
       --input-bg:rgba(255,255,255,0.04);
       
-      --dayoff-bg: rgba(239, 68, 68, 0.15); 
-      --dayoff-border: #ef4444;
+      /* Day Off Red Tone */
+      --dayoff-bg: rgba(239, 68, 68, 0.15); /* Light red background */
+      --dayoff-border: #ef4444; /* Bright red border */
       --dayoff-text: #ffcfcf;
       
-      --earnings-color: #fbbd0a; 
+      /* NEW EARNINGS COLOR */
+      --earnings-color: #fbbd0a; /* Gold/Yellow for money */
     }
     body.light-mode{
       --bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06);
@@ -40,28 +48,25 @@
     body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Roboto,Arial;padding:14px}
     .wrap{max-width:980px;margin:0 auto}
     .card{background:linear-gradient(180deg,var(--card),rgba(255,255,255,0.02));padding:16px;border-radius:14px;box-shadow:var(--shadow);border:1px solid var(--glass)}
-    
-    /* HEADER & SIGNED STATE FIX (STABLE MOBILE/DESKTOP) */
-    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;} 
-    .title-wrap{flex:1;min-width:180px; display: flex; align-items: center; gap: 10px;}
+    header.app-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px; position: relative; padding-top: 50px;} /* Added padding-top for fixed sign-in button */
+    .title-wrap{flex:1;min-width:180px}
     h1.title{margin:0;font-size:18px}
-    .subtitle{color:var(--muted);font-size:12px;margin-top:4px; margin-left: 35px;}
+    .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
 
-    /* AUTH SCREEN (SIMPLIFIED) */
-    #auth-area {display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
+    /* AUTH AREA (SIMPLIFIED FOR GOOGLE ONLY) */
+    .auth-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
     .auth-area .auth-title {font-size: 30px; margin-bottom: 20px;}
     .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25); display: flex; align-items: center; max-width: 280px;}
-    
-    /* GOOGLE ICON FIX (Base64) */
-    .google-icon {
+    .auth-btn .google-icon {
         width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhhLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtMy44IDMuOGMtMS4xIDEuMS0yLjggMS4xLTMuOSAwbC0yLjYtMi42Yy0xLjEtMS4xLTEuMS0yLjcgMC0zLjhsMy43LTMuN2MtMS42LTEuNS0zLjctMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
+        /* Base64 SVG for the standard Google G Logo */
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
     
-    /* SIGNED STATE */
+    /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
     #signedState {
         display: none;
-        position: fixed; 
+        position: absolute; 
         top: 0px; 
         right: 0px;
         padding: 8px 12px;
@@ -75,12 +80,17 @@
     }
     .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
     .auth-btn.secondary{
-      background:var(--danger); 
+      /* FIXED: Sign out button to RED design */
+      background: var(--danger); 
       color: #fff; 
       border: 1px solid var(--danger); 
       padding: 4px 8px; 
       font-size: 12px;
       margin-bottom: 0;
+    }
+    .auth-btn.secondary:hover {
+        background: #cc3333;
+        border-color: #cc3333;
     }
 
     /* language + theme */
@@ -91,10 +101,20 @@
 
     /* inputs / controls */
     .controls-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
-    .entry-grid{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
-    .input-group label {color: var(--muted);font-size: 12px;font-weight: 600;text-transform: uppercase;margin-left: 0;}
-    .input-group {display: flex;flex-direction: column;gap: 0;}
-    input[type=date],input[type=time],input[type=text],input[type=number]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
+    .entry-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .input-group label {
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        margin-left: 0;
+    }
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+    }
+    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
     .preview{color:var(--muted);font-size:13px}
 
     .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
@@ -109,43 +129,91 @@
     tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
     
     /* DAY OFF Style */
-    tr.day-off {background: var(--dayoff-bg) !important; color: var(--dayoff-text) !important;font-weight: 600; border: 1px solid var(--dayoff-border) !important;}
-    tr.day-off td {font-style: italic; border-bottom: 1px solid var(--dayoff-border) !important;padding: 10px 12px;}
-    tr.day-off td:first-child::before {content: "🚨 "; margin-right: 5px;}
+    tr.day-off {
+        background: var(--dayoff-bg) !important; 
+        color: var(--dayoff-text) !important;
+        font-weight: 600; 
+        border: 1px solid var(--dayoff-border) !important; 
+    }
+    tr.day-off td {
+        font-style: italic;
+        border-bottom: 1px solid var(--dayoff-border) !important;
+        padding: 10px 12px;
+    }
+    tr.day-off td:first-child::before {
+        content: "🚨 "; 
+        margin-right: 5px;
+    }
 
     .actions{display:flex;gap:8px}
     .chip{padding:6px 10px;border-radius:8px;font-weight:600;cursor:pointer}
     .chip.edit{background:var(--success);color:#fff}
     .chip.del{background:var(--danger);color:#fff}
 
-    .footer{display:flex;justify-content:flex-end;margin-top:12px; display: none;} 
+    .footer{display:flex;justify-content:flex-end;margin-top:12px; display: none;} /* HIDDEN */
     .total-card{background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700; font-size: 15px;}
     .total-card span { color: var(--accent); font-size: 16px;}
     
     /* NEW: Earnings Display */
-    #earnings-display {background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700;font-size:15px;border:1px solid var(--table-border);}
-    #earnings-display span {color: var(--earnings-color);font-size: 16px;font-weight: 800;}
-    .controls-top .earnings-wrapper {order: 3; margin-left: 8px;}
+    #earnings-display {
+        background: var(--input-bg);
+        padding: 10px 15px;
+        border-radius: 8px;
+        color: var(--text);
+        font-weight: 700;
+        font-size: 15px;
+        border: 1px solid var(--table-border);
+    }
+    #earnings-display span {
+        color: var(--earnings-color);
+        font-size: 16px;
+        font-weight: 800;
+    }
     
-    /* ADMIN VIEW SPECIFIC STYLES */
-    #admin-dashboard-view {display: none; }
-    #admin-dashboard-view table { min-width: 900px; }
-    #admin-dashboard-view h2 { color: var(--accent); margin-top: 0; }
-    #admin-totals-table th, #admin-totals-table td { text-align: left; padding: 10px; border-bottom: 1px solid var(--table-border);}
-    #admin-pass-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.8); z-index: 3000; display: none; justify-content: center; align-items: center;}
-    #admin-pass-form-card { background: var(--card); padding: 30px; border-radius: var(--radius); width: 90%; max-width: 350px; text-align: center; }
+    /* Earnings Position Fix */
+    .controls-top .earnings-wrapper {
+        order: 3; 
+        margin-left: 8px;
+    }
 
-    /* MOBILE FIXES */
+
+    /* GENERAL MOBILE FIXES */
     @media(max-width:640px){
-      header.app-head { padding-top: 50px; }
-      #signedState {position: fixed; top: 0; left: 0; width: 100%; border-radius: 0; border-bottom: 1px solid var(--table-border); box-shadow: 0 1px 5px rgba(0,0,0,0.2); justify-content: flex-end; }
+      .entry-grid{flex-direction:column;align-items:stretch}
       .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
+      .controls-top > div { flex-wrap: nowrap !important; }
+      
       .total-card { order: 1; margin-bottom: 5px; } 
       .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;} 
       .controls-top div:last-child { order: 3; margin-left: 0 !important; }
-      input[type=date],input[type=time],input[type=text],input[type=number],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
+
+      input[type=date],input[type=time],input[type=text],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
+      .input-group { width: 100%; }
+      table{min-width:600px}
+      
+      /* MOBILE HEADER FIX */
+      header.app-head { padding-top: 50px; }
+      #signedState {
+        position: fixed; 
+        top: 0;
+        left: 0;
+        width: 100%;
+        border-radius: 0;
+        border-bottom: 1px solid var(--table-border);
+        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
+        justify-content: flex-end; 
+      }
     }
 
+    @media print{
+      @page{size:A4 landscape;margin:12mm}
+      body,html{background:#fff;color:#000}
+      .card{background:#fff;box-shadow:none;border:none}
+      .controls-top,.entry-grid,button,[class*="chip"],#auth-area,#loading-screen,.right-controls,#signedState{display:none}
+      table{min-width:0}
+      thead th,tbody td{border:1px solid #ccc;padding:8px}
+      th{background:#f2f2f2}
+    }
   </style>
 </head>
 <body>
@@ -161,7 +229,7 @@
         Continue with Google
       </button>
 
-    </div>
+      </div>
 
       <p class="auth-terms">
         Data is synced to the cloud via your Google Account.
@@ -176,14 +244,6 @@
             <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in reports.</p>
             <input id="username-input-field" type="text" placeholder="Your Name or Alias" required style="width: 100%; margin-bottom: 15px;" />
             <button id="save-username-btn" class="primary btn" style="width: 100%;">Save Name</button>
-        </div>
-    </div>
-    <div id="admin-pass-modal" style="display:none;">
-        <div id="admin-pass-form-card" class="card">
-            <h3>Admin Access Required</h3>
-            <p style="color:var(--danger); font-size: 14px;">Enter the Admin Password to view User Tracking Data.</p>
-            <input id="admin-password-field" type="password" placeholder="Password" required />
-            <button id="confirm-admin-pass" class="primary btn" style="margin-top: 15px; width: 100%;">Confirm</button>
         </div>
     </div>
     <div id="loading-screen" class="card" style="display:none;">
@@ -206,10 +266,9 @@
         </div>
 
         <div class="right-controls">
-          <button id="admin-menu-btn" class="ghost btn" style="display:none;">Admin Dashboard</button>
           <div class="lang-select" id="lang-buttons" role="tablist" aria-label="Language selector">
             <button data-lang="en">🇺🇸 EN</button>
-            <button data-lang="my">🇲🇲 ျမန္မာ</button>
+            <button data-lang="my">🇲🇲 မြန်မာ</button>
             <button data-lang="th">🇹🇭 ไทย</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
@@ -229,9 +288,8 @@
         <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
         
         <div class="earnings-wrapper">
-            <div id="earnings-display"><span id="earnings-label-text">ရရှိမည့်ငွေ</span>: <span id="earnings-amount">0.00 ฿</span></div>
+            <div id="earnings-display">ရရှိမည့်ငွေ: <span id="earnings-amount">0.00 ฿</span></div>
         </div>
-        
         <div style="margin-left:auto;display:flex;gap:8px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
@@ -252,11 +310,6 @@
         <div class="input-group">
             <label id="end-label" for="end-input">OUT</label>
             <input id="end-input" type="time" />
-        </div>
-        
-        <div class="input-group">
-            <label id="loan-label" for="loan-input">ADVANCE / LOAN (฿)</label>
-            <input id="loan-input" type="number" placeholder="0" value="0" min="0" />
         </div>
         
         <div class="input-group" style="flex-grow: 1;">
@@ -287,39 +340,21 @@
           <tbody id="entries-body"></tbody>
         </table>
       </div>
+      
+      <div class="footer" style="display:none;">
+        <div class="total-card">Total Rounded Hours: <span id="total-footer">0.00</span></div>
+      </div>
     </div>
-    
-    <div class="card" id="admin-dashboard-view" style="display:none;">
-        <h2>Admin Dashboard - All Users' Total Hours</h2>
-        <div class="table-wrap">
-            <table id="admin-totals-table">
-                <thead>
-                    <tr>
-                        <th>User Name (ID)</th>
-                        <th>Total Hours</th>
-                        <th>Advance/Loan (฿)</th>
-                        <th>Net Earnings (฿)</th>
-                    </tr>
-                </thead>
-                <tbody id="admin-totals-body">
-                    <tr><td colspan="4" style="text-align:center;">Loading user data...</td></tr>
-                </tbody>
-            </table>
-        </div>
-        <button id="back-to-user-btn" class="ghost btn" style="margin-top: 15px;">⬅️ Back to My Tracker</button>
-    </div>
-    </div>
+  </div>
 
-  <script>
-  // =========================================================================
-  // WARNING: Using the old Firebase CDN for stability on mobile browsers
-  // =========================================================================
+  <script type="module">
+  // --- Firebase imports (modular) ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
-  // --- CONFIGURATION CONSTANTS (FIXED) ---
-  const ADMIN_EMAIL = 'vnoon698@gmail.com'; 
-  const ADMIN_PASSWORD = '@Vannoon8800'; 
-  const HOURLY_RATE = 40.00; // 40 Baht per hour
-  
+  // --- Your confirmed Firebase config ---
   const firebaseConfig = {
     apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
     authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
@@ -327,46 +362,38 @@
     storageBucket: "thevanntrackduration-81ee0.firebasestorage.app",
     messagingSenderId: "56786707859",
     appId: "1:56786707859:web:75be757ceb95604984f466",
-    // measurementId is removed as Analytics is not used in this stable setup
+    measurementId: "G-QNG2F09LWL"
   };
 
-  // Initialize Firebase using the old namespace (firebase.)
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const provider = new firebase.auth.GoogleAuthProvider();
-  const db = firebase.firestore();
+  // init firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics?.(app);
+  const auth = getAuth(app);
+  const provider = new GoogleAuthProvider();
+  const db = getFirestore(app);
 
   // --- CONSTANTS ---
-  const USER_DATA_COLLECTION = 'users_data'; 
-  const ENTRIES_COLLECTION = 'user_entries'; 
-
+  const HOURLY_RATE = 40.00; // 40 Baht per hour
+  
   // --- DOM ---
   const googleSignInBtn = document.getElementById('googleSignIn');
   const signedState = document.getElementById('signedState');
   const signedText = document.getElementById('signedText');
   const signOutBtn = document.getElementById('signOut');
-  const adminMenuBtn = document.getElementById('admin-menu-btn');
   
-  // Modals/Views
+  // Username Modal DOM
   const usernameModal = document.getElementById('username-modal');
   const usernameInputField = document.getElementById('username-input-field');
   const saveUsernameBtn = document.getElementById('save-username-btn');
-  const adminPassModal = document.getElementById('admin-pass-modal');
-  const adminPasswordField = document.getElementById('admin-password-field');
-  const confirmAdminPass = document.getElementById('confirm-admin-pass');
-  const adminDashboardView = document.getElementById('admin-dashboard-view');
-  const backToUserBtn = document.getElementById('back-to-user-btn');
-  const adminTotalsBody = document.getElementById('admin-totals-body');
 
-
+  // New DOM elements for content hiding
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
-  const authArea = document.getElementById('auth-area'); 
+  const authArea = document.getElementById('auth-area'); // Reference to the main auth area
 
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
   const endEl = document.getElementById('end-input');
-  const loanEl = document.getElementById('loan-input'); // NEW LOAN INPUT
   const taskEl = document.getElementById('task-input');
   const previewEl = document.getElementById('preview');
   const addBtn = document.getElementById('add-btn');
@@ -378,15 +405,20 @@
   const earningsDisplay = document.getElementById('earnings-display');
   const earningsAmount = document.getElementById('earnings-amount');
   
+  const exportBtn = document.getElementById('export-csv');
+  const printBtn = document.getElementById('print-btn');
+  const prevMonthBtn = document.getElementById('prev-month');
+  const nextMonthBtn = document.getElementById('next-month');
+  const todayMonthBtn = document.getElementById('today-month');
   const monthLabel = document.getElementById('month-label');
   const langButtons = document.getElementById('lang-buttons');
-  const themeToggle = document.getElementById('theme-toggle'); // Keep theme toggle DOM
+  const themeToggle = document.getElementById('theme-toggle');
 
+  // Input Labels for dynamic translation
   const dateLabel = document.getElementById('date-label');
   const startLabel = document.getElementById('start-label');
   const endLabel = document.getElementById('end-label');
   const taskLabel = document.getElementById('task-label');
-  const loanLabel = document.getElementById('loan-label');
 
 
   // keys
@@ -395,23 +427,21 @@
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
 
-  // translations (FINAL VERSION)
+  // translations (Myanmar Unicode fixed & Earnings Label fixed)
   const translations = {
     en: { 
       app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', 
       edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
-      date_label: 'Date', in_label: 'IN', out_label: 'OUT', loan_label: 'ADVANCE / LOAN (฿)', task_placeholder: 'Task / notes (optional)',
+      // NEW LABELS
+      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
       csv_user_label: 'User Name',
       modal_title: 'Set Your Display Name',
       modal_subtitle: 'This name will be used in reports.',
       save_name: 'Save Name',
       sign_out_btn: 'Sign out',
-      earnings_label: 'Net Earnings',
-      currency: '฿',
-      admin_dashboard: 'Admin Dashboard',
-      back_to_user: '⬅️ Back to My Tracker',
-      admin_access_title: 'Admin Access Required',
-      admin_access_prompt: 'Enter the Admin Password to view User Tracking Data.'
+      // NEW: Earnings
+      earnings_label: 'Total Earnings',
+      currency: '฿'
     },
     my: { 
       app_title:'Thevann အချိန်မှတ်တမ်း', 
@@ -424,34 +454,28 @@
       total_label:'စုစုပေါင်း ပတ်လည်နာရီ', 
       alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
       edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
-      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', loan_label: 'ချေးငွေ / ကြိုတင်ထုတ်ငွေ (ကျပ်)', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
+      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
       csv_user_label: 'အသုံးပြုသူအမည်',
       modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
       modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
       save_name: 'အမည်သိမ်းမည်',
       sign_out_btn: 'ထွက်မည်',
-      earnings_label: 'ရရှိမည့်ငွေ (အသားတင်)',
-      currency: 'ကျပ်',
-      admin_dashboard: 'Admin Dashboard',
-      back_to_user: '⬅️ Tracker သို့ ပြန်သွားမည်',
-      admin_access_title: 'Admin ခွင့်ပြုချက် လိုအပ်သည်',
-      admin_access_prompt: 'Users Tracking Data ကိုကြည့်ရန် Admin Password ထည့်ပါ။'
+      // NEW: Earnings
+      earnings_label: 'ရရှိမည့်ငွေ',
+      currency: '฿' 
     },
     th: { 
       app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
       edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
-      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', loan_label: 'เงินกู้ / เบิกล่วงหน้า (฿)', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
+      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
       csv_user_label: 'ชื่อผู้ใช้',
       modal_title: 'กำหนดชื่อแสดงผล',
       modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
       save_name: 'บันทึกชื่อ',
       sign_out_btn: 'ออกจากระบบ',
-      earnings_label: 'รายได้สุทธิ',
-      currency: '฿',
-      admin_dashboard: 'แดชบอร์ดผู้ดูแล',
-      back_to_user: '⬅️ กลับสู่ตัวติดตาม',
-      admin_access_title: 'ต้องเข้าถึงโดยผู้ดูแล',
-      admin_access_prompt: 'ป้อนรหัสผ่านผู้ดูแลเพื่อดูข้อมูลผู้ใช้ทั้งหมด'
+      // NEW: Earnings
+      earnings_label: 'รายได้รวม',
+      currency: '฿'
     }
   };
 
@@ -460,16 +484,13 @@
   let editId = null;
   let selectedYear, selectedMonth;
   let currentLang = localStorage.getItem(LANG) || 'en';
-  let currentUser = null; 
-  let isUserAdmin = false; 
-  let currentLoanAmount = 0.00; 
-  let userCustomName = 'User'; 
-
+  let currentUser = null; // firebase user object
 
   // helpers
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
   function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
   
+  // *** FIXED computeRounded function (30-39 mins = 0.5) ***
   function computeRounded(raw){ 
     if(raw<=0) return 0.00; 
     const h=Math.floor(raw/60); 
@@ -480,74 +501,65 @@
         return +(H).toFixed(2);
     } 
     else if(m>=30 && m<=39) {
-        return +(H + 0.5).toFixed(2); 
+        return +(H + 0.5).toFixed(2); // Fix: return H.50 exactly
     } 
     else if(m>=40 && m<=59){ 
-        return +(H + 1).toFixed(2);
+        return +(H + 1).toFixed(2); // round up
     }
     
     return +(H).toFixed(2);
   }
+  // *********************************************************
 
-  // --- Firestore Data Handlers ---
+  // local storage
+  function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
+  function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
 
-  async function getUserProfileData(uid) {
-      if (!uid) return { customName: 'Guest', loan: 0.00 };
-      try {
-          const docRef = db.collection(USER_DATA_COLLECTION).doc(uid);
-          const docSnap = await docRef.get();
-          if (docSnap.exists) {
-              const data = docSnap.data();
-              return { 
-                  customName: data.customName || currentUser.displayName || 'User',
-                  loan: parseFloat(data.loan) || 0.00
-              };
-          }
-          return { customName: currentUser.displayName || 'User', loan: 0.00 };
-      } catch (err) {
-          return { customName: currentUser.displayName || 'User', loan: 0.00 };
-      }
-  }
-
-  async function saveLoanData(uid, newLoanAmount) {
-      if (!uid) return;
-      try {
-          const docRef = db.collection(USER_DATA_COLLECTION).doc(uid);
-          await docRef.set({ loan: parseFloat(newLoanAmount) }, { merge: true });
-          currentLoanAmount = parseFloat(newLoanAmount);
-          render();
-      } catch (err) {
-          alert("Failed to save loan amount.");
-      }
-  }
-
+  // Firestore helpers: store under collection "users", doc id = uid, field "entries" = array
   async function saveToFirestore(uid){
     if(!uid) return;
     try{
-      const d = db.collection(ENTRIES_COLLECTION).doc(uid);
-      await d.set({ entries }, { merge: true });
+      const d = doc(db, 'users', uid);
+      await setDoc(d, { entries }, { merge: true });
+      // console.log('Saved to Firestore');
     }catch(err){
       console.error('saveToFirestore error:', err);
     }
   }
 
-  async function loadUserEntries(uid){
+  async function loadFromFirestore(uid){
     if(!uid) return null;
     try{
-      const d = db.collection(ENTRIES_COLLECTION).doc(uid);
-      const snap = await d.get();
-      if(snap.exists){
+      const d = doc(db, 'users', uid);
+      const snap = await getDoc(d);
+      if(snap.exists()){
         const data = snap.data();
-        return Array.isArray(data.entries) ? data.entries : [];
+        if(Array.isArray(data.entries) && data.entries.length>0){
+          return data.entries;
+        }
+        return [];
       } else {
         return [];
       }
     }catch(err){
+      console.error('loadFromFirestore error:', err);
       return null;
     }
   }
 
-  // --- USER NAME HANDLING ---
+  // USER NAME HANDLING
+  async function handleUsernameSetup(user) {
+    // Show username modal
+    usernameModal.style.display = 'flex';
+    // Use part of email as initial name if display name is totally empty
+    usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
+    
+    // Update modal texts (since render is not called)
+    const t = translations[currentLang];
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+  }
   
   saveUsernameBtn.addEventListener('click', async () => {
       const newName = usernameInputField.value.trim();
@@ -557,183 +569,89 @@
       }
       if (currentUser) {
           try {
-              // 1. Save custom name and initial loan (0) to Firestore
-              const docRef = db.collection(USER_DATA_COLLECTION).doc(currentUser.uid);
-              await docRef.set({ customName: newName, loan: 0.00 }, { merge: true });
-              
-              // 2. Update Firebase Auth profile to hold the new name (optional but good practice)
-              await currentUser.updateProfile({ displayName: newName });
-
-              // 3. Close modal and proceed
+              // Update display name in Firebase Auth
+              await updateProfile(currentUser, {
+                  displayName: newName
+              });
+              // Force the app to re-render with the new name
+              currentUser.displayName = newName;
               usernameModal.style.display = 'none';
               handleUserSignedIn(currentUser); 
           } catch (error) {
+              console.error('Error updating profile:', error);
               alert('Failed to save name: ' + error.message);
           }
       }
   });
 
 
-  // --- ADMIN/USER VIEW LOGIC ---
-
-  function showUserAppView() {
-      adminDashboardView.style.display = 'none';
-      appContent.style.display = 'block';
-  }
-  
-  // ADMIN DASHBOARD RENDERING 
-  async function renderAdminDashboard() {
-      appContent.style.display = 'none';
-      adminDashboardView.style.display = 'block';
-      adminTotalsBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">Fetching All User Data...</td></tr>';
-
-      try {
-          // 1. Fetch ALL users' profile data (names and loans)
-          const usersSnapshot = await db.collection(USER_DATA_COLLECTION).get();
-          let allUsersData = {};
-          usersSnapshot.forEach(doc => {
-              allUsersData[doc.id] = { ...doc.data(), uid: doc.id, totalHours: 0 };
-          });
-
-          // 2. Fetch ALL users' time entries and calculate hours
-          const entriesSnapshot = await db.collection(ENTRIES_COLLECTION).get();
-          entriesSnapshot.forEach(doc => {
-              const uid = doc.id;
-              const userEntries = doc.data().entries || [];
-              
-              let totalRoundedHours = 0;
-              userEntries.forEach(entry => {
-                  totalRoundedHours += entry.rounded || 0;
-              });
-              
-              if (allUsersData[uid]) {
-                  allUsersData[uid].totalHours = totalRoundedHours;
-              }
-          });
-
-          // 3. Render the table
-          adminTotalsBody.innerHTML = '';
-          const sortedUsers = Object.values(allUsersData).sort((a, b) => (a.customName || a.uid).localeCompare(b.customName || b.uid));
-
-          if (sortedUsers.length === 0) {
-              adminTotalsBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No users found in database.</td></tr>';
-              return;
-          }
-
-          sortedUsers.forEach(user => {
-              const grossEarnings = user.totalHours * HOURLY_RATE;
-              const netEarnings = grossEarnings - (user.loan || 0);
-              const currency = translations[currentLang].currency || '฿';
-              
-              adminTotalsBody.innerHTML += `
-                  <tr>
-                      <td>${user.customName || user.uid.substring(0, 8)} <br><span style="font-size:10px; color:var(--muted);">${user.uid.substring(0, 8)}...</span></td>
-                      <td>${user.totalHours.toFixed(2)} hrs</td>
-                      <td>${(user.loan || 0).toFixed(2)} ${currency}</td>
-                      <td style="font-weight:700; color: ${netEarnings < 0 ? 'var(--danger)' : 'var(--success)'}">${netEarnings.toFixed(2)} ${currency}</td>
-                  </tr>
-              `;
-          });
-      } catch (error) {
-          adminTotalsBody.innerHTML = `<tr style="color:var(--danger);"><td colspan="4" style="text-align:center;">Error loading Admin Data. Check Console.</td></tr>`;
-          console.error("ADMIN RENDER ERROR:", error);
-      }
-  }
-
-  // Admin Access Button Handlers
-  adminMenuBtn.addEventListener('click', () => {
-      adminPassModal.style.display = 'flex';
-      adminPasswordField.value = '';
-      
-      const t = translations[currentLang];
-      document.querySelector('#admin-pass-form-card h3').textContent = t.admin_access_title;
-      document.querySelector('#admin-pass-form-card p').textContent = t.admin_access_prompt;
-      document.getElementById('confirm-admin-pass').textContent = 'Confirm';
-  });
-  
-  confirmAdminPass.addEventListener('click', () => {
-      if (adminPasswordField.value === ADMIN_PASSWORD) {
-          adminPassModal.style.display = 'none';
-          renderAdminDashboard();
-      } else {
-          alert('Invalid Admin Password!');
-          adminPasswordField.value = '';
-      }
-  });
-
-  backToUserBtn.addEventListener('click', showUserAppView);
-
-  // --- CORE AUTH LOGIC ---
-
+  // UI/STATE CONTROL FUNCTION
   function showLoadingState(){
-      authArea.style.display = 'none'; 
-      appContent.style.display = 'none'; 
-      signedState.style.display = 'none'; 
-      usernameModal.style.display = 'none'; 
-      adminPassModal.style.display = 'none';
+      authArea.style.display = 'none'; // Hide auth area
+      appContent.style.display = 'none'; // Hide main app
+      signedState.style.display = 'none'; // Hide signed state
+      usernameModal.style.display = 'none'; // Hide username modal
       loadingScreen.style.display = 'block'; 
       loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
       loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
   }
 
+  // handle user status
   async function handleUserSignedIn(user){
     currentUser = user;
     const uid = user.uid;
     
-    // 1. Get User Profile Data (Name and Loan)
-    const profile = await getUserProfileData(uid);
-    userCustomName = profile.customName;
-    currentLoanAmount = profile.loan; 
-    
-    // 2. Check for Custom Name (If no custom name, prompt the user)
-    if (!userCustomName || userCustomName.includes('@') || userCustomName === 'User') {
+    // *** CHECK FOR DISPLAY NAME FIRST ***
+    if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
         await handleUsernameSetup(user);
         return; 
     }
     
-    // Set Admin flag
-    isUserAdmin = (user.email === ADMIN_EMAIL);
-    adminMenuBtn.style.display = isUserAdmin ? 'block' : 'none';
-
-    signedText.textContent = `Signed in: ${userCustomName}`;
-    signedState.style.display = 'flex'; 
-    authArea.style.display = 'none'; 
+    // If name is set, proceed to app
+    signedText.textContent = `Signed in: ${user.displayName}`;
+    signedState.style.display = 'flex'; // Show sign out button and signed text
+    authArea.style.display = 'none'; // Hide the full auth screen
+    
+    // Show the main app content
     appContent.style.display = 'block';
     loadingScreen.style.display = 'none';
 
-    // 3. Load user's entries
-    const cloudEntries = await loadUserEntries(uid);
-    if (cloudEntries) {
-        entries = cloudEntries;
+    // try load from cloud
+    const cloud = await loadFromFirestore(uid);
+    if(cloud === null){
+      console.warn('Could not read from Firestore — using local data');
+      loadLocal();
+    } else if(Array.isArray(cloud) && cloud.length>0){
+      entries = cloud;
+      saveLocal(); // update local
     } else {
-        entries = [];
+      loadLocal();
+      if(Array.isArray(entries) && entries.length>0){
+        await saveToFirestore(uid);
+      }
     }
-    
     render();
   }
 
   function handleUserSignedOut(){
     currentUser = null;
-    isUserAdmin = false;
-    adminMenuBtn.style.display = 'none';
-    currentLoanAmount = 0.00;
-
-    signedState.style.display = 'none'; 
-    usernameModal.style.display = 'none'; 
-    adminPassModal.style.display = 'none';
-    authArea.style.display = 'flex'; 
+    signedState.style.display = 'none'; // Hide sign out button and signed text
+    usernameModal.style.display = 'none'; // Hide username modal
+    authArea.style.display = 'flex'; // Show the new auth screen
     
+    // Hide the main app content
     appContent.style.display = 'none';
-    loadingScreen.style.display = 'none'; 
+    loadingScreen.style.display = 'none'; // Ensure loading screen is hidden
 
     // *** THE FIX: Clear only the user's data from local storage on sign-out ***
     localStorage.removeItem(STORAGE); 
     
+    loadLocal();
     render(); 
   }
 
   // auth events
-  firebase.auth().onAuthStateChanged(async (user) => {
+  onAuthStateChanged(auth, async (user) => {
     if(user){
       await handleUserSignedIn(user);
     } else {
@@ -745,7 +663,7 @@
   googleSignInBtn.addEventListener('click', async ()=>{
     showLoadingState(); 
     try{
-      await firebase.auth().signInWithPopup(provider);
+      await signInWithPopup(auth, provider);
     }catch(err){
       alert('Google sign-in failed: ' + err.message);
       handleUserSignedOut(); 
@@ -754,30 +672,14 @@
   
   signOutBtn.addEventListener('click', async ()=>{
     try{
-      await firebase.auth().signOut();
+      await signOut(auth);
     }catch(err){
       console.error(err);
     }
   });
 
-
-  // --- USER APP FUNCTIONALITY ---
-
   // preview update
-  function updatePreview(){ 
-    const s=startEl.value, e=endEl.value; 
-    if(s && e){ 
-        const sM=parseHM(s), eM=parseHM(e); 
-        if(sM==null||eM==null){ 
-            previewEl.textContent = translations[currentLang].duration_default; return; 
-        } 
-        let diff=eM - sM; 
-        if(diff<0) diff+=24*60; 
-        previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` 
-    } else { 
-        previewEl.textContent = translations[currentLang].duration_default 
-    } 
-  }
+  function updatePreview(){ const s=startEl.value, e=endEl.value; if(s && e){ const sM=parseHM(s), eM=parseHM(e); if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; } let diff=eM - sM; if(diff<0) diff+=24*60; previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` } else { previewEl.textContent = translations[currentLang].duration_default } }
   [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
 
   // render
@@ -801,6 +703,7 @@
       const end = row.isDayOff? dayOffText : row.end;
       const duration = row.isDayOff? dayOffText : row.duration;
       const rounded = row.isDayOff? 0 : row.rounded;
+      
       const taskDisplay = row.isDayOff ? dayOffText : row.task || '';
 
       tr.innerHTML = `
@@ -818,18 +721,19 @@
 
     totalEl.textContent = total.toFixed(2);
     
-    // *** CALCULATE EARNINGS WITH LOAN DEDUCTION ***
-    const grossEarnings = parseFloat(totalEl.textContent) * HOURLY_RATE;
-    const netEarnings = grossEarnings - currentLoanAmount;
-    const currency = t.currency || '฿';
-
-    earningsAmount.textContent = `${netEarnings.toFixed(2)} ${currency}`;
-    earningsDisplay.querySelector('span').style.color = netEarnings < 0 ? 'var(--danger)' : 'var(--earnings-color)';
-    // **********************************************
+    // *** NEW: Calculate and Display Earnings ***
+    const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
+    earningsAmount.textContent = `${totalEarnings} ${t.currency}`;
     
     // FIXED: Ensure month name displays correctly using the appropriate locale format
-    const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang] || 'en-US';
+    const localeCode = {
+        en: 'en-US',
+        my: 'my-MM', // Attempt Myanmar locale code
+        th: 'th-TH'
+    }[currentLang];
+    
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
+    // *****************************************
     
     applyLanguageTexts();
   }
@@ -842,28 +746,16 @@
     }
   }
 
-  // add/update (Loan field added)
+  // add/update
   addBtn.addEventListener('click', async ()=>{
-    const date = dateEl.value; const s = startEl.value; const e = endEl.value; 
-    const loan = parseFloat(loanEl.value) || 0; // Get Loan/Advance amount
-    const task = taskEl.value.trim();
-    
+    const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
     if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
-    
     const sM = parseHM(s), eM = parseHM(e);
     if(sM==null||eM==null) return alert('Invalid time');
-    
     let diff = eM - sM; if(diff<0) diff += 24*60;
     const formatted = fmtHM(diff); const rounded = computeRounded(diff);
-
-    // Save Loan/Advance amount to profile data (overwrites previous loan)
-    if(loan >= 0) {
-        await saveLoanData(currentUser.uid, loan);
-    }
-    
     if(editId){
       const idx = entries.findIndex(x=>x.id===editId);
-      // NOTE: Loan entry logic is simplified; Loan amount is stored separately in profile.
       if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = '➕ ' + translations[currentLang].add_entry; }
     } else {
       entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
@@ -877,12 +769,14 @@
     dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28)); 
     startEl.value=''; 
     endEl.value=''; 
-    loanEl.value = currentLoanAmount.toFixed(2); // Keep current loan amount in the form
     taskEl.value=''; 
+    
+    // Task input placeholder needs to be set based on current language
     taskEl.placeholder = translations[currentLang].task_placeholder;
+    
     previewEl.textContent = translations[currentLang].duration_default; 
     addBtn.textContent = '➕ ' + translations[currentLang].add_entry; 
-    editId = null; 
+    editId = null; // Ensure editId is reset
   }
 
   // day off
@@ -890,19 +784,26 @@
     const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
     const dayOffText = translations[currentLang].day_off_text || 'Day Off';
     
+    // Check if a day off already exists for this date
     const existingDayOff = entries.some(x => x.date === date && x.isDayOff);
 
     if (existingDayOff) {
+        // Find existing day off entry to remove it
         entries = entries.filter(x => !(x.date === date && x.isDayOff));
+        // Also remove any regular entries on that date (optional, but clean)
         entries = entries.filter(x => x.date !== date);
     } else {
+        // Not exists, so add it
+        // First, check if there are any regular entries on this date and ask for confirmation to delete
         const regularEntries = entries.filter(x => x.date === date && !x.isDayOff);
         if (regularEntries.length > 0 && !confirm(`There are ${regularEntries.length} regular entries on ${date}. Do you want to delete them and mark this day as Day Off?`)) {
             return;
         }
         
+        // Delete regular entries
         entries = entries.filter(x => x.date !== date);
 
+        // Add the new Day Off entry
         entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: dayOffText, isDayOff:true });
     }
 
@@ -926,11 +827,10 @@
       const idx = entries.findIndex(x=>x.id===id); 
       if(idx===-1) return; 
       const r = entries[idx]; 
-      if(r.isDayOff) return alert('Day Off entries cannot be edited directly.'); 
+      if(r.isDayOff) return alert('Cannot edit Day Off'); 
       dateEl.value = r.date; 
       startEl.value = r.start; 
       endEl.value = r.end; 
-      loanEl.value = currentLoanAmount.toFixed(2); // Show current loan in form
       taskEl.value = r.task; 
       editId = id; 
       addBtn.textContent = '💾 Save'; 
@@ -947,20 +847,16 @@
     const t = translations['en']; // Use English headers for CSV compatibility
     const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
     const userLabel = translations[currentLang].csv_user_label || 'User Name';
-    const totalHours = parseFloat(totalEl.textContent) || 0;
-    const grossEarnings = totalHours * HOURLY_RATE;
-    const netEarnings = grossEarnings - currentLoanAmount;
+    const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
     const currency = translations[currentLang].currency || '฿';
     
     const header=['Date','Start','End','Duration','Rounded Hours','Task'];
-    let csv = `${userLabel}:,${userName}\n\n`; 
+    let csv = `${userLabel}:,${userName}\n\n`; // ADD USER NAME TO TOP OF CSV
     csv += header.join(',') + '\n';
     
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
-    csv += `\n${translations[currentLang].total_label},,, ,${totalHours.toFixed(2)}\n`;
-    csv += `${translations[currentLang].earnings_label} (Gross),,, ,${grossEarnings.toFixed(2)} ${currency}\n`;
-    csv += `${translations[currentLang].loan_label} (Current),,, ,${currentLoanAmount.toFixed(2)} ${currency}\n`;
-    csv += `${translations[currentLang].earnings_label} (Net),,, ,${netEarnings.toFixed(2)} ${currency}\n`;
+    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
+    csv += `${translations[currentLang].earnings_label},,, ,${totalEarnings} ${currency}\n`;
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
@@ -998,6 +894,11 @@
     document.getElementById('app-title').textContent = t.app_title;
     document.getElementById('app-sub').textContent = t.sub;
     
+    // Update Username Modal
+    document.getElementById('modal-title').textContent = t.modal_title;
+    document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
+    document.getElementById('save-username-btn').textContent = t.save_name;
+    
     // Update Sign out button
     signOutBtn.textContent = t.sign_out_btn;
     
@@ -1005,12 +906,11 @@
     dateLabel.textContent = t.date_label;
     startLabel.textContent = t.in_label;
     endLabel.textContent = t.out_label;
-    loanLabel.textContent = t.loan_label; 
     taskLabel.textContent = t.task_placeholder;
     taskEl.placeholder = t.task_placeholder;
     
     if (currentUser && currentUser.displayName) {
-        signedText.textContent = `Signed in: ${userCustomName}`;
+        signedText.textContent = `Signed in: ${currentUser.displayName}`;
     }
 
     // Check if we are in edit mode
@@ -1021,22 +921,28 @@
     }
     
     dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
+    exportBtn.textContent = '💾 ' + t.export_csv;
+    printBtn.textContent = '🖨️ ' + t.print;
+    
+    if (!startEl.value || !endEl.value) {
+        previewEl.textContent = t.duration_default;
+    }
     
     // FIXED: Month Label Update Logic
-    const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang] || 'en-US';
+    const localeCode = {
+        en: 'en-US',
+        my: 'my-MM', 
+        th: 'th-TH'
+    }[currentLang] || 'en-US';
+
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     
     // total label for header
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
     
     // Earnings label update
-    const netEarnings = parseFloat(earningsAmount.textContent.replace(/[^\d.]/g, '')) || 0;
-    document.getElementById('earnings-label-text').textContent = t.earnings_label;
-    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${netEarnings.toFixed(2)} ${currency}</span>`;
-    
-    // Admin Button Text
-    adminMenuBtn.textContent = t.admin_dashboard;
-    document.getElementById('back-to-user-btn').textContent = t.back_to_user;
+    const currentEarnings = parseFloat(earningsAmount.textContent.replace(/[^\d.]/g, '')) || 0;
+    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${currentEarnings.toFixed(2)} ${currency}</span>`;
   }
   langButtons.addEventListener('click', (ev)=>{ 
     const b=ev.target; 
