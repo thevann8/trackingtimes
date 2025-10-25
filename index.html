@@ -6,6 +6,10 @@
   <title>TheVann Track Duration — v8 (Admin/User System)</title>
   <meta name="description" content="Track work time with custom rounding, month view, multi-language, dark/light theme, CSV, print-ready and Google sign-in." />
 
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
   <style>
     /* ===================================================
     ORIGINAL DESIGN THEME (STABLE & ORIGINAL STYLE)
@@ -51,14 +55,13 @@
     /* GOOGLE ICON FIX (Base64) */
     .google-icon {
         width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
-        /* Base64 SVG for the standard Google G Logo */
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhhLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtMy44IDMuOGMtMS4xIDEuMS0yLjggMS4xLTMuOSAwbC0yLjYtMi42Yy0xLjEtMS4xLTEuMS0yLjcgMC0zLjhsMy43LTMuN2MtMS42LTEuNS0zLjctMi42LTguOS01LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhhLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtMy44IDMuOGMtMS4xIDEuMS0yLjggMS4xLTMuOSAwbC0yLjYtMi42Yy0xLjEtMS4xLTEuMS0yLjcgMC0zLjhsMy43LTMuN2MtMS42LTEuNS0zLjctMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy45LTMuOWMtLjUtLjUtMS4yLS44LTEuNy0uOEgzNGMtLjYgMC0xLjEuMy0xLjcuOGwtMy43IDMuN2MtLjUuNS0uOCAxLjItLjggMS43VjE3YzAgMSAuOSAxLjkgMi41IDIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDI0LjNjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4xIDEuMS43IDEuNmwxLjcgMS43YzkuOS0uNS0uOTQtLjMtMS43LS44LTIuNC0xLjRMOS45IDE2LjdjLS41LjUtMS4yLjgtMS43LjhzPSInIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
     
-    /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
+    /* SIGNED STATE */
     #signedState {
         display: none;
-        position: fixed; /* Fixed position is OK if padding is handled */
+        position: fixed; 
         top: 0px; 
         right: 0px;
         padding: 8px 12px;
@@ -88,7 +91,7 @@
 
     /* inputs / controls */
     .controls-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
-    .entry-grid{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+    .entry-grid{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
     .input-group label {color: var(--muted);font-size: 12px;font-weight: 600;text-transform: uppercase;margin-left: 0;}
     .input-group {display: flex;flex-direction: column;gap: 0;}
     input[type=date],input[type=time],input[type=text],input[type=number]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
@@ -120,7 +123,7 @@
     .total-card span { color: var(--accent); font-size: 16px;}
     
     /* NEW: Earnings Display */
-    #earnings-display {background: var(--input-bg);padding: 10px 15px;border-radius: 8px;color: var(--text);font-weight: 700;font-size: 15px;border: 1px solid var(--table-border);}
+    #earnings-display {background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700;font-size:15px;border:1px solid var(--table-border);}
     #earnings-display span {color: var(--earnings-color);font-size: 16px;font-weight: 800;}
     .controls-top .earnings-wrapper {order: 3; margin-left: 8px;}
     
@@ -189,6 +192,7 @@
     </div>
 
     <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
+      
       
       <header class="app-head">
         
@@ -306,12 +310,11 @@
     </div>
     </div>
 
-  <script type="module">
-  // --- Firebase imports (modular) ---
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-  
+  <script>
+  // =========================================================================
+  // WARNING: Using the old Firebase CDN for stability on mobile browsers
+  // =========================================================================
+
   // --- CONFIGURATION CONSTANTS (FIXED) ---
   const ADMIN_EMAIL = 'vnoon698@gmail.com'; 
   const ADMIN_PASSWORD = '@Vannoon8800'; 
@@ -324,14 +327,14 @@
     storageBucket: "thevanntrackduration-81ee0.firebasestorage.app",
     messagingSenderId: "56786707859",
     appId: "1:56786707859:web:75be757ceb95604984f466",
-    measurementId: "G-QNG2F09LWL"
+    // measurementId is removed as Analytics is not used in this stable setup
   };
 
-  // init firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const provider = new GoogleAuthProvider();
-  const db = getFirestore(app);
+  // Initialize Firebase using the old namespace (firebase.)
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const provider = new firebase.auth.GoogleAuthProvider();
+  const db = firebase.firestore();
 
   // --- CONSTANTS ---
   const USER_DATA_COLLECTION = 'users_data'; 
@@ -377,6 +380,7 @@
   
   const monthLabel = document.getElementById('month-label');
   const langButtons = document.getElementById('lang-buttons');
+  const themeToggle = document.getElementById('theme-toggle'); // Keep theme toggle DOM
 
   const dateLabel = document.getElementById('date-label');
   const startLabel = document.getElementById('start-label');
@@ -459,7 +463,7 @@
   let currentUser = null; 
   let isUserAdmin = false; 
   let currentLoanAmount = 0.00; 
-  let userCustomName = 'User'; // Global variable for current user's custom name
+  let userCustomName = 'User'; 
 
 
   // helpers
@@ -485,15 +489,14 @@
     return +(H).toFixed(2);
   }
 
-  // --- Firestore Data Handlers (UPDATED for multi-user structure) ---
+  // --- Firestore Data Handlers ---
 
-  // Get user's profile data (name, loan) from Firestore
   async function getUserProfileData(uid) {
       if (!uid) return { customName: 'Guest', loan: 0.00 };
       try {
-          const docRef = doc(db, USER_DATA_COLLECTION, uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
+          const docRef = db.collection(USER_DATA_COLLECTION).doc(uid);
+          const docSnap = await docRef.get();
+          if (docSnap.exists) {
               const data = docSnap.data();
               return { 
                   customName: data.customName || currentUser.displayName || 'User',
@@ -502,51 +505,44 @@
           }
           return { customName: currentUser.displayName || 'User', loan: 0.00 };
       } catch (err) {
-          console.error("Error fetching user profile:", err);
           return { customName: currentUser.displayName || 'User', loan: 0.00 };
       }
   }
 
-  // Update user's loan data
   async function saveLoanData(uid, newLoanAmount) {
       if (!uid) return;
       try {
-          const docRef = doc(db, USER_DATA_COLLECTION, uid);
-          await setDoc(docRef, { loan: parseFloat(newLoanAmount) }, { merge: true });
+          const docRef = db.collection(USER_DATA_COLLECTION).doc(uid);
+          await docRef.set({ loan: parseFloat(newLoanAmount) }, { merge: true });
           currentLoanAmount = parseFloat(newLoanAmount);
           render();
       } catch (err) {
-          console.error("Error saving loan data:", err);
           alert("Failed to save loan amount.");
       }
   }
 
-
-  // Save user's entries 
   async function saveToFirestore(uid){
     if(!uid) return;
     try{
-      const d = doc(db, ENTRIES_COLLECTION, uid);
-      await setDoc(d, { entries }, { merge: true });
+      const d = db.collection(ENTRIES_COLLECTION).doc(uid);
+      await d.set({ entries }, { merge: true });
     }catch(err){
       console.error('saveToFirestore error:', err);
     }
   }
 
-  // Load user's entries
   async function loadUserEntries(uid){
     if(!uid) return null;
     try{
-      const d = doc(db, ENTRIES_COLLECTION, uid);
-      const snap = await getDoc(d);
-      if(snap.exists()){
+      const d = db.collection(ENTRIES_COLLECTION).doc(uid);
+      const snap = await d.get();
+      if(snap.exists){
         const data = snap.data();
         return Array.isArray(data.entries) ? data.entries : [];
       } else {
         return [];
       }
     }catch(err){
-      console.error('loadUserEntries error:', err);
       return null;
     }
   }
@@ -562,11 +558,11 @@
       if (currentUser) {
           try {
               // 1. Save custom name and initial loan (0) to Firestore
-              const docRef = doc(db, USER_DATA_COLLECTION, currentUser.uid);
-              await setDoc(docRef, { customName: newName, loan: 0.00 });
+              const docRef = db.collection(USER_DATA_COLLECTION).doc(currentUser.uid);
+              await docRef.set({ customName: newName, loan: 0.00 }, { merge: true });
               
-              // 2. Update Firebase Auth profile to hold the new name
-              await updateProfile(currentUser, { displayName: newName });
+              // 2. Update Firebase Auth profile to hold the new name (optional but good practice)
+              await currentUser.updateProfile({ displayName: newName });
 
               // 3. Close modal and proceed
               usernameModal.style.display = 'none';
@@ -585,7 +581,7 @@
       appContent.style.display = 'block';
   }
   
-  // ADMIN DASHBOARD RENDERING (Only visible to Admin)
+  // ADMIN DASHBOARD RENDERING 
   async function renderAdminDashboard() {
       appContent.style.display = 'none';
       adminDashboardView.style.display = 'block';
@@ -593,14 +589,14 @@
 
       try {
           // 1. Fetch ALL users' profile data (names and loans)
-          const usersSnapshot = await getDocs(collection(db, USER_DATA_COLLECTION));
+          const usersSnapshot = await db.collection(USER_DATA_COLLECTION).get();
           let allUsersData = {};
           usersSnapshot.forEach(doc => {
               allUsersData[doc.id] = { ...doc.data(), uid: doc.id, totalHours: 0 };
           });
 
           // 2. Fetch ALL users' time entries and calculate hours
-          const entriesSnapshot = await getDocs(collection(db, ENTRIES_COLLECTION));
+          const entriesSnapshot = await db.collection(ENTRIES_COLLECTION).get();
           entriesSnapshot.forEach(doc => {
               const uid = doc.id;
               const userEntries = doc.data().entries || [];
@@ -617,7 +613,7 @@
 
           // 3. Render the table
           adminTotalsBody.innerHTML = '';
-          const sortedUsers = Object.values(allUsersData).sort((a, b) => a.customName.localeCompare(b.customName));
+          const sortedUsers = Object.values(allUsersData).sort((a, b) => (a.customName || a.uid).localeCompare(b.customName || b.uid));
 
           if (sortedUsers.length === 0) {
               adminTotalsBody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No users found in database.</td></tr>';
@@ -631,7 +627,7 @@
               
               adminTotalsBody.innerHTML += `
                   <tr>
-                      <td>${user.customName} <br><span style="font-size:10px; color:var(--muted);">${user.uid.substring(0, 8)}...</span></td>
+                      <td>${user.customName || user.uid.substring(0, 8)} <br><span style="font-size:10px; color:var(--muted);">${user.uid.substring(0, 8)}...</span></td>
                       <td>${user.totalHours.toFixed(2)} hrs</td>
                       <td>${(user.loan || 0).toFixed(2)} ${currency}</td>
                       <td style="font-weight:700; color: ${netEarnings < 0 ? 'var(--danger)' : 'var(--success)'}">${netEarnings.toFixed(2)} ${currency}</td>
@@ -639,7 +635,8 @@
               `;
           });
       } catch (error) {
-          adminTotalsBody.innerHTML = `<tr class="day-off"><td colspan="4" style="text-align:center;">Error loading data: ${error.message}</td></tr>`;
+          adminTotalsBody.innerHTML = `<tr style="color:var(--danger);"><td colspan="4" style="text-align:center;">Error loading Admin Data. Check Console.</td></tr>`;
+          console.error("ADMIN RENDER ERROR:", error);
       }
   }
 
@@ -648,7 +645,6 @@
       adminPassModal.style.display = 'flex';
       adminPasswordField.value = '';
       
-      // Update modal texts
       const t = translations[currentLang];
       document.querySelector('#admin-pass-form-card h3').textContent = t.admin_access_title;
       document.querySelector('#admin-pass-form-card p').textContent = t.admin_access_prompt;
@@ -690,8 +686,7 @@
     currentLoanAmount = profile.loan; 
     
     // 2. Check for Custom Name (If no custom name, prompt the user)
-    // We check if the saved name is just the email, which indicates first time login
-    if (!profile.customName || profile.customName.includes('@') || profile.customName === 'User') {
+    if (!userCustomName || userCustomName.includes('@') || userCustomName === 'User') {
         await handleUsernameSetup(user);
         return; 
     }
@@ -738,7 +733,7 @@
   }
 
   // auth events
-  onAuthStateChanged(auth, async (user) => {
+  firebase.auth().onAuthStateChanged(async (user) => {
     if(user){
       await handleUserSignedIn(user);
     } else {
@@ -750,7 +745,7 @@
   googleSignInBtn.addEventListener('click', async ()=>{
     showLoadingState(); 
     try{
-      await signInWithPopup(auth, provider);
+      await firebase.auth().signInWithPopup(provider);
     }catch(err){
       alert('Google sign-in failed: ' + err.message);
       handleUserSignedOut(); 
@@ -759,7 +754,7 @@
   
   signOutBtn.addEventListener('click', async ()=>{
     try{
-      await signOut(auth);
+      await firebase.auth().signOut();
     }catch(err){
       console.error(err);
     }
@@ -826,8 +821,9 @@
     // *** CALCULATE EARNINGS WITH LOAN DEDUCTION ***
     const grossEarnings = parseFloat(totalEl.textContent) * HOURLY_RATE;
     const netEarnings = grossEarnings - currentLoanAmount;
+    const currency = t.currency || '฿';
 
-    earningsAmount.textContent = `${netEarnings.toFixed(2)} ${t.currency}`;
+    earningsAmount.textContent = `${netEarnings.toFixed(2)} ${currency}`;
     earningsDisplay.querySelector('span').style.color = netEarnings < 0 ? 'var(--danger)' : 'var(--earnings-color)';
     // **********************************************
     
@@ -860,9 +856,8 @@
     let diff = eM - sM; if(diff<0) diff += 24*60;
     const formatted = fmtHM(diff); const rounded = computeRounded(diff);
 
-    // Save Loan/Advance as an entry (for tracking/editing)
-    if(loan > 0) {
-        // Update user's loan data in Firestore
+    // Save Loan/Advance amount to profile data (overwrites previous loan)
+    if(loan >= 0) {
         await saveLoanData(currentUser.uid, loan);
     }
     
@@ -882,7 +877,7 @@
     dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28)); 
     startEl.value=''; 
     endEl.value=''; 
-    loanEl.value='0'; // Reset loan field
+    loanEl.value = currentLoanAmount.toFixed(2); // Keep current loan amount in the form
     taskEl.value=''; 
     taskEl.placeholder = translations[currentLang].task_placeholder;
     previewEl.textContent = translations[currentLang].duration_default; 
@@ -908,7 +903,7 @@
         
         entries = entries.filter(x => x.date !== date);
 
-        entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, loan: 0, task: dayOffText, isDayOff:true });
+        entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: dayOffText, isDayOff:true });
     }
 
     formReset(); 
@@ -949,10 +944,12 @@
     const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     if(filtered.length===0) return alert('No data to export for this month');
     
-    const t = translations['en']; 
+    const t = translations['en']; // Use English headers for CSV compatibility
     const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
     const userLabel = translations[currentLang].csv_user_label || 'User Name';
-    const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
+    const totalHours = parseFloat(totalEl.textContent) || 0;
+    const grossEarnings = totalHours * HOURLY_RATE;
+    const netEarnings = grossEarnings - currentLoanAmount;
     const currency = translations[currentLang].currency || '฿';
     
     const header=['Date','Start','End','Duration','Rounded Hours','Task'];
@@ -960,10 +957,10 @@
     csv += header.join(',') + '\n';
     
     filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
-    csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
-    csv += `${translations[currentLang].earnings_label} (Gross),,, ,${(parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2)} ${currency}\n`;
+    csv += `\n${translations[currentLang].total_label},,, ,${totalHours.toFixed(2)}\n`;
+    csv += `${translations[currentLang].earnings_label} (Gross),,, ,${grossEarnings.toFixed(2)} ${currency}\n`;
     csv += `${translations[currentLang].loan_label} (Current),,, ,${currentLoanAmount.toFixed(2)} ${currency}\n`;
-    csv += `${translations[currentLang].earnings_label} (Net),,, ,${netEarnings} ${currency}\n`;
+    csv += `${translations[currentLang].earnings_label} (Net),,, ,${netEarnings.toFixed(2)} ${currency}\n`;
 
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
@@ -981,13 +978,13 @@
     const t = localStorage.getItem(THEME) || 'dark'; 
     if(t==='light'){ 
       document.body.classList.add('light-mode'); 
-      document.getElementById('theme-toggle').textContent='☀️'; 
+      themeToggle.textContent='☀️'; 
     } else { 
       document.body.classList.remove('light-mode'); 
-      document.getElementById('theme-toggle').textContent='🌙'; 
+      themeToggle.textContent='🌙'; 
     } 
   }
-  document.getElementById('theme-toggle').addEventListener('click', ()=>{ 
+  themeToggle.addEventListener('click', ()=>{ 
     const now = document.body.classList.toggle('light-mode')? 'light':'dark'; 
     localStorage.setItem(THEME, now); 
     applyTheme(); 
@@ -1013,7 +1010,7 @@
     taskEl.placeholder = t.task_placeholder;
     
     if (currentUser && currentUser.displayName) {
-        signedText.textContent = `Signed in: ${currentUser.displayName}`;
+        signedText.textContent = `Signed in: ${userCustomName}`;
     }
 
     // Check if we are in edit mode
@@ -1025,7 +1022,7 @@
     
     dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
     
-    // Month Label Update Logic
+    // FIXED: Month Label Update Logic
     const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang] || 'en-US';
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     
@@ -1033,12 +1030,13 @@
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
     
     // Earnings label update
-    const currentEarnings = parseFloat(earningsAmount.textContent.replace(/[^\d.]/g, '')) || 0;
+    const netEarnings = parseFloat(earningsAmount.textContent.replace(/[^\d.]/g, '')) || 0;
     document.getElementById('earnings-label-text').textContent = t.earnings_label;
-    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${currentEarnings.toFixed(2)} ${currency}</span>`;
-
+    earningsDisplay.innerHTML = `${t.earnings_label}: <span id="earnings-amount">${netEarnings.toFixed(2)} ${currency}</span>`;
+    
     // Admin Button Text
     adminMenuBtn.textContent = t.admin_dashboard;
+    document.getElementById('back-to-user-btn').textContent = t.back_to_user;
   }
   langButtons.addEventListener('click', (ev)=>{ 
     const b=ev.target; 
