@@ -53,9 +53,19 @@
     h1.title{margin:0;font-size:18px}
     .subtitle{color:var(--muted);font-size:12px;margin-top:4px}
 
-    /* AUTH AREA (SIMPLIFIED FOR GOOGLE ONLY) */
-    .auth-area{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:calc(100vh - 28px); margin:-14px; padding: 20px;}
-    .auth-area .auth-title {font-size: 30px; margin-bottom: 20px;}
+    /* =================================
+       UPDATED: AUTH AREA
+       Now a flex wrapper for the card
+    ================================= */
+    .auth-area{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        min-height:calc(100vh - 28px); 
+        margin:-14px; 
+        padding: 20px;
+    }
     .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25); display: flex; align-items: center; max-width: 280px;}
     .auth-btn .google-icon {
         width: 18px; height: 18px; margin-right: 10px; background-size: contain; background-repeat: no-repeat;
@@ -63,7 +73,7 @@
         background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi41VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy4xMC0zLjljLS41LS41LTEuMi0uOC0xLjctLjgzNC0uNiAwLTEuMS4zLTEuNy44bC0zLjcgMy43Yy0uNS41LS44IDEuMi0uOCAxLjdWMTdjMCAxIC45IDEuOSAyLjUgMi41di0uNWMwLS42LS4zLTEuMi0uOC0xLjdMMzYgMjQuM2MtLjUuNS0uOCAxLjEtLjggMS43djEuMmMwIC41LjEgMS4xLjcgMS42bDEuNyAxLjdjOS45LS41LS45NC0uMy0xLjctLjgtMi40LTEuNEw5LjkgMTYuN2MtLjUuNS0xLjIuOC0xLjcuOHM9JyIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
     
-    /* SIGNED STATE (FIXED FOR MOBILE/DESKTOP) */
+    /* SIGNED STATE (FIXED FOR MOBILE/DESTOP) */
     #signedState {
         display: none;
         position: absolute; 
@@ -203,6 +213,98 @@
         margin-left: 8px;
     }
 
+    /* =================================
+       NEW: Cool & Clean Auth Card Design
+    ================================= */
+    .auth-card {
+        background: var(--card);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        border: 1px solid var(--glass);
+        padding: 24px 28px;
+        width: 100%;
+        max-width: 400px;
+        animation: fadeIn 0.5s ease-out;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .auth-card .auth-title {
+        text-align: center;
+        font-size: 24px;
+        margin-top: 0;
+        margin-bottom: 20px;
+        color: var(--text);
+    }
+    
+    .auth-tabs {
+        display: flex;
+        border-bottom: 1px solid var(--table-border);
+        margin-bottom: 24px;
+    }
+    
+    .auth-tab {
+        flex: 1;
+        background: transparent;
+        border: none;
+        color: var(--muted);
+        padding: 12px 10px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        margin-bottom: -1px; /* Aligns with parent border */
+        transition: all 0.2s ease;
+    }
+    
+    .auth-tab.active {
+        color: var(--accent-2);
+        border-bottom-color: var(--accent-2);
+    }
+    
+    .auth-tab:not(.active):hover {
+        color: var(--text);
+    }
+    
+    .auth-pane-sub {
+        font-size: 14px;
+        color: var(--muted);
+        text-align: center;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+
+    /* Ensure auth buttons look good in this layout */
+    .auth-card .auth-btn {
+        width: 100%;
+        max-width: 100%;
+        justify-content: center;
+    }
+    
+    /* Make form inputs full width inside card */
+    .auth-card .input-group {
+        width: 100%;
+        max-width: 100%;
+    }
+    .auth-card .input-group input,
+    .auth-area input[type=email],
+    .auth-area input[type=password],
+    .auth-area input[type=text] {
+        width: 100%;
+        min-width: unset;
+        background: var(--input-bg);
+    }
+    
+    .auth-btn.primary {
+        justify-content: center;
+    }
+    /* =================================
+       END of New Auth CSS
+    ================================= */
+
 
     /* GENERAL MOBILE FIXES */
     @media(max-width:640px){
@@ -247,25 +349,50 @@
   <div class="wrap">
     
 <div class="auth-area" id="auth-area" style="display:none;">
-      <h1 class="auth-title">Log into TheVann</h1>
-      
-    <div class="auth-buttons-wrapper">
-      
-      <button id="googleSignIn" class="auth-btn">
-        <div class="google-icon"></div> 
-        Continue with Google
-      </button>
+    <div class="auth-card">
+        <h1 class="auth-title">TheVann Tracker</h1>
+        
+        <div class="auth-tabs">
+            <button id="tab-signin" class="auth-tab active">Sign In</button>
+            <button id="tab-register" class="auth-tab">Register</button>
+        </div>
+        
+        <div class="auth-panes">
+            
+            <div id="signin-pane">
+                <p class="auth-pane-sub">Sign in using your Google account.</p>
+                <div class="auth-buttons-wrapper">
+                    <button id="googleSignIn" class="auth-btn">
+                        <div class="google-icon"></div> 
+                        Continue with Google
+                    </button>
+                </div>
+                </div>
+            
+            <div id="register-pane" style="display: none;">
+                <p class="auth-pane-sub">Create a new account with your email.</p>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <label for="register-username">Username</label>
+                    <input id="register-username" type="text" placeholder="Your unique name" />
+                </div>
+                <div class="input-group" style="margin-bottom: 10px;">
+                    <label for="register-email">Email</label>
+                    <input id="register-email" type="email" placeholder="you@example.com" />
+                </div>
+                <div class="input-group" style="margin-bottom: 15px;">
+                    <label for="register-password">Password</label>
+                    <input id="register-password" type="password" placeholder="Min. 6 characters" />
+                </div>
+                <button id="register-btn" class="auth-btn primary" style="width: 100%; max-width: 100%; justify-content: center;">Register Account</button>
+            </div>
 
-      </div>
-
-      <p class="auth-terms">
-        Data is synced to the cloud via your Google Account.
-        <span style="color:var(--accent); font-weight: 600;">Access requires Google Sign-in.</span>
-      </p>
-
-</div>
+        </div>
+        
+        <p id="auth-message" style="color:var(--accent); margin-top: 15px; text-align: center; min-height: 20px;"></p>
     
-    <div id="username-modal" style="display:none;">
+    </div>
+</div>
+<div id="username-modal" style="display:none;">
         <div id="username-form-card" class="card">
             <h3 id="modal-title">Set Your Display Name</h3>
             <p id="modal-subtitle" style="color:var(--muted); font-size: 14px;">This name will be used in reports.</p>
@@ -381,7 +508,8 @@
   <script type="module">
   // --- Firebase imports (modular) ---
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+  // UPDATED: Added new auth methods
+  import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged, updateProfile, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
   import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
@@ -421,6 +549,19 @@
   const appContent = document.getElementById('app-content');
   const loadingScreen = document.getElementById('loading-screen');
   const authArea = document.getElementById('auth-area'); // Reference to the main auth area
+  
+  // UPDATED: Tabbed Auth DOM
+  const signinPane = document.getElementById('signin-pane');
+  const registerPane = document.getElementById('register-pane');
+  const tabSigninBtn = document.getElementById('tab-signin');
+  const tabRegisterBtn = document.getElementById('tab-register');
+  
+  // NEW: Registration form inputs
+  const registerUsernameEl = document.getElementById('register-username');
+  const registerEmailEl = document.getElementById('register-email');
+  const registerPasswordEl = document.getElementById('register-password');
+  const registerBtn = document.getElementById('register-btn');
+  const authMessageEl = document.getElementById('auth-message');
 
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
@@ -501,7 +642,7 @@
       currency: '฿' 
     },
     th: { 
-      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
+      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนမัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
       edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
       date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
       csv_user_label: 'ชื่อผู้ใช้',
@@ -545,6 +686,15 @@
     }
     
     return +(H).toFixed(2);
+  }
+  // *********************************************************
+
+  // *** NEW: Check if username is already taken in Firestore ***
+  async function isUsernameTaken(username) {
+      // We store usernames in lowercase to make them case-insensitive
+      const usernameRef = doc(db, 'usernames', username.toLowerCase());
+      const docSnap = await getDoc(usernameRef);
+      return docSnap.exists();
   }
   // *********************************************************
 
@@ -657,6 +807,19 @@
     currentUser = user;
     const uid = user.uid;
     
+    // *** CHECK FOR EMAIL VERIFICATION (for non-Google users) ***
+    if (!user.emailVerified && !user.providerData.some(p => p.providerId === 'google.com')) {
+        showLoadingState();
+        loadingScreen.querySelector('h2').innerHTML = 'Email Verification Required';
+        loadingScreen.querySelector('p').textContent = `A verification link was sent to ${user.email}. Please check your inbox and verify your account.`;
+        
+        // Hide other elements
+        authArea.style.display = 'none';
+        appContent.style.display = 'none';
+        signedState.style.display = 'none';
+        return;
+    }
+    
     // *** CHECK FOR DISPLAY NAME FIRST ***
     if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
         await handleUsernameSetup(user);
@@ -703,6 +866,15 @@
     localStorage.removeItem(STORAGE); 
     
     loadLocal();
+    
+    // Reset tabs to default
+    if (tabSigninBtn) {
+        tabSigninBtn.classList.add('active');
+        tabRegisterBtn.classList.remove('active');
+        signinPane.style.display = 'block';
+        registerPane.style.display = 'none';
+    }
+    
     render(); 
   }
 
@@ -740,6 +912,13 @@
 
   // render
   function render(){
+    // Do not render if not logged in (to prevent flashes)
+    if (!currentUser) {
+        authArea.style.display = 'flex';
+        appContent.style.display = 'none';
+        return;
+    }
+      
     entriesBody.innerHTML = '';
     let total = 0;
     const filtered = entries.filter(r=>{
@@ -1011,6 +1190,103 @@
       isEarningsHidden = !isEarningsHidden;
       localStorage.setItem(EARNINGS_HIDDEN, isEarningsHidden);
       updateEarningsVisibility();
+  });
+
+  // --- UPDATED: Auth Tab Listeners ---
+  tabSigninBtn.addEventListener('click', () => {
+      tabSigninBtn.classList.add('active');
+      tabRegisterBtn.classList.remove('active');
+      signinPane.style.display = 'block';
+      registerPane.style.display = 'none';
+      authMessageEl.textContent = '';
+  });
+
+  tabRegisterBtn.addEventListener('click', () => {
+      tabSigninBtn.classList.remove('active');
+      tabRegisterBtn.classList.add('active');
+      signinPane.style.display = 'none';
+      registerPane.style.display = 'block';
+      authMessageEl.textContent = '';
+  });
+
+  // --- NEW: Registration Logic ---
+  registerBtn.addEventListener('click', async () => {
+      const username = registerUsernameEl.value.trim();
+      const email = registerEmailEl.value.trim();
+      const password = registerPasswordEl.value;
+      
+      authMessageEl.style.color = 'var(--accent)';
+      authMessageEl.textContent = 'Checking...';
+
+      // 1. Validate inputs
+      if (!username || !email || !password) {
+          authMessageEl.style.color = 'var(--danger)';
+          authMessageEl.textContent = 'Please fill all fields.';
+          return;
+      }
+      if (password.length < 6) {
+          authMessageEl.style.color = 'var(--danger)';
+          authMessageEl.textContent = 'Password must be at least 6 characters.';
+          return;
+      }
+      if (username.length < 3) {
+          authMessageEl.style.color = 'var(--danger)';
+          authMessageEl.textContent = 'Username must be at least 3 characters.';
+          return;
+      }
+
+      // 2. Check if username is taken (Your Requirement)
+      try {
+          if (await isUsernameTaken(username)) {
+              authMessageEl.style.color = 'var(--danger)';
+              authMessageEl.textContent = 'This username is already taken. Please try another.';
+              return;
+          }
+      
+          // 3. Create user in Firebase Auth
+          authMessageEl.textContent = 'Creating account...';
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
+          
+          // 4. Update profile (set username) and send verification (Your Requirement)
+          await updateProfile(user, { displayName: username });
+          await sendEmailVerification(user);
+          
+          // 5. **CRITICAL:** Claim the username in Firestore
+          // We checked (step 2), now we claim it.
+          const usernameRef = doc(db, 'usernames', username.toLowerCase());
+          await setDoc(usernameRef, { uid: user.uid });
+          
+          // 6. Create the main user document (so the app doesn't break)
+          const userDocRef = doc(db, 'users', user.uid);
+          await setDoc(userDocRef, { 
+              username: username, 
+              email: email, 
+              entries: [] // Start with empty entries
+          }, { merge: true });
+
+          // 7. Success message
+          authMessageEl.style.color = 'var(--success)';
+          authMessageEl.textContent = `Verification email sent to ${email}. Please check your inbox!`;
+          
+          // Reset form by clicking the sign-in tab
+          tabSigninBtn.click();
+          registerUsernameEl.value = '';
+          registerEmailEl.value = '';
+          registerPasswordEl.value = '';
+
+      } catch (error) {
+          // Handle Firebase errors
+          authMessageEl.style.color = 'var(--danger)';
+          if (error.code === 'auth/email-already-in-use') {
+              authMessageEl.textContent = 'This email is already registered. Please sign in.';
+          } else if (error.code === 'auth/weak-password') {
+              authMessageEl.textContent = 'Password is too weak.';
+          } else {
+              console.error('Registration Error:', error);
+              authMessageEl.textContent = 'Error: ' + error.message;
+          }
+      }
   });
 
   // init
