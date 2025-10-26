@@ -33,6 +33,10 @@
       
       /* NEW EARNINGS COLOR */
       --earnings-color: #fbbd0a; /* Gold/Yellow for money */
+      /* NEW ADVANCE COLOR */
+      --advance-color: #f472b6; /* Pink/Magenta for advance */
+      /* NEW NET EARNINGS COLOR */
+      --net-earnings-color: var(--success); /* Green for final amount */
     }
     body.light-mode{
       --bg:#f7fbfc;--card:#fff;--text:#06202a;--muted:#4b5963;--accent:#0ea5a3;--accent-2:#7dd3fc;--glass:rgba(2,6,23,0.03);--shadow:0 8px 20px rgba(2,6,23,0.06);--table-border:rgba(2,6,23,0.06);
@@ -40,6 +44,8 @@
       --dayoff-border: #cc3333;
       --dayoff-text: #cc3333;
       --earnings-color: #e38200;
+      --advance-color: #db2777;
+      --net-earnings-color: var(--success);
     }
     
     /* General Styles */
@@ -124,7 +130,15 @@
         flex-direction: column;
         gap: 0;
     }
-    input[type=date],input[type=time],input[type=text]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
+    input[type=date],input[type=time],input[type=text],input[type=number]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
+    /* Input number hide arrows */
+    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    input[type=number] { -moz-appearance: textfield; } /* Firefox */
+
     .preview{color:var(--muted);font-size:13px}
 
     .btn{padding:10px 12px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
@@ -164,7 +178,7 @@
     .total-card{background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700; font-size: 15px;}
     .total-card span { color: var(--accent); font-size: 16px;}
     
-    /* NEW: Earnings Display (Updated for Toggle) */
+    /* UPDATED: Earnings Display Area */
     #earnings-display {
         background: var(--input-bg);
         padding: 10px 15px;
@@ -173,193 +187,83 @@
         font-weight: 700;
         font-size: 15px;
         border: 1px solid var(--table-border);
-        
-        /* NEW: Flex layout */
+        line-height: 1.6; /* Add some spacing */
+    }
+    #earnings-display div {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        gap: 5px;
     }
+    #earnings-amount-gross { color: var(--earnings-color); font-weight: 800; font-size: 16px; }
+    #earnings-amount-advance { color: var(--advance-color); font-weight: 800; font-size: 16px; }
+    #earnings-amount-net { color: var(--net-earnings-color); font-weight: 800; font-size: 18px; border-top: 1px dashed var(--muted); padding-top: 5px; margin-top: 5px;}
     
-    /* NEW: Label text style */
-    #earnings-label-text {
-        /* Inherits color and font-weight */
-    }
-
-    /* UPDATED: Target the value span */
-    #earnings-amount-value {
-        color: var(--earnings-color);
-        font-size: 16px;
-        font-weight: 800;
-        margin-left: auto; /* Pushes value and button to the right */
-    }
-    
-    /* NEW: Toggle button style */
+    /* Toggle button position */
     .earnings-toggle {
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-        padding: 0 2px;
-        color: var(--muted);
-        line-height: 1;
+        background: transparent; border: none; cursor: pointer; font-size: 18px; padding: 0 2px;
+        color: var(--muted); line-height: 1; margin-left: 8px;
     }
-    .earnings-toggle:hover {
-        color: var(--text);
-    }
+    .earnings-toggle:hover { color: var(--text); }
     
-    /* Earnings Position Fix */
-    .controls-top .earnings-wrapper {
-        order: 3; 
-        margin-left: 8px;
-    }
+    /* Position earnings wrapper */
+    .controls-top .earnings-wrapper { order: 3; margin-left: 8px; }
 
     /* =================================
        NEW: Cool & Clean Auth Card Design
     ================================= */
     .auth-card {
-        background: var(--card);
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        border: 1px solid var(--glass);
-        padding: 24px 28px;
-        width: 100%;
-        max-width: 400px;
-        animation: fadeIn 0.5s ease-out;
+        background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); border: 1px solid var(--glass);
+        padding: 24px 28px; width: 100%; max-width: 400px; animation: fadeIn 0.5s ease-out;
     }
-    
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .auth-card .auth-title {
-        text-align: center;
-        font-size: 24px;
-        margin-top: 0;
-        margin-bottom: 20px;
-        color: var(--text);
-    }
-    
-    .auth-tabs {
-        display: flex;
-        border-bottom: 1px solid var(--table-border);
-        margin-bottom: 24px;
-    }
-    
-    .auth-tab {
-        flex: 1;
-        background: transparent;
-        border: none;
-        color: var(--muted);
-        padding: 12px 10px;
-        font-size: 16px;
-        font-weight: 600;
-        cursor: pointer;
-        border-bottom: 2px solid transparent;
-        margin-bottom: -1px; /* Aligns with parent border */
-        transition: all 0.2s ease;
-    }
-    
-    .auth-tab.active {
-        color: var(--accent-2);
-        border-bottom-color: var(--accent-2);
-    }
-    
-    .auth-tab:not(.active):hover {
-        color: var(--text);
-    }
-    
-    .auth-pane-sub {
-        font-size: 14px;
-        color: var(--muted);
-        text-align: center;
-        margin-top: 0;
-        margin-bottom: 20px;
-    }
-
-    /* Ensure auth buttons look good in this layout */
-    .auth-card .auth-btn {
-        width: 100%;
-        max-width: 100%;
-        justify-content: center;
-    }
-    
-    /* Make form inputs full width inside card */
-    .auth-card .input-group {
-        width: 100%;
-        max-width: 100%;
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .auth-card .auth-title { text-align: center; font-size: 24px; margin-top: 0; margin-bottom: 20px; color: var(--text); }
+    .auth-tabs { display: flex; border-bottom: 1px solid var(--table-border); margin-bottom: 24px; }
+    .auth-tab { flex: 1; background: transparent; border: none; color: var(--muted); padding: 12px 10px;
+        font-size: 16px; font-weight: 600; cursor: pointer; border-bottom: 2px solid transparent;
+        margin-bottom: -1px; transition: all 0.2s ease; }
+    .auth-tab.active { color: var(--accent-2); border-bottom-color: var(--accent-2); }
+    .auth-tab:not(.active):hover { color: var(--text); }
+    .auth-pane-sub { font-size: 14px; color: var(--muted); text-align: center; margin-top: 0; margin-bottom: 20px; }
+    .auth-card .auth-btn { width: 100%; max-width: 100%; justify-content: center; }
+    .auth-card .input-group { width: 100%; max-width: 100%; }
     .auth-card .input-group input,
-    .auth-area input[type=email],
-    .auth-area input[type=password],
-    .auth-area input[type=text] {
-        width: 100%;
-        min-width: unset;
-        background: var(--input-bg);
+    .auth-area input[type=email], .auth-area input[type=password], .auth-area input[type=text] {
+        width: 100%; min-width: unset; background: var(--input-bg);
     }
-    
-    .auth-btn.primary {
-        justify-content: center;
-    }
-    
-    /* NEW: Divider Style */
-    .auth-divider {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 600;
-        margin: 20px 0;
-    }
-    .auth-divider::before,
-    .auth-divider::after {
-        content: '';
-        flex: 1;
-        border-bottom: 1px solid var(--table-border);
-    }
-    .auth-divider span {
-        padding: 0 10px;
-    }
+    .auth-btn.primary { justify-content: center; }
+    .auth-divider { display: flex; align-items: center; text-align: center; color: var(--muted);
+        font-size: 12px; font-weight: 600; margin: 20px 0; }
+    .auth-divider::before, .auth-divider::after { content: ''; flex: 1; border-bottom: 1px solid var(--table-border); }
+    .auth-divider span { padding: 0 10px; }
     /* =================================
        END of New Auth CSS
     ================================= */
     
     /* NEW: Admin Panel Style */
-    #admin-panel {
-        margin-top: 16px;
-        background: linear-gradient(180deg, var(--danger), #a13030);
-        border-color: #ff6060;
-    }
-    #admin-panel h2 {
-        margin-top: 0;
-        color: #fff;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding-bottom: 10px;
-    }
-    #admin-panel .input-group label {
-        color: #ffcfcf;
-    }
-    #admin-panel .input-group input {
-        background: var(--input-bg);
-    }
-    #admin-results {
-        margin-top: 15px; 
-        background: var(--bg); 
-        padding: 10px; 
-        border-radius: 8px; 
-        display:none;
-        color: var(--text);
-        line-height: 1.6;
-    }
-    #admin-results strong {
-        color: var(--accent-2);
-    }
+    #admin-panel { margin-top: 16px; background: linear-gradient(180deg, var(--danger), #a13030); border-color: #ff6060; }
+    #admin-panel h2 { margin-top: 0; color: #fff; border-bottom: 1px solid rgba(255, 255, 255, 0.2); padding-bottom: 10px; }
+    #admin-panel .input-group label { color: #ffcfcf; }
+    #admin-panel .input-group input { background: var(--input-bg); }
+    #admin-results { margin-top: 15px; background: var(--bg); padding: 10px; border-radius: 8px; display:none; color: var(--text); line-height: 1.6; }
+    #admin-results strong { color: var(--accent-2); }
+
+    /* NEW: Advance Payment Section */
+    .advance-section { margin-top: 20px; border-top: 1px solid var(--table-border); padding-top: 20px;}
+    .advance-section h3 { margin-top: 0; color: var(--advance-color); }
+    .advance-grid { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; margin-bottom: 10px;}
+    .advance-grid .input-group { flex: 1; min-width: 120px; }
+    .advance-grid .input-group.amount-group { flex: 0 1 150px; } /* Amount field smaller */
+    .advance-grid .input-group.note-group { flex: 2; } /* Note field larger */
+    .btn.advance-btn { background: var(--advance-color); color: #fff; }
+    
+    /* Style for advances table */
+    #advances-table { min-width: 500px; } /* Adjust min-width as needed */
+    #advances-table td:nth-child(2) { color: var(--advance-color); font-weight: 700; } /* Amount column style */
 
 
     /* GENERAL MOBILE FIXES */
     @media(max-width:640px){
-      .entry-grid{flex-direction:column;align-items:stretch}
+      .entry-grid, .advance-grid {flex-direction:column; align-items:stretch;} /* Make grids stack on mobile */
       .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
       .controls-top > div { flex-wrap: nowrap !important; }
       
@@ -367,32 +271,27 @@
       .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;} 
       .controls-top div:last-child { order: 3; margin-left: 0 !important; }
 
-      input[type=date],input[type=time],input[type=text],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
+      input[type=date],input[type=time],input[type=text],input[type=number],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
       .input-group { width: 100%; }
       table{min-width:600px}
+      #advances-table { min-width: 400px; } /* Adjust advances table for mobile */
       
       /* MOBILE HEADER FIX */
       header.app-head { padding-top: 50px; }
-      #signedState {
-        position: fixed; 
-        top: 0;
-        left: 0;
-        width: 100%;
-        border-radius: 0;
-        border-bottom: 1px solid var(--table-border);
-        box-shadow: 0 1px 5px rgba(0,0,0,0.2);
-        justify-content: flex-end; 
-      }
+      #signedState { position: fixed; top: 0; left: 0; width: 100%; border-radius: 0; border-bottom: 1px solid var(--table-border);
+          box-shadow: 0 1px 5px rgba(0,0,0,0.2); justify-content: flex-end; }
     }
 
     @media print{
       @page{size:A4 landscape;margin:12mm}
       body,html{background:#fff;color:#000}
       .card{background:#fff;box-shadow:none;border:none}
-      .controls-top,.entry-grid,button,[class*="chip"],#auth-area,#loading-screen,.right-controls,#signedState,#admin-panel{display:none}
+      .controls-top,.entry-grid,.advance-grid,button,[class*="chip"],#auth-area,#loading-screen,.right-controls,#signedState,#admin-panel{display:none} /* Hide advance input */
       table{min-width:0}
       thead th,tbody td{border:1px solid #ccc;padding:8px}
       th{background:#f2f2f2}
+      #advances-table { margin-top: 20px; } /* Keep advances table visible */
+      #earnings-display { border: 1px solid #ccc; padding: 10px; margin-top: 10px;} /* Style earnings for print */
     }
   </style>
 </head>
@@ -519,11 +418,9 @@
         
         <div class="earnings-wrapper">
             <div id="earnings-display">
-                <span id="earnings-label-text">ရရှိမည့်ငွေ:</span>
-                <span id="earnings-amount-value">0.00 ฿</span>
-                <button id="toggle-earnings" class="earnings-toggle" title="Toggle visibility">👁️</button>
-            </div>
+                </div>
         </div>
+        
         <div style="margin-left:auto;display:flex;gap:8px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
@@ -535,46 +432,73 @@
             <label id="date-label" for="date-input">Date</label>
             <input id="date-input" type="date" />
         </div>
-        
         <div class="input-group">
             <label id="start-label" for="start-input">IN</label>
             <input id="start-input" type="time" />
         </div>
-        
         <div class="input-group">
             <label id="end-label" for="end-input">OUT</label>
             <input id="end-input" type="time" />
         </div>
-        
         <div class="input-group" style="flex-grow: 1;">
             <label id="task-label" for="task-input">Task / notes (optional)</label>
             <input id="task-input" type="text" placeholder="" />
         </div>
-        
         <div class="preview" id="preview" style="align-self: flex-end;">Duration: 00:00 (0.00h)</div>
-
         <div style="display:flex;gap:8px;flex-wrap:wrap">
           <button id="add-btn" class="primary btn">➕ Add Entry</button>
           <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
         </div>
       </div>
+      
       <div class="table-wrap">
         <table id="entries-table" aria-describedby="month-label">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Start</th>
-              <th>End</th>
-              <th>Duration (H:M)</th>
-              <th>Rounded (hrs)</th>
-              <th>Task</th>
-              <th class="actions">Actions</th>
+              <th id="th-date">Date</th>
+              <th id="th-start">Start</th>
+              <th id="th-end">End</th>
+              <th id="th-duration">Duration (H:M)</th>
+              <th id="th-rounded">Rounded (hrs)</th>
+              <th id="th-task">Task</th>
+              <th class="actions" id="th-actions">Actions</th>
             </tr>
           </thead>
           <tbody id="entries-body"></tbody>
         </table>
       </div>
       
+      <div class="advance-section">
+          <h3 id="advance-title">ကြိုတင်ထုတ်ငွေများ (Advances)</h3>
+          <div class="advance-grid">
+              <div class="input-group">
+                  <label id="advance-date-label" for="advance-date">Date</label>
+                  <input id="advance-date" type="date" />
+              </div>
+              <div class="input-group amount-group">
+                  <label id="advance-amount-label" for="advance-amount">Amount</label>
+                  <input id="advance-amount" type="number" placeholder="0.00" step="0.01" />
+              </div>
+              <div class="input-group note-group">
+                  <label id="advance-note-label" for="advance-note">Note (optional)</label>
+                  <input id="advance-note" type="text" placeholder="" />
+              </div>
+              <button id="add-advance-btn" class="btn advance-btn">➕ Add Advance</button>
+          </div>
+          <div class="table-wrap">
+              <table id="advances-table">
+                  <thead>
+                      <tr>
+                          <th id="th-advance-date">Date</th>
+                          <th id="th-advance-amount">Amount</th>
+                          <th id="th-advance-note">Note</th>
+                          <th class="actions" id="th-advance-actions">Actions</th>
+                      </tr>
+                  </thead>
+                  <tbody id="advances-body"></tbody>
+              </table>
+          </div>
+      </div>
       <div class="footer" style="display:none;">
         <div class="total-card">Total Rounded Hours: <span id="total-footer">0.00</span></div>
       </div>
@@ -667,7 +591,7 @@
   const adminSearchInput = document.getElementById('admin-search-uid'); // Changed ID
   const adminResultsEl = document.getElementById('admin-results');
 
-  // App DOM
+  // App DOM (Entries)
   const dateEl = document.getElementById('date-input');
   const startEl = document.getElementById('start-input');
   const endEl = document.getElementById('end-input');
@@ -680,11 +604,10 @@
   const totalHeaderEl = document.getElementById('total-header'); 
   const totalEl = totalHeaderEl.querySelector('#total'); 
   
-  // UPDATED: New earnings DOM elements
+  // UPDATED: Earnings display area and toggle button
   const earningsDisplay = document.getElementById('earnings-display');
-  const earningsLabel = document.getElementById('earnings-label-text');
-  const earningsAmountValue = document.getElementById('earnings-amount-value');
-  const toggleEarningsBtn = document.getElementById('toggle-earnings');
+  // Removed label/amount/toggle specific vars here, will populate dynamically
+  const toggleEarningsBtn = document.getElementById('toggle-earnings'); // Only keep toggle button ref
   
   const exportBtn = document.getElementById('export-csv');
   const printBtn = document.getElementById('print-btn');
@@ -695,79 +618,100 @@
   const langButtons = document.getElementById('lang-buttons');
   const themeToggle = document.getElementById('theme-toggle');
 
-  // Input Labels for dynamic translation
+  // Input Labels for dynamic translation (Entries)
   const dateLabel = document.getElementById('date-label');
   const startLabel = document.getElementById('start-label');
   const endLabel = document.getElementById('end-label');
   const taskLabel = document.getElementById('task-label');
 
+  // NEW: Advance Payment DOM
+  const advanceDateEl = document.getElementById('advance-date');
+  const advanceAmountEl = document.getElementById('advance-amount');
+  const advanceNoteEl = document.getElementById('advance-note');
+  const addAdvanceBtn = document.getElementById('add-advance-btn');
+  const advancesBody = document.getElementById('advances-body');
+  const advanceTitle = document.getElementById('advance-title');
+  const advanceDateLabel = document.getElementById('advance-date-label');
+  const advanceAmountLabel = document.getElementById('advance-amount-label');
+  const advanceNoteLabel = document.getElementById('advance-note-label');
+  
+  // Table Header IDs for translation
+  const thDate = document.getElementById('th-date');
+  const thStart = document.getElementById('th-start');
+  const thEnd = document.getElementById('th-end');
+  const thDuration = document.getElementById('th-duration');
+  const thRounded = document.getElementById('th-rounded');
+  const thTask = document.getElementById('th-task');
+  const thActions = document.getElementById('th-actions');
+  const thAdvanceDate = document.getElementById('th-advance-date');
+  const thAdvanceAmount = document.getElementById('th-advance-amount');
+  const thAdvanceNote = document.getElementById('th-advance-note');
+  const thAdvanceActions = document.getElementById('th-advance-actions');
+
 
   // keys
-  const STORAGE = 'vann_v8_entries';
+  const STORAGE_ENTRIES = 'vann_v8_entries'; // Renamed
+  const STORAGE_ADVANCES = 'vann_v8_advances'; // New
   const THEME = 'vann_v8_theme';
   const LANG = 'vann_v8_lang';
   const MONTH = 'vann_v8_month';
-  const EARNINGS_HIDDEN = 'vann_v8_earnings_hidden';
+  const EARNINGS_HIDDEN = 'vann_v8_earnings_hidden'; // For gross earnings toggle
 
   // translations 
   const translations = {
     en: { 
+      // Existing
       app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', 
-      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off',
-      // NEW LABELS
-      date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
-      csv_user_label: 'User Name',
-      modal_title: 'Set Your Display Name',
-      modal_subtitle: 'This name will be used in reports.',
-      save_name: 'Save Name',
-      sign_out_btn: 'Sign out',
-      // NEW: Earnings
-      earnings_label: 'Total Earnings',
-      currency: '฿'
+      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off', date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
+      csv_user_label: 'User Name', modal_title: 'Set Your Display Name', modal_subtitle: 'This name will be used in reports.', save_name: 'Save Name', sign_out_btn: 'Sign out',
+      earnings_label: 'Total Earnings', currency: '฿', // Used for gross
+      // Table Headers
+      th_date: 'Date', th_start: 'Start', th_end: 'End', th_duration: 'Duration', th_rounded: 'Rounded (hrs)', th_task: 'Task', th_actions: 'Actions',
+      // New Advance Feature
+      advance_title: 'Salary Advances', advance_date_label: 'Date', advance_amount_label: 'Amount', advance_note_label: 'Note (optional)', advance_note_placeholder: 'Reason for advance...', add_advance: 'Add Advance', 
+      th_advance_date: 'Date', th_advance_amount: 'Amount', th_advance_note: 'Note', th_advance_actions: 'Actions',
+      alert_advance_fill: 'Please fill Date and Amount for advance.', alert_advance_amount: 'Advance amount must be a positive number.',
+      // Earnings Display
+      gross_earnings: 'Gross Earnings', total_advance: 'Total Advance', net_earnings: 'Net Earnings'
     },
     my: { 
-      app_title:'Thevann အချိန်မှတ်တမ်း', 
-      sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', 
-      add_entry:'မှတ်တမ်းထည့်မည်', 
-      add_dayoff:'နားရက်', 
-      export_csv:'CSV ထုတ်ယူမည်', 
-      print:'ပုံနှိပ်', 
-      duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', 
-      total_label:'စုစုပေါင်း ပတ်လည်နာရီ', 
-      alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
-      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်',
-      date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
-      csv_user_label: 'အသုံးပြုသူအမည်',
-      modal_title: 'မိမိအမည် သတ်မှတ်ပါ',
-      modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။',
-      save_name: 'အမည်သိမ်းမည်',
-      sign_out_btn: 'ထွက်မည်',
-      // NEW: Earnings
-      earnings_label: 'ရရှိမည့်ငွေ',
-      currency: '฿' 
+      app_title:'Thevann အချိန်မှတ်တမ်း', sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', add_entry:'မှတ်တမ်းထည့်မည်', add_dayoff:'နားရက်', export_csv:'CSV ထုတ်ယူမည်', print:'ပုံနှိပ်', duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', total_label:'စုစုပေါင်း ပတ်လည်နာရီ', alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
+      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်', date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
+      csv_user_label: 'အသုံးပြုသူအမည်', modal_title: 'မိမိအမည် သတ်မှတ်ပါ', modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။', save_name: 'အမည်သိမ်းမည်', sign_out_btn: 'ထွက်မည်',
+      earnings_label: 'စုစုပေါင်းရငွေ', currency: '฿', // Used for gross
+      // Table Headers
+      th_date: 'ရက်စွဲ', th_start: 'ဝင်ချိန်', th_end: 'ထွက်ချိန်', th_duration: 'ကြာချိန်', th_rounded: 'နာရီ', th_task: 'အလုပ်', th_actions: 'လုပ်ဆောင်ချက်',
+      // New Advance Feature
+      advance_title: 'ကြိုတင်ထုတ်ငွေများ', advance_date_label: 'ရက်စွဲ', advance_amount_label: 'ပမာဏ', advance_note_label: 'မှတ်စု (ထည့်ရန်မလိုပါ)', advance_note_placeholder: 'ထုတ်ယူသည့်အကြောင်းရင်း...', add_advance: 'ကြိုတင်ငွေထည့်မည်', 
+      th_advance_date: 'ရက်စွဲ', th_advance_amount: 'ပမာဏ', th_advance_note: 'မှတ်စု', th_advance_actions: 'လုပ်ဆောင်ချက်',
+      alert_advance_fill: 'ရက်စွဲ နှင့် ကြိုတင်ထုတ် ပမာဏ ထည့်ပါ။', alert_advance_amount: 'ကြိုတင်ထုတ် ပမာဏသည် အပေါင်းကိန်း ဖြစ်ရပါမည်။',
+      // Earnings Display
+      gross_earnings: 'စုစုပေါင်းဝင်ငွေ', total_advance: 'စုစုပေါင်း ကြိုထုတ်ငွေ', net_earnings: 'လက်ကျန်ရငွေ'
     },
     th: { 
       app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
-      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด',
-      date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
-      csv_user_label: 'ชื่อผู้ใช้',
-      modal_title: 'กำหนดชื่อแสดงผล',
-      modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน',
-      save_name: 'บันทึกชื่อ',
-      sign_out_btn: 'ออกจากระบบ',
-      // NEW: Earnings
-      earnings_label: 'รายได้รวม',
-      currency: '฿'
+      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด', date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
+      csv_user_label: 'ชื่อผู้ใช้', modal_title: 'กำหนดชื่อแสดงผล', modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน', save_name: 'บันทึกชื่อ', sign_out_btn: 'ออกจากระบบ',
+      earnings_label: 'รายได้รวม', currency: '฿', // Used for gross
+      // Table Headers
+      th_date: 'วันที่', th_start: 'เริ่ม', th_end: 'สิ้นสุด', th_duration: 'ระยะเวลา', th_rounded: 'ชม. (ปัดเศษ)', th_task: 'งาน', th_actions: 'การกระทำ',
+      // New Advance Feature
+      advance_title: 'เบิกล่วงหน้า', advance_date_label: 'วันที่', advance_amount_label: 'จำนวนเงิน', advance_note_label: 'หมายเหตุ (ไม่บังคับ)', advance_note_placeholder: 'เหตุผลในการเบิก...', add_advance: 'เพิ่มรายการเบิก', 
+      th_advance_date: 'วันที่', th_advance_amount: 'จำนวนเงิน', th_advance_note: 'หมายเหตุ', th_advance_actions: 'การกระทำ',
+      alert_advance_fill: 'กรุณากรอก วันที่ และ จำนวนเงิน ที่เบิก', alert_advance_amount: 'จำนวนเงินที่เบิกต้องเป็นค่าบวก',
+      // Earnings Display
+      gross_earnings: 'รายได้รวม', total_advance: 'ยอดเบิกล่วงหน้า', net_earnings: 'รายรับสุทธิ'
     }
   };
 
   // state
   let entries = [];
+  let advances = []; // New state for advance payments
   let editId = null;
   let selectedYear, selectedMonth;
   let currentLang = localStorage.getItem(LANG) || 'en';
   let currentUser = null; // firebase user object
-  let isEarningsHidden = false;
+  let isEarningsHidden = false; // Now applies to gross earnings
 
   // helpers
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
@@ -776,70 +720,102 @@
   // --- Calculate rounded hours based on minutes ---
   function computeRounded(raw){ 
     if(raw<=0) return 0.00; 
-    const h=Math.floor(raw/60); 
-    const m=raw%60; 
-    let H=h; 
-    
-    if(m>=0 && m<=29) {
-        return +(H).toFixed(2); // Round down to previous hour
-    } 
-    else if(m>=30 && m<=39) {
-        return +(H + 0.5).toFixed(2); // Round to hour + 0.5
-    } 
-    else if(m>=40 && m<=59){ 
-        return +(H + 1).toFixed(2); // Round up to next full hour
-    }
-    
-    return +(H).toFixed(2); // Default fallback (should not happen)
+    const h=Math.floor(raw/60); const m=raw%60; let H=h; 
+    if(m>=0 && m<=29) { return +(H).toFixed(2); } 
+    else if(m>=30 && m<=39) { return +(H + 0.5).toFixed(2); } 
+    else if(m>=40 && m<=59){ return +(H + 1).toFixed(2); }
+    return +(H).toFixed(2); 
   }
   // --------------------------------------------------
 
   // --- Check if username is already taken in Firestore ---
   async function isUsernameTaken(username) {
-      // Store usernames in lowercase for case-insensitivity
       const usernameRef = doc(db, 'usernames', username.toLowerCase());
       const docSnap = await getDoc(usernameRef);
       return docSnap.exists();
   }
   // --------------------------------------------------------
 
-  // --- Update visibility of earnings amount ---
-  function updateEarningsVisibility() {
+  // --- Update visibility/calculation of earnings (Gross, Advance, Net) ---
+  function updateEarningsDisplay() {
       const t = translations[currentLang];
       const currency = t.currency || '฿';
       
-      if (isEarningsHidden) {
-          // Show asterisks and "hidden" icon
-          earningsAmountValue.textContent = `******** ${currency}`;
-          toggleEarningsBtn.textContent = '🙈';
-      } else {
-          // Show real value and "visible" icon
-          const total = parseFloat(totalEl.textContent) || 0;
-          const totalEarnings = (total * HOURLY_RATE).toFixed(2);
-          earningsAmountValue.textContent = `${totalEarnings} ${currency}`;
-          toggleEarningsBtn.textContent = '👁️';
+      const totalHours = parseFloat(totalEl.textContent) || 0;
+      const grossEarnings = (totalHours * HOURLY_RATE);
+      
+      // Calculate total advance for the current month
+      let totalAdvance = 0;
+      const filteredAdvances = advances.filter(a => {
+          const d = new Date(a.date);
+          return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
+      });
+      filteredAdvances.forEach(a => totalAdvance += a.amount);
+      
+      const netEarnings = grossEarnings - totalAdvance;
+
+      const hiddenValue = `******** ${currency}`;
+      
+      earningsDisplay.innerHTML = `
+          <div>
+              <span>${t.gross_earnings}:</span>
+              <span id="earnings-amount-gross">${isEarningsHidden ? hiddenValue : grossEarnings.toFixed(2) + ' ' + currency}</span>
+              <button id="toggle-earnings-visibility" class="earnings-toggle" title="Toggle visibility">${isEarningsHidden ? '🙈' : '👁️'}</button>
+          </div>
+          <div>
+              <span>${t.total_advance}:</span>
+              <span id="earnings-amount-advance" style="color: var(--advance-color);">${totalAdvance.toFixed(2)} ${currency}</span>
+          </div>
+          <div>
+              <span style="font-weight: 800;">${t.net_earnings}:</span>
+              <span id="earnings-amount-net" style="color: var(--net-earnings-color);">${netEarnings.toFixed(2)} ${currency}</span>
+          </div>
+      `;
+
+      // Re-attach listener for the toggle button inside the dynamic HTML
+      const toggleBtn = document.getElementById('toggle-earnings-visibility');
+      if (toggleBtn) {
+          toggleBtn.addEventListener('click', toggleEarningsVisibility);
       }
+  }
+  
+  // Separate function to handle the toggle click
+  function toggleEarningsVisibility() {
+      isEarningsHidden = !isEarningsHidden;
+      localStorage.setItem(EARNINGS_HIDDEN, isEarningsHidden);
+      updateEarningsDisplay(); // Re-render the earnings display
   }
   // ---------------------------------------------
 
-  // local storage functions
-  function saveLocal(){ localStorage.setItem(STORAGE, JSON.stringify(entries)); render(); }
-  function loadLocal(){ const raw = localStorage.getItem(STORAGE); entries = raw? JSON.parse(raw): []; }
+  // --- Local storage functions (Updated for entries and advances) ---
+  function saveLocal(){ 
+      localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(entries)); 
+      localStorage.setItem(STORAGE_ADVANCES, JSON.stringify(advances)); 
+      render(); 
+  }
+  function loadLocal(){ 
+      const rawEntries = localStorage.getItem(STORAGE_ENTRIES); 
+      entries = rawEntries ? JSON.parse(rawEntries) : []; 
+      const rawAdvances = localStorage.getItem(STORAGE_ADVANCES);
+      advances = rawAdvances ? JSON.parse(rawAdvances) : [];
+  }
+  // -----------------------------------------------------------------
 
-  // --- Firestore helper functions ---
-  // Save user entries to Firestore
+  // --- Firestore helper functions (Updated for entries and advances) ---
+  // Save user entries AND advances to Firestore
   async function saveToFirestore(uid){
     if(!uid) return;
     try{
       const d = doc(db, 'users', uid);
-      await setDoc(d, { entries }, { merge: true });
-      // console.log('Saved to Firestore');
+      // Save both arrays
+      await setDoc(d, { entries, advances }, { merge: true }); 
+      // console.log('Saved entries and advances to Firestore');
     }catch(err){
       console.error('saveToFirestore error:', err);
     }
   }
   
-  // Load user entries from Firestore
+  // Load user entries AND advances from Firestore
   async function loadFromFirestore(uid){
     if(!uid) return null;
     try{
@@ -847,222 +823,162 @@
       const snap = await getDoc(d);
       if(snap.exists()){
         const data = snap.data();
-        // Return entries array if it exists and is not empty
-        if(Array.isArray(data.entries) && data.entries.length>0){
-          return data.entries;
-        }
-        return []; // Return empty array if entries field is empty or missing
+        // Return both arrays (or empty arrays if they don't exist)
+        return {
+            entries: (Array.isArray(data.entries) ? data.entries : []),
+            advances: (Array.isArray(data.advances) ? data.advances : [])
+        };
       } else {
-        return []; // Return empty array if user document doesn't exist
+        // User document doesn't exist, return empty arrays
+        return { entries: [], advances: [] }; 
       }
     }catch(err){
       console.error('loadFromFirestore error:', err);
       return null; // Return null on error
     }
   }
-  // ----------------------------------
+  // ------------------------------------------------------------------
 
   // --- Handle first-time username setup ---
   async function handleUsernameSetup(user) {
-    // Show username modal
     usernameModal.style.display = 'flex';
-    // Pre-fill with part of email if display name is empty
     usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name');
-    
-    // Update modal texts based on current language
     const t = translations[currentLang];
     document.getElementById('modal-title').textContent = t.modal_title;
     document.getElementById('modal-subtitle').textContent = t.modal_subtitle;
     document.getElementById('save-username-btn').textContent = t.save_name;
   }
-  
-  // Save username from modal
   saveUsernameBtn.addEventListener('click', async () => {
       const newName = usernameInputField.value.trim();
-      if (!newName) {
-          alert('Please enter a name.');
-          return;
-      }
+      if (!newName) { alert('Please enter a name.'); return; }
       if (currentUser) {
           try {
-              // Update display name in Firebase Auth profile
-              await updateProfile(currentUser, {
-                  displayName: newName
-              });
-              // Update local state and hide modal
+              await updateProfile(currentUser, { displayName: newName });
               currentUser.displayName = newName;
               usernameModal.style.display = 'none';
-              // Re-run sign-in logic to load data etc.
               handleUserSignedIn(currentUser); 
-          } catch (error) {
-              console.error('Error updating profile:', error);
-              alert('Failed to save name: ' + error.message);
-          }
+          } catch (error) { console.error('Error updating profile:', error); alert('Failed to save name: ' + error.message); }
       }
   });
   // ----------------------------------------
 
   // --- UI State Control ---
-  // Show loading screen
   function showLoadingState(){
-      authArea.style.display = 'none'; // Hide auth area
-      appContent.style.display = 'none'; // Hide main app
-      signedState.style.display = 'none'; // Hide signed-in state
-      usernameModal.style.display = 'none'; // Hide username modal
-      loadingScreen.style.display = 'block'; // Show loading screen
+      authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none';
+      usernameModal.style.display = 'none'; loadingScreen.style.display = 'block'; 
       loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...';
       loadingScreen.querySelector('p').textContent = 'Checking authentication status...';
   }
+  // ------------------------
 
   // --- Handle User Signed In ---
   async function handleUserSignedIn(user){
     currentUser = user;
     const uid = user.uid;
     
-    // --- Check for Email Verification (for non-Google users) ---
+    // --- Check for Email Verification ---
     if (!user.emailVerified && !user.providerData.some(p => p.providerId === 'google.com')) {
         showLoadingState();
         loadingScreen.querySelector('h2').innerHTML = 'Email Verification Required';
         loadingScreen.querySelector('p').textContent = `A verification link was sent to ${user.email}. Please check your inbox and verify your account.`;
-        
-        // Hide other elements
-        authArea.style.display = 'none';
-        appContent.style.display = 'none';
-        signedState.style.display = 'none';
-        
-        // Sign them out to prevent access until verified
+        authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none';
         try { await signOut(auth); } catch(e) { console.error("Sign out error", e); }
-        
-        return; // Stop further execution
+        return; 
     }
     
-    // --- Check for Display Name (Prompt setup if missing) ---
+    // --- Check for Display Name ---
     if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) {
         await handleUsernameSetup(user);
-        return; // Stop further execution until name is set
+        return; 
     }
     
     // --- Proceed if verified and display name is set ---
     signedText.textContent = `Signed in: ${user.displayName}`;
-    signedState.style.display = 'flex'; // Show signed-in info
-    authArea.style.display = 'none';    // Hide auth card
+    signedState.style.display = 'flex'; authArea.style.display = 'none';    
+    appContent.style.display = 'block'; loadingScreen.style.display = 'none'; 
     
-    // Show the main app content
-    appContent.style.display = 'block';
-    loadingScreen.style.display = 'none'; // Hide loading screen
+    // --- Show Admin Panel ---
+    adminPanel.style.display = (user.uid === ADMIN_UID) ? 'block' : 'none';
     
-    // --- Show Admin Panel if user is Admin ---
-    if (user.uid === ADMIN_UID) {
-        adminPanel.style.display = 'block';
-    } else {
-        adminPanel.style.display = 'none';
-    }
-    // -----------------------------------------
-
-    // --- Load user data (Firestore or Local) ---
-    const cloud = await loadFromFirestore(uid);
-    if(cloud === null){ // Firestore error
+    // --- Load user data (Entries AND Advances) ---
+    const cloudData = await loadFromFirestore(uid);
+    if(cloudData === null){ // Firestore error
       console.warn('Could not read from Firestore — using local data');
-      loadLocal();
-    } else if(Array.isArray(cloud) && cloud.length>0){ // Firestore data found
-      entries = cloud;
-      saveLocal(); // Sync to local storage
-    } else { // No Firestore data, check local
-      loadLocal();
-      if(Array.isArray(entries) && entries.length>0){
-        // If local has data but cloud doesn't, save local to cloud
-        await saveToFirestore(uid); 
+      loadLocal(); // Load both entries and advances from local
+    } else { // Firestore data (or empty arrays) received
+      entries = cloudData.entries;
+      advances = cloudData.advances;
+      // Check if local data needs syncing UP (only if cloud was empty but local wasn't)
+      if (cloudData.entries.length === 0 && cloudData.advances.length === 0) {
+          const rawLocalEntries = localStorage.getItem(STORAGE_ENTRIES);
+          const localEntries = rawLocalEntries ? JSON.parse(rawLocalEntries) : [];
+          const rawLocalAdvances = localStorage.getItem(STORAGE_ADVANCES);
+          const localAdvances = rawLocalAdvances ? JSON.parse(rawLocalAdvances) : [];
+          if (localEntries.length > 0 || localAdvances.length > 0) {
+              entries = localEntries; // Use local data
+              advances = localAdvances;
+              await saveToFirestore(uid); // Sync local up to cloud
+          }
       }
-    }
-    render(); // Render the UI
+      saveLocal(); // Sync cloud data down to local storage & render
+    } 
+    // Initial render is triggered by saveLocal()
   }
 
   // --- Handle User Signed Out ---
   function handleUserSignedOut(){
     currentUser = null;
-    signedState.style.display = 'none'; // Hide signed-in info
-    usernameModal.style.display = 'none'; // Hide username modal
-    authArea.style.display = 'flex';   // Show auth card
+    signedState.style.display = 'none'; usernameModal.style.display = 'none'; authArea.style.display = 'flex';   
+    appContent.style.display = 'none'; loadingScreen.style.display = 'none'; 
+    adminPanel.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = '';
     
-    // Hide the main app content
-    appContent.style.display = 'none';
-    loadingScreen.style.display = 'none'; // Hide loading screen
-    
-    // --- Hide Admin Panel on sign out ---
-    adminPanel.style.display = 'none';
-    adminResultsEl.style.display = 'none';
-    adminSearchInput.value = '';
-    // ----------------------------------
-
     // --- Clear user-specific data from local storage ---
-    localStorage.removeItem(STORAGE); 
+    localStorage.removeItem(STORAGE_ENTRIES); 
+    localStorage.removeItem(STORAGE_ADVANCES);
     
-    loadLocal(); // Reload (should be empty now)
+    loadLocal(); // Reset state arrays to empty
     
-    // --- Reset auth tabs to default ---
+    // --- Reset auth tabs ---
     if (tabSigninBtn) {
-        tabSigninBtn.classList.add('active');
-        tabRegisterBtn.classList.remove('active');
-        signinPane.style.display = 'block';
-        registerPane.style.display = 'none';
-        authMessageEl.textContent = ''; // Clear any old messages
+        tabSigninBtn.classList.add('active'); tabRegisterBtn.classList.remove('active');
+        signinPane.style.display = 'block'; registerPane.style.display = 'none';
+        authMessageEl.textContent = ''; 
     }
-    
-    render(); // Re-render (will likely show nothing as user is null)
+    render(); // Re-render (will show auth screen)
   }
 
   // --- Firebase Auth State Listener ---
-  // This runs whenever the user's login state changes (login, logout, page load)
   onAuthStateChanged(auth, async (user) => {
-    if(user){
-      await handleUserSignedIn(user);
-    } else {
-      await handleUserSignedOut();
-    }
+    if(user){ await handleUserSignedIn(user); } 
+    else { handleUserSignedOut(); }
   });
+  // ------------------------------------
 
   // --- Sign In/Out Button Listeners ---
   googleSignInBtn.addEventListener('click', async ()=>{
     showLoadingState(); 
-    try{
-      await signInWithPopup(auth, provider);
-      // onAuthStateChanged will handle the rest
-    }catch(err){
-      alert('Google sign-in failed: ' + err.message);
-      handleUserSignedOut(); // Reset UI on failure
-    }
+    try{ await signInWithPopup(auth, provider); }
+    catch(err){ alert('Google sign-in failed: ' + err.message); handleUserSignedOut(); }
   });
-  
   signOutBtn.addEventListener('click', async ()=>{
-    try{
-      await signOut(auth);
-      // onAuthStateChanged will handle the rest
-    }catch(err){
-      console.error(err);
-    }
+    try{ await signOut(auth); } catch(err){ console.error(err); }
   });
   // ------------------------------------
 
-  // --- Update duration preview when time inputs change ---
+  // --- Update duration preview ---
   function updatePreview(){ 
       const s=startEl.value, e=endEl.value; 
       if(s && e){ 
           const sM=parseHM(s), eM=parseHM(e); 
-          if(sM==null||eM==null){ 
-              previewEl.textContent = translations[currentLang].duration_default; 
-              return; 
-          } 
-          let diff=eM - sM; 
-          if(diff<0) diff+=24*60; // Handle overnight shifts
+          if(sM==null||eM==null){ previewEl.textContent = translations[currentLang].duration_default; return; } 
+          let diff=eM - sM; if(diff<0) diff+=24*60; 
           previewEl.textContent = `Duration: ${fmtHM(diff)} (${computeRounded(diff).toFixed(2)}h)` 
-      } else { 
-          previewEl.textContent = translations[currentLang].duration_default 
-      } 
+      } else { previewEl.textContent = translations[currentLang].duration_default } 
   }
   [startEl,endEl].forEach(i=>i.addEventListener('input', updatePreview));
-  // --------------------------------------------------------
+  // -----------------------------
 
-  // --- Render the main table and totals ---
+  // --- Render the main UI (tables, totals, etc.) ---
   function render(){
     // Don't render if user is not logged in
     if (!currentUser) {
@@ -1071,232 +987,164 @@
         return;
     }
       
-    entriesBody.innerHTML = ''; // Clear existing table rows
-    let total = 0;
-    
-    // Filter entries for the currently selected month and year
-    const filtered = entries.filter(r=>{
+    // --- Render Entries Table ---
+    entriesBody.innerHTML = ''; 
+    let totalHours = 0;
+    const filteredEntries = entries.filter(r=>{
       const d = new Date(r.date);
       return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth;
     });
-
-    // Sort entries by date (newest first), then by ID (newest first)
-    filtered.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
-    
+    filteredEntries.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
     const t = translations[currentLang]; 
     const dayOffText = t.day_off_text || 'Day Off';
-
-    // Loop through filtered entries and create table rows
-    for(const row of filtered){
+    for(const row of filteredEntries){
       const tr = document.createElement('tr');
-      if(row.isDayOff) tr.classList.add('day-off'); // Add special class for day off
-      
-      // Determine display values (handle day off entries)
+      if(row.isDayOff) tr.classList.add('day-off'); 
       const start = row.isDayOff? dayOffText : row.start;
       const end = row.isDayOff? dayOffText : row.end;
       const duration = row.isDayOff? dayOffText : row.duration;
       const rounded = row.isDayOff? 0 : row.rounded;
       const taskDisplay = row.isDayOff ? dayOffText : row.task || '';
-
-      // Set inner HTML for the table row
-      tr.innerHTML = `
-        <td>${row.date}</td>
-        <td>${start}</td>
-        <td>${end}</td>
-        <td>${duration}</td>
-        <td>${rounded.toFixed(2)}</td>
-        <td class="${row.isDayOff? 'day-off-task':''}">${taskDisplay}</td>
-        <td class="actions">
-            ${row.isDayOff? 
-                `<button class="chip del" data-id="${row.id}">${t.del}</button>` 
-              : `<button class="chip edit" data-id="${row.id}">${t.edit}</button><button class="chip del" data-id="${row.id}">${t.del}</button>`
-            }
-        </td>
-      `;
+      tr.innerHTML = `<td>${row.date}</td><td>${start}</td><td>${end}</td><td>${duration}</td><td>${rounded.toFixed(2)}</td><td class="${row.isDayOff? 'day-off-task':''}">${taskDisplay}</td><td class="actions">${row.isDayOff? `<button class="chip del" data-type="entry" data-id="${row.id}">${t.del}</button>` : `<button class="chip edit" data-id="${row.id}">${t.edit}</button><button class="chip del" data-type="entry" data-id="${row.id}">${t.del}</button>`}</td>`;
       entriesBody.appendChild(tr);
-      total += rounded; // Add to total hours
+      totalHours += rounded; 
     }
-
-    totalEl.textContent = total.toFixed(2); // Update total hours display
+    totalEl.textContent = totalHours.toFixed(2); // Update total hours display
     
-    // Set month label based on selected year/month and current language
+    // --- Render Advances Table ---
+    advancesBody.innerHTML = '';
+    const filteredAdvances = advances.filter(a => {
+        const d = new Date(a.date);
+        return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
+    });
+    filteredAdvances.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
+    for (const row of filteredAdvances) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td>${row.date}</td>
+            <td>${row.amount.toFixed(2)} ${t.currency}</td>
+            <td>${row.note || ''}</td>
+            <td class="actions"><button class="chip del" data-type="advance" data-id="${row.id}">${t.del}</button></td>
+        `;
+        advancesBody.appendChild(tr);
+    }
+    
+    // --- Update Month Label ---
     const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang];
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     
-    applyLanguageTexts(); // Apply translations to UI elements
+    // --- Apply Translations and Update Earnings Display ---
+    applyLanguageTexts(); 
   }
-  // ----------------------------------------
+  // ----------------------------------------------------
 
   // --- Save data to local storage and Firestore ---
   async function saveAll(){
-    saveLocal(); // Saves to localStorage and triggers render()
+    // No need to call render() here, saveLocal does it.
+    localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(entries)); 
+    localStorage.setItem(STORAGE_ADVANCES, JSON.stringify(advances)); 
+    render(); // Render after updating local state
     if(currentUser){
-      await saveToFirestore(currentUser.uid); // Save to Firestore if logged in
+      await saveToFirestore(currentUser.uid); // Save both arrays to Firestore
     }
   }
   // ----------------------------------------------
 
   // --- Add/Update Entry Button Listener ---
   addBtn.addEventListener('click', async ()=>{
-    const date = dateEl.value; 
-    const s = startEl.value; 
-    const e = endEl.value; 
-    const task = taskEl.value.trim();
-    
-    // Validate inputs
+    const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim();
     if(!date || !s || !e) return alert(translations[currentLang].alert_fill);
-    
-    const sM = parseHM(s), eM = parseHM(e); // Parse times to minutes
-    if(sM==null||eM==null) return alert('Invalid time');
-    
-    let diff = eM - sM; if(diff<0) diff += 24*60; // Calculate duration in minutes
-    
-    const formatted = fmtHM(diff); // Format duration as HH:MM
-    const rounded = computeRounded(diff); // Calculate rounded hours
-    
-    if(editId){ // If editing existing entry
+    const sM = parseHM(s), eM = parseHM(e); if(sM==null||eM==null) return alert('Invalid time');
+    let diff = eM - sM; if(diff<0) diff += 24*60; 
+    const formatted = fmtHM(diff); const rounded = computeRounded(diff);
+    if(editId){ 
       const idx = entries.findIndex(x=>x.id===editId);
-      if(idx>-1){ 
-          entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; 
-          editId = null; // Clear edit mode
-          addBtn.textContent = '➕ ' + translations[currentLang].add_entry; // Reset button text
-      }
-    } else { // If adding new entry
-      entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false });
-    }
-    formReset(); // Clear the input form
-    await saveAll(); // Save data
+      if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = '➕ ' + translations[currentLang].add_entry; }
+    } else { entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }); }
+    formReset(); await saveAll(); 
   });
+  // ----------------------------------------
 
-  // --- Reset the input form ---
+  // --- Reset the entry input form ---
   function formReset(){ 
-    // Set date to current month/year, but don't change the day
     dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28)); 
-    startEl.value=''; 
-    endEl.value=''; 
-    taskEl.value=''; 
-    
-    // Update task placeholder based on language
+    startEl.value=''; endEl.value=''; taskEl.value=''; 
     taskEl.placeholder = translations[currentLang].task_placeholder;
-    
     previewEl.textContent = translations[currentLang].duration_default; 
-    addBtn.textContent = '➕ ' + translations[currentLang].add_entry; // Reset button text
-    editId = null; // Ensure edit mode is cleared
+    addBtn.textContent = '➕ ' + translations[currentLang].add_entry; 
+    editId = null; 
   }
-  // ----------------------------
+  // ----------------------------------
 
   // --- Add Day Off Button Listener ---
   dayOffBtn.addEventListener('click', async ()=>{
-    const date = dateEl.value; 
-    if(!date) return alert(translations[currentLang].alert_fill);
-    
+    const date = dateEl.value; if(!date) return alert(translations[currentLang].alert_fill);
     const dayOffText = translations[currentLang].day_off_text || 'Day Off';
-    
-    // Check if a day off already exists for this date
     const existingDayOff = entries.some(x => x.date === date && x.isDayOff);
-
     if (existingDayOff) {
-        // If exists, remove it (toggle off)
         entries = entries.filter(x => !(x.date === date && x.isDayOff));
-        // Also remove any regular entries on that date for cleanliness
         entries = entries.filter(x => x.date !== date); 
     } else {
-        // If not exists, add it (toggle on)
-        // Check if regular entries exist and confirm deletion
         const regularEntries = entries.filter(x => x.date === date && !x.isDayOff);
-        if (regularEntries.length > 0 && !confirm(`There are ${regularEntries.length} regular entries on ${date}. Do you want to delete them and mark this day as Day Off?`)) {
-            return; // User cancelled
-        }
-        
-        // Delete any regular entries for this date
+        if (regularEntries.length > 0 && !confirm(`There are ${regularEntries.length} regular entries on ${date}. Do you want to delete them and mark this day as Day Off?`)) return;
         entries = entries.filter(x => x.date !== date);
-
-        // Add the new Day Off entry
         entries.push({ id: Date.now(), date, start:'', end:'', duration:'00:00', rounded:0, task: dayOffText, isDayOff:true });
     }
-
-    formReset(); // Clear input form
-    await saveAll(); // Save data
+    formReset(); await saveAll(); 
   });
   // ---------------------------------
 
-  // --- Edit/Delete Button Listener (Event Delegation) ---
-  entriesBody.addEventListener('click', async (ev)=>{
-    const idStr = ev.target.getAttribute('data-id'); 
-    if(!idStr) return; // Ignore clicks not on buttons with data-id
-    
-    const id = Number(idStr);
-    const t = translations[currentLang];
+  // --- Unified Edit/Delete Listener (Event Delegation for BOTH tables) ---
+  appContent.addEventListener('click', async (ev) => {
+      // Handle Edit Entry
+      if (ev.target.classList.contains('edit')) {
+          const idStr = ev.target.getAttribute('data-id');
+          if (!idStr) return;
+          const id = Number(idStr);
+          const idx = entries.findIndex(x => x.id === id);
+          if (idx === -1) return;
+          const r = entries[idx];
+          if (r.isDayOff) return alert('Cannot edit Day Off');
+          dateEl.value = r.date; startEl.value = r.start; endEl.value = r.end; taskEl.value = r.task;
+          editId = id; addBtn.textContent = '💾 Save'; updatePreview();
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
 
-    // --- Delete Action ---
-    if(ev.target.classList.contains('del')){ 
-      if(!confirm('Delete this entry?')) return; // Confirm deletion
-      entries = entries.filter(x=>x.id!==id); // Remove entry from array
-      await saveAll(); // Save changes
-    }
-    // --- Edit Action ---
-    if(ev.target.classList.contains('edit')){ 
-      const idx = entries.findIndex(x=>x.id===id); 
-      if(idx===-1) return; // Entry not found
-      
-      const r = entries[idx]; 
-      if(r.isDayOff) return alert('Cannot edit Day Off'); // Prevent editing day off entries
-      
-      // Populate form with entry data
-      dateEl.value = r.date; 
-      startEl.value = r.start; 
-      endEl.value = r.end; 
-      taskEl.value = r.task; 
-      
-      editId = id; // Set edit mode
-      addBtn.textContent = '💾 Save'; // Change button text to "Save"
-      updatePreview(); // Update duration preview
-      window.scrollTo({top:0,behavior:'smooth'}); // Scroll to top
-    }
+      // Handle Delete (Entry or Advance)
+      if (ev.target.classList.contains('del')) {
+          const idStr = ev.target.getAttribute('data-id');
+          const type = ev.target.getAttribute('data-type'); // 'entry' or 'advance'
+          if (!idStr || !type) return;
+          if (!confirm('Delete this item?')) return;
+          
+          const id = Number(idStr);
+          if (type === 'entry') {
+              entries = entries.filter(x => x.id !== id);
+          } else if (type === 'advance') {
+              advances = advances.filter(x => x.id !== id);
+          }
+          await saveAll(); // Save changes for either type
+      }
   });
-  // -----------------------------------------------------
+  // -------------------------------------------------------------------
 
-  // --- Export CSV Button Listener ---
+  // --- Export CSV Button Listener (No changes needed for advances yet) ---
   exportBtn.addEventListener('click', ()=>{
-    // Filter entries for the current month
     const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     if(filtered.length===0) return alert('No data to export for this month');
-    
-    const t = translations['en']; // Use English headers for CSV compatibility
-    const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
+    const t = translations['en']; const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest';
     const userLabel = translations[currentLang].csv_user_label || 'User Name';
     const totalEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2);
     const currency = translations[currentLang].currency || '฿';
-    
-    // CSV Header
     const header=['Date','Start','End','Duration','Rounded Hours','Task'];
-    let csv = `${userLabel}:,${userName}\n\n`; // Add user name at the top
-    csv += header.join(',') + '\n';
-    
-    // Add each entry row
-    filtered.forEach(r=> csv += [
-        r.date, 
-        r.isDayOff? 'Day Off': r.start, 
-        r.isDayOff? 'Day Off': r.end, 
-        r.isDayOff? 'Day Off': r.duration, 
-        r.isDayOff? '0.00': r.rounded.toFixed(2), 
-        `"${(r.task||'').replace(/"/g,'""')}"` // Handle quotes in task names
-    ].join(',') + '\n');
-    
-    // Add totals at the bottom
+    let csv = `${userLabel}:,${userName}\n\n`; csv += header.join(',') + '\n';
+    filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n');
     csv += `\n${translations[currentLang].total_label},,, ,${totalEl.textContent}\n`;
-    csv += `${translations[currentLang].earnings_label},,, ,${totalEarnings} ${currency}\n`;
-
-    // Create and trigger download link
+    csv += `${translations[currentLang].earnings_label},,, ,${totalEarnings} ${currency}\n`; // Still shows gross
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-    const a = document.createElement('a'); 
-    a.href = URL.createObjectURL(blob); 
-    a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; 
-    document.body.appendChild(a); 
-    a.click(); 
-    a.remove();
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove();
   });
-  // --------------------------------
+  // -----------------------------------------------------------------
 
   // --- Print Button Listener ---
   printBtn.addEventListener('click', ()=> window.print());
@@ -1311,23 +1159,17 @@
   // --- Theme Toggle ---
   function applyTheme(){ 
     const t = localStorage.getItem(THEME) || 'dark'; 
-    if(t==='light'){ 
-      document.body.classList.add('light-mode'); 
-      themeToggle.textContent='☀️'; 
-    } else { 
-      document.body.classList.remove('light-mode'); 
-      themeToggle.textContent='🌙'; 
-    } 
+    if(t==='light'){ document.body.classList.add('light-mode'); themeToggle.textContent='☀️'; } 
+    else { document.body.classList.remove('light-mode'); themeToggle.textContent='🌙'; } 
   }
   themeToggle.addEventListener('click', ()=>{ 
     const now = document.body.classList.toggle('light-mode')? 'light':'dark'; 
-    localStorage.setItem(THEME, now); 
-    applyTheme(); 
+    localStorage.setItem(THEME, now); applyTheme(); 
   });
   // -------------------
 
   // --- Language Switcher ---
-  // Apply translated text to various UI elements
+  // Apply translated text to various UI elements (UPDATED)
   function applyLanguageTexts(){
     const t = translations[currentLang];
     const currency = t.currency || '฿';
@@ -1344,7 +1186,7 @@
     // Update Sign out button text
     signOutBtn.textContent = t.sign_out_btn;
     
-    // Update Input Labels
+    // Update Entry Input Labels
     dateLabel.textContent = t.date_label;
     startLabel.textContent = t.in_label;
     endLabel.textContent = t.out_label;
@@ -1356,12 +1198,8 @@
         signedText.textContent = `Signed in: ${currentUser.displayName}`;
     }
 
-    // Update Add/Save button text based on edit mode
-    if (editId) {
-      addBtn.textContent = '💾 Save';
-    } else {
-      addBtn.textContent = '➕ ' + t.add_entry;
-    }
+    // Update Add/Save entry button text based on edit mode
+    addBtn.textContent = editId ? '💾 Save' : '➕ ' + t.add_entry;
     
     // Update other button texts
     dayOffBtn.textContent = '🏖️ ' + t.add_dayoff;
@@ -1373,239 +1211,163 @@
         previewEl.textContent = t.duration_default;
     }
     
-    // Update Month Label (using locale for proper month names)
+    // Update Month Label 
     const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang] || 'en-US';
     monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
     
     // Update total hours label in header
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
     
-    // Update earnings label (Refactored for toggle)
-    earningsLabel.textContent = t.earnings_label + ':';
-    // Re-calculate and display earnings based on visibility state
-    updateEarningsVisibility();
+    // Update Advance Section Labels
+    advanceTitle.textContent = t.advance_title;
+    advanceDateLabel.textContent = t.advance_date_label;
+    advanceAmountLabel.textContent = t.advance_amount_label;
+    advanceNoteLabel.textContent = t.advance_note_label;
+    advanceNoteEl.placeholder = t.advance_note_placeholder;
+    addAdvanceBtn.textContent = '➕ ' + t.add_advance;
+
+    // Update Table Headers
+    thDate.textContent = t.th_date;
+    thStart.textContent = t.th_start;
+    thEnd.textContent = t.th_end;
+    thDuration.textContent = t.th_duration;
+    thRounded.textContent = t.th_rounded;
+    thTask.textContent = t.th_task;
+    thActions.textContent = t.th_actions;
+    thAdvanceDate.textContent = t.th_advance_date;
+    thAdvanceAmount.textContent = t.th_advance_amount;
+    thAdvanceNote.textContent = t.th_advance_note;
+    thAdvanceActions.textContent = t.th_advance_actions;
+    
+    // Re-calculate and display earnings (Gross, Advance, Net)
+    updateEarningsDisplay(); 
   }
   
-  // Language button click listener (event delegation)
+  // Language button click listener
   langButtons.addEventListener('click', (ev)=>{ 
-    const b=ev.target; 
-    const lang=b.getAttribute('data-lang'); 
-    if(!lang) return; // Ignore clicks not on language buttons
-    currentLang = lang; 
-    localStorage.setItem(LANG,currentLang); // Save language preference
+    const b=ev.target; const lang=b.getAttribute('data-lang'); if(!lang) return; 
+    currentLang = lang; localStorage.setItem(LANG,currentLang); 
     render(); // Re-render UI with new language
   });
   // -------------------------
 
-  // --- Earnings visibility toggle listener ---
-  toggleEarningsBtn.addEventListener('click', () => {
-      isEarningsHidden = !isEarningsHidden; // Toggle state
-      localStorage.setItem(EARNINGS_HIDDEN, isEarningsHidden); // Save preference
-      updateEarningsVisibility(); // Update UI
-  });
-  // ----------------------------------------
-
   // --- Auth Tab Listeners ---
   tabSigninBtn.addEventListener('click', () => {
-      tabSigninBtn.classList.add('active');
-      tabRegisterBtn.classList.remove('active');
-      signinPane.style.display = 'block';
-      registerPane.style.display = 'none';
-      authMessageEl.textContent = ''; // Clear message
+      tabSigninBtn.classList.add('active'); tabRegisterBtn.classList.remove('active');
+      signinPane.style.display = 'block'; registerPane.style.display = 'none'; authMessageEl.textContent = '';
   });
-
   tabRegisterBtn.addEventListener('click', () => {
-      tabSigninBtn.classList.remove('active');
-      tabRegisterBtn.classList.add('active');
-      signinPane.style.display = 'none';
-      registerPane.style.display = 'block';
-      authMessageEl.textContent = ''; // Clear message
+      tabSigninBtn.classList.remove('active'); tabRegisterBtn.classList.add('active');
+      signinPane.style.display = 'none'; registerPane.style.display = 'block'; authMessageEl.textContent = '';
   });
   // -------------------------
 
   // --- Email/Password Login Logic ---
   loginBtn.addEventListener('click', async () => {
-      const email = loginEmailEl.value.trim();
-      const password = loginPasswordEl.value;
-      
-      authMessageEl.style.color = 'var(--accent)';
-      authMessageEl.textContent = 'Signing in...';
-
-      // 1. Validate inputs
-      if (!email || !password) {
+      const email = loginEmailEl.value.trim(); const password = loginPasswordEl.value;
+      authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Signing in...';
+      if (!email || !password) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Please enter email and password.'; return; }
+      try { await signInWithEmailAndPassword(auth, email, password); authMessageEl.textContent = 'Sign in successful! Loading...'; } 
+      catch (error) {
           authMessageEl.style.color = 'var(--danger)';
-          authMessageEl.textContent = 'Please enter email and password.';
-          return;
-      }
-      
-      // 2. Try to sign in with Firebase Auth
-      try {
-          const userCredential = await signInWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user;
-
-          // 3. Success. The `onAuthStateChanged` listener will handle the rest,
-          // including the verification check in `handleUserSignedIn`.
-          authMessageEl.textContent = 'Sign in successful! Loading...';
-
-      } catch (error) {
-          // 4. Handle login errors
-          authMessageEl.style.color = 'var(--danger)';
-          if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
-              authMessageEl.textContent = 'Invalid email or password.';
-          } else {
-              console.error('Login Error:', error);
-              authMessageEl.textContent = 'Error: ' + error.message;
-          }
+          if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') { authMessageEl.textContent = 'Invalid email or password.'; } 
+          else { console.error('Login Error:', error); authMessageEl.textContent = 'Error: ' + error.message; }
       }
   });
   // -------------------------------
 
   // --- Email/Password Registration Logic ---
   registerBtn.addEventListener('click', async () => {
-      const username = registerUsernameEl.value.trim();
-      const email = registerEmailEl.value.trim();
-      const password = registerPasswordEl.value;
-      
-      authMessageEl.style.color = 'var(--accent)';
-      authMessageEl.textContent = 'Checking...';
-
-      // 1. Validate inputs
-      if (!username || !email || !password) {
-          authMessageEl.style.color = 'var(--danger)';
-          authMessageEl.textContent = 'Please fill all fields.';
-          return;
-      }
-      if (password.length < 6) {
-          authMessageEl.style.color = 'var(--danger)';
-          authMessageEl.textContent = 'Password must be at least 6 characters.';
-          return;
-      }
-      if (username.length < 3) {
-          authMessageEl.style.color = 'var(--danger)';
-          authMessageEl.textContent = 'Username must be at least 3 characters.';
-          return;
-      }
-
-      // 2. Check if username is already taken
+      const username = registerUsernameEl.value.trim(); const email = registerEmailEl.value.trim(); const password = registerPasswordEl.value;
+      authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Checking...';
+      if (!username || !email || !password) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Please fill all fields.'; return; }
+      if (password.length < 6) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Password must be at least 6 characters.'; return; }
+      if (username.length < 3) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Username must be at least 3 characters.'; return; }
       try {
-          if (await isUsernameTaken(username)) {
-              authMessageEl.style.color = 'var(--danger)';
-              authMessageEl.textContent = 'This username is already taken. Please try another.';
-              return;
-          }
-      
-          // 3. Create user in Firebase Auth
+          if (await isUsernameTaken(username)) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'This username is already taken. Please try another.'; return; }
           authMessageEl.textContent = 'Creating account...';
-          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-          const user = userCredential.user;
-          
-          // 4. Update Auth profile (set display name) and send verification email
-          await updateProfile(user, { displayName: username });
-          await sendEmailVerification(user);
-          
-          // 5. **CRITICAL:** Claim the username in Firestore 'usernames' collection
-          // This prevents others from taking the same username later.
-          const usernameRef = doc(db, 'usernames', username.toLowerCase());
-          await setDoc(usernameRef, { uid: user.uid });
-          
-          // 6. Create the main user document in 'users' collection
-          // Initialize with empty entries array.
-          const userDocRef = doc(db, 'users', user.uid);
-          await setDoc(userDocRef, { 
-              username: username, // Store the username here too
-              email: email, 
-              entries: [] 
-          }, { merge: true }); // Use merge to avoid overwriting if doc somehow exists
-
-          // 7. Show success message
-          authMessageEl.style.color = 'var(--success)';
-          authMessageEl.textContent = `Verification email sent to ${email}. Please check your inbox!`;
-          
-          // Reset form and switch back to Sign In tab
-          tabSigninBtn.click();
-          registerUsernameEl.value = '';
-          registerEmailEl.value = '';
-          registerPasswordEl.value = '';
-
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password); const user = userCredential.user;
+          await updateProfile(user, { displayName: username }); await sendEmailVerification(user);
+          const usernameRef = doc(db, 'usernames', username.toLowerCase()); await setDoc(usernameRef, { uid: user.uid });
+          const userDocRef = doc(db, 'users', user.uid); await setDoc(userDocRef, { username: username, email: email, entries: [], advances: [] }, { merge: true }); // Initialize advances too
+          authMessageEl.style.color = 'var(--success)'; authMessageEl.textContent = `Verification email sent to ${email}. Please check your inbox!`;
+          tabSigninBtn.click(); registerUsernameEl.value = ''; registerEmailEl.value = ''; registerPasswordEl.value = '';
       } catch (error) {
-          // Handle Firebase registration errors
           authMessageEl.style.color = 'var(--danger)';
-          if (error.code === 'auth/email-already-in-use') {
-              authMessageEl.textContent = 'This email is already registered. Please sign in.';
-          } else if (error.code === 'auth/weak-password') {
-              authMessageEl.textContent = 'Password is too weak.';
-          } else {
-              console.error('Registration Error:', error);
-              authMessageEl.textContent = 'Error: ' + error.message;
-          }
+          if (error.code === 'auth/email-already-in-use') { authMessageEl.textContent = 'This email is already registered. Please sign in.'; } 
+          else if (error.code === 'auth/weak-password') { authMessageEl.textContent = 'Password is too weak.'; } 
+          else { console.error('Registration Error:', error); authMessageEl.textContent = 'Error: ' + error.message; }
       }
   });
   // ----------------------------------------
   
   // --- Admin Panel Search Logic (Search by UID) ---
   adminSearchBtn.addEventListener('click', async () => {
-        const searchUid = adminSearchInput.value.trim(); // Get UID from input
-        if (!searchUid) return; // Do nothing if input is empty
-
-        adminResultsEl.style.display = 'block'; // Show results area
-        adminResultsEl.innerHTML = 'Searching...';
-
+        const searchUid = adminSearchInput.value.trim(); if (!searchUid) return; 
+        adminResultsEl.style.display = 'block'; adminResultsEl.innerHTML = 'Searching...';
         try {
-            // 1. Fetch the user's data directly from 'users' collection using the UID
-            // This read is allowed only for the Admin (defined by ADMIN_UID in Firestore Rules)
-            const userRef = doc(db, 'users', searchUid);
-            const userSnap = await getDoc(userRef);
-            
-            if (!userSnap.exists()) {
-                adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`;
-                return;
-            }
-            
-            const userData = userSnap.data();
-            const userEntries = userData.entries || []; // Get entries, default to empty array
-            
-            // 2. Calculate total rounded hours for this user (all time)
-            let totalAllTimeHours = 0;
-            userEntries.forEach(entry => {
-                totalAllTimeHours += entry.rounded || 0; // Sum up the 'rounded' field
-            });
-            
-            // 3. Display the results (Name from Firestore document, Total Hours)
-            adminResultsEl.innerHTML = `
-                <strong>User:</strong> ${userData.username || 'N/A'}<br> 
-                <strong>Email:</strong> ${userData.email || 'N/A'}<br>
-                <strong>Total Entries:</strong> ${userEntries.length}<br>
-                <strong style="color: var(--earnings-color);">Total All-Time Rounded Hours:</strong> ${totalAllTimeHours.toFixed(2)}
-            `;
-
-        } catch (error) {
-            // Handle errors (e.g., Firestore rules deny access, network issues, invalid UID format)
-            console.error('Admin search error:', error);
-            adminResultsEl.innerHTML = `Error: ${error.message}. (Is the UID correct? Did you update Firestore Rules?)`;
-        }
+            const userRef = doc(db, 'users', searchUid); const userSnap = await getDoc(userRef);
+            if (!userSnap.exists()) { adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`; return; }
+            const userData = userSnap.data(); const userEntries = userData.entries || []; 
+            let totalAllTimeHours = 0; userEntries.forEach(entry => { totalAllTimeHours += entry.rounded || 0; });
+            adminResultsEl.innerHTML = `<strong>User:</strong> ${userData.username || 'N/A'}<br> <strong>Email:</strong> ${userData.email || 'N/A'}<br> <strong>Total Entries:</strong> ${userEntries.length}<br> <strong style="color: var(--earnings-color);">Total All-Time Rounded Hours:</strong> ${totalAllTimeHours.toFixed(2)}`;
+        } catch (error) { console.error('Admin search error:', error); adminResultsEl.innerHTML = `Error: ${error.message}. (Is the UID correct? Did you update Firestore Rules?)`; }
     });
+  // ---------------------------------------------
+
+  // --- NEW: Add Advance Payment Button Listener ---
+  addAdvanceBtn.addEventListener('click', async () => {
+      const date = advanceDateEl.value;
+      const amountStr = advanceAmountEl.value;
+      const note = advanceNoteEl.value.trim();
+      const t = translations[currentLang];
+
+      // Validate date and amount
+      if (!date || !amountStr) {
+          return alert(t.alert_advance_fill);
+      }
+      const amount = parseFloat(amountStr);
+      if (isNaN(amount) || amount <= 0) {
+          return alert(t.alert_advance_amount);
+      }
+
+      // Add to advances array
+      advances.push({
+          id: Date.now(),
+          date: date,
+          amount: amount,
+          note: note
+      });
+
+      // Clear form
+      advanceDateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(), 28)); // Reset date
+      advanceAmountEl.value = '';
+      advanceNoteEl.value = '';
+
+      // Save data
+      await saveAll(); // saveAll now saves both entries and advances
+  });
   // ---------------------------------------------
 
   // --- Initialize the application ---
   function init(){
-    showLoadingState(); // Show loading screen initially
-
-    loadLocal(); // Load data from local storage first
-
-    // Load or set initial month/year
-    const saved = localStorage.getItem(MONTH);
-    if(saved){ try{ const o=JSON.parse(saved); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
+    showLoadingState(); 
+    loadLocal(); // Load entries AND advances
+    const savedMonth = localStorage.getItem(MONTH);
+    if(savedMonth){ try{ const o=JSON.parse(savedMonth); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
     if(typeof selectedYear==='undefined'){ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); }
     
-    // Set initial date input value
-    dateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
+    // Set initial date for both forms
+    const initialDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
+    dateEl.valueAsDate = initialDate;
+    advanceDateEl.valueAsDate = initialDate; // Set advance date too
     
     // Load preferences
     currentLang = localStorage.getItem(LANG) || currentLang;
-    applyTheme(); // Apply saved theme (light/dark)
-    isEarningsHidden = localStorage.getItem(EARNINGS_HIDDEN) === 'true'; // Load earnings visibility state
+    applyTheme(); 
+    isEarningsHidden = localStorage.getItem(EARNINGS_HIDDEN) === 'true'; 
     
-    // Firebase onAuthStateChanged will handle showing the app or auth screen
+    // Auth check will trigger the rest
   }
   init(); // Run initialization
   // ----------------------------------
