@@ -500,8 +500,8 @@
       <div id="admin-panel" class="card" style="display:none;">
           <h2>Admin Panel</h2>
           <div class="input-group" style="margin-bottom: 10px;">
-            <label for="admin-search-username">Search User by Username</label>
-            <input id="admin-search-username" type="text" placeholder="Enter exact username..." />
+            <label for="admin-search-uid">Search User by User ID (UID)</label>
+            <input id="admin-search-uid" type="text" placeholder="Enter exact User ID..." />
           </div>
           <button id="admin-search-btn" class="primary btn" style="background: #fff; color: #b91c1c; border: none;">Search User Hours</button>
 
@@ -661,10 +661,10 @@
   const registerBtn = document.getElementById('register-btn');
   const authMessageEl = document.getElementById('auth-message');
   
-  // NEW: Admin Panel DOM
+  // UPDATED: Admin Panel DOM (Search by UID)
   const adminPanel = document.getElementById('admin-panel');
   const adminSearchBtn = document.getElementById('admin-search-btn');
-  const adminSearchInput = document.getElementById('admin-search-username');
+  const adminSearchInput = document.getElementById('admin-search-uid'); // Changed ID
   const adminResultsEl = document.getElementById('admin-results');
 
   // App DOM
@@ -1512,7 +1512,7 @@
           // Initialize with empty entries array.
           const userDocRef = doc(db, 'users', user.uid);
           await setDoc(userDocRef, { 
-              username: username, 
+              username: username, // Store the username here too
               email: email, 
               entries: [] 
           }, { merge: true }); // Use merge to avoid overwriting if doc somehow exists
@@ -1542,60 +1542,49 @@
   });
   // ----------------------------------------
   
-  // --- Admin Panel Search Logic ---
+  // --- Admin Panel Search Logic (Search by UID) ---
   adminSearchBtn.addEventListener('click', async () => {
-        const username = adminSearchInput.value.trim().toLowerCase(); // Search is case-insensitive
-        if (!username) return; // Do nothing if input is empty
+        const searchUid = adminSearchInput.value.trim(); // Get UID from input
+        if (!searchUid) return; // Do nothing if input is empty
 
         adminResultsEl.style.display = 'block'; // Show results area
         adminResultsEl.innerHTML = 'Searching...';
 
         try {
-            // 1. Find the user's UID from the 'usernames' collection
-            const usernameRef = doc(db, 'usernames', username);
-            const usernameSnap = await getDoc(usernameRef);
-            
-            if (!usernameSnap.exists()) {
-                adminResultsEl.innerHTML = `Error: User "${adminSearchInput.value}" not found.`;
-                return;
-            }
-            
-            const foundUid = usernameSnap.data().uid; // Get the UID associated with the username
-            
-            // 2. Fetch the user's data from the 'users' collection using the found UID
-            // This read operation is only allowed if the current user is the Admin (due to Firestore Rules)
-            const userRef = doc(db, 'users', foundUid);
+            // 1. Fetch the user's data directly from 'users' collection using the UID
+            // This read is allowed only for the Admin (defined by ADMIN_UID in Firestore Rules)
+            const userRef = doc(db, 'users', searchUid);
             const userSnap = await getDoc(userRef);
             
             if (!userSnap.exists()) {
-                adminResultsEl.innerHTML = `Error: User data not found for UID ${foundUid}.`;
+                adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`;
                 return;
             }
             
             const userData = userSnap.data();
             const userEntries = userData.entries || []; // Get entries, default to empty array
             
-            // 3. Calculate total rounded hours for this user (all time)
+            // 2. Calculate total rounded hours for this user (all time)
             let totalAllTimeHours = 0;
             userEntries.forEach(entry => {
-                totalAllTimeHours += entry.rounded || 0; // Sum up the 'rounded' field from each entry
+                totalAllTimeHours += entry.rounded || 0; // Sum up the 'rounded' field
             });
             
-            // 4. Display the results in the admin panel
+            // 3. Display the results (Name from Firestore document, Total Hours)
             adminResultsEl.innerHTML = `
-                <strong>User:</strong> ${userData.username || adminSearchInput.value}<br>
+                <strong>User:</strong> ${userData.username || 'N/A'}<br> 
                 <strong>Email:</strong> ${userData.email || 'N/A'}<br>
                 <strong>Total Entries:</strong> ${userEntries.length}<br>
                 <strong style="color: var(--earnings-color);">Total All-Time Rounded Hours:</strong> ${totalAllTimeHours.toFixed(2)}
             `;
 
         } catch (error) {
-            // Handle errors (e.g., Firestore rules deny access, network issues)
+            // Handle errors (e.g., Firestore rules deny access, network issues, invalid UID format)
             console.error('Admin search error:', error);
-            adminResultsEl.innerHTML = `Error: ${error.message}. (Did you update Firestore Rules with your Admin UID?)`;
+            adminResultsEl.innerHTML = `Error: ${error.message}. (Is the UID correct? Did you update Firestore Rules?)`;
         }
     });
-  // --------------------------------
+  // ---------------------------------------------
 
   // --- Initialize the application ---
   function init(){
