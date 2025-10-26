@@ -25,12 +25,12 @@
       --shadow:0 12px 30px rgba(3,8,20,0.6);
       --table-border:rgba(255,255,255,0.04);
       --input-bg:rgba(255,255,255,0.04);
-      
+
       /* Day Off Red Tone */
       --dayoff-bg: rgba(239, 68, 68, 0.15); /* Light red background */
       --dayoff-border: #ef4444; /* Bright red border */
       --dayoff-text: #ffcfcf;
-      
+
       /* NEW EARNINGS COLOR */
       --earnings-color: #fbbd0a; /* Gold/Yellow for money */
       /* NEW ADVANCE COLOR */
@@ -47,7 +47,7 @@
       --advance-color: #db2777;
       --net-earnings-color: var(--success);
     }
-    
+
     /* General Styles */
     *{box-sizing:border-box; transition: all 0.3s ease-in-out;}
     html,body{height:100%}
@@ -68,8 +68,8 @@
         flex-direction:column;
         align-items:center;
         justify-content:center;
-        min-height:calc(100vh - 28px); 
-        margin:-14px; 
+        min-height:calc(100vh - 28px);
+        margin:-14px;
         padding: 20px;
     }
     .auth-btn{padding:10px 18px;border-radius:18px;border:none;background:#fff;color:#022;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.25); display: flex; align-items: center; max-width: 280px;}
@@ -78,12 +78,12 @@
         /* Base64 SVG for the standard Google G Logo */
         background-image: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgdmlld0JveD0iMCAwIDQ4IDQ4Ij48cGF0aCBmaWxsPSIjNDI4NUY0IiBkPSJNMjQgNWM2LjYgMCAxMC4zIDIuOCAxMi42IDUuM2wtMy43IDMuN2MtMS42LTEuNS0zLjctMi42LTguOS0yLjZtMC04Yy0xMS4yIDAtMTkuOSAxMC4zLTE5LjkgMTAuMy0xLjEgMS0xLjEgMi43IDAgMy44bDIuNiAyLjZjMS4xIDEuMSAxLjEgMi44IDAgMy45bC0xLjYgMS42Yy0xLjEgMS4xLTEuMSAyLjcgMCAzLjhsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMy44IDMuOGMxLjEgMS4xIDIuNyAxLjEgMy44IDBsNC4zLTQuM2MxLjEtMS4xIDIuOC0xLjEgMy45IDBsMi42LTIuNmMxLjEtMS4xIDEuMS0yLjcgMC0zLjhMNDAuOSAyMmMtMS4xLTEuMS0yLjctMS4xLTMuOCAwTDM0LjMgMTkuMWMtMS4xLTEuMS0yLjgtMS4xLTMuOSAwbC0zLjggMy44Yy0xLjEgMS4xLTIuOCAxLjEtMy45IDBsLTQuMy00LjNjLTEuMS0xLjEtMi43LTEuMS0zLjggMEwyMi40IDEyYy0xLjEtMS4xLTIuNy0xLjEtMy44IDBsLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLS4zODE2IDMyLjcuM2wtLTMuOCAzLjhjLTEuMSAxLjEtMi44IDEuMS0zLjkgMGwtMi42LTIuNmMtMS4xLTEuMS0xLjEtMi43IDAtMy44bDMuNy0zLjdjMS41LTMuNSAzLjktNi4zIDYuMy04LjdsMy43LTMuN2MyLjUtMi41IDUuMy0zLjggOC45LTMuOGg3LjJtMTQuMyAyNmMwIDYuMi0yLjUgMTAuMy01LjMgMTIuNmwtMy43IDMuN2MtMS42IDEuNS0zLjcgMi42LTguOSA1LjNoLTMuOHYtMTkuNWgyLjZjNC4yIDAgNy42IDMgOS40IDYuNUw0MyAyOS42Yy41LjkuNyAxLjguNyAyLjhtLTguMi0zLjVjLS42IDAtMS4yLS4xLTEuNy0uMy0xLjYtLjYtMi41LTEuNS0yLjUtMi45VjI3YzAtMSAuOS0xLjkgMi41LTIuNXYtLjVjMC0uNi0uMy0xLjItLjgtMS43TDM2IDIzLjVjLS41LjUtLjggMS4xLS44IDEuN3YxLjJjMCAuNS4yIDEuMS43IDEuNmw1LjQgNS40YzEuNSAxLjUgMi4yIDMuMyAyLjIgNS44czEuMiA0LjMgMi44IDYuNWwxLjcgMS43Yy45LjkgMi4zIDEuMyAzLjggMS4zVjEzYzAtLjctLjQtMS4zLS45LTEuN2wtMy4xMC0zLjljLS41LS41LTEuMi0uOC0xLjctLjgzNC0uNiAwLTEuMS4zLTEuNy44bC0zLjcgMy43Yy0uNS41LS44IDEuMi0uOCAxLjdWMTdjMCAxIC45IDEuOSAyLjUgMi41di0uNWMwLS42LS4zLTEuMi0uOC0xLjdMMzYgMjQuM2MtLjUuNS0uOCAxLjEtLjggMS43djEuMmMwIC41LjEgMS4xLjcgMS42bDEuNyAxLjdjOS45LS41LS45NC0uMy0xLjctLjgtMi40LTEuNEw5LjkgMTYuN2MtLjUuNS0xLjIuOC0xLjcuOHM9JyIGZpbGw9IiMzQTRFMzkiLz48L3N2Zz4=');
     }
-    
+
     /* SIGNED STATE (FIXED FOR MOBILE/DESTOP) */
     #signedState {
         display: none;
-        position: absolute; 
-        top: 0px; 
+        position: absolute;
+        top: 0px;
         right: 0px;
         padding: 8px 12px;
         background: var(--card);
@@ -97,10 +97,10 @@
     .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
     .auth-btn.secondary{
       /* FIXED: Sign out button to RED design */
-      background: var(--danger); 
-      color: #fff; 
-      border: 1px solid var(--danger); 
-      padding: 4px 8px; 
+      background: var(--danger);
+      color: #fff;
+      border: 1px solid var(--danger);
+      padding: 4px 8px;
       font-size: 12px;
       margin-bottom: 0;
     }
@@ -135,10 +135,10 @@
     }
     input[type=date],input[type=time],input[type=text],input[type=number]{background:transparent;border:1px solid var(--table-border);padding:8px 10px;border-radius:8px;color:var(--text);min-width:120px}
     /* Input number hide arrows */
-    input[type=number]::-webkit-inner-spin-button, 
-    input[type=number]::-webkit-outer-spin-button { 
-      -webkit-appearance: none; 
-      margin: 0; 
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
     }
     input[type=number] { -moz-appearance: textfield; } /* Firefox */
 
@@ -154,13 +154,13 @@
     thead th{padding:10px 12px;text-align:left;color:var(--muted);font-size:12px;text-transform:uppercase;border-bottom:1px solid var(--table-border)}
     tbody td{padding:10px 12px;border-bottom:1px solid var(--table-border)}
     tbody tr:nth-child(odd){background:rgba(255,255,255,0.01)}
-    
+
     /* DAY OFF Style */
     tr.day-off {
-        background: var(--dayoff-bg) !important; 
+        background: var(--dayoff-bg) !important;
         color: var(--dayoff-text) !important;
-        font-weight: 600; 
-        border: 1px solid var(--dayoff-border) !important; 
+        font-weight: 600;
+        border: 1px solid var(--dayoff-border) !important;
     }
     tr.day-off td {
         font-style: italic;
@@ -168,7 +168,7 @@
         padding: 10px 12px;
     }
     tr.day-off td:first-child::before {
-        content: "🚨 "; 
+        content: "🚨 ";
         margin-right: 5px;
     }
 
@@ -180,7 +180,7 @@
     .footer{display:flex;justify-content:flex-end;margin-top:12px; display: none;} /* HIDDEN */
     .total-card{background:var(--input-bg);padding:10px 15px;border-radius:8px;color:var(--text);font-weight:700; font-size: 15px;}
     .total-card span { color: var(--accent); font-size: 16px;}
-    
+
     /* UPDATED: Earnings Display Area */
     #earnings-display {
         background: var(--input-bg);
@@ -200,14 +200,14 @@
     #earnings-amount-gross { color: var(--earnings-color); font-weight: 800; font-size: 16px; }
     #earnings-amount-advance { color: var(--advance-color); font-weight: 800; font-size: 16px; }
     #earnings-amount-net { color: var(--net-earnings-color); font-weight: 800; font-size: 18px; border-top: 1px dashed var(--muted); padding-top: 5px; margin-top: 5px;}
-    
+
     /* Toggle button position */
     .earnings-toggle {
         background: transparent; border: none; cursor: pointer; font-size: 18px; padding: 0 2px;
         color: var(--muted); line-height: 1; margin-left: 8px;
     }
     .earnings-toggle:hover { color: var(--text); }
-    
+
     /* Position earnings wrapper */
     .controls-top .earnings-wrapper { order: 3; margin-left: 8px; }
 
@@ -241,7 +241,7 @@
     /* =================================
        END of New Auth CSS
     ================================= */
-    
+
     /* NEW: Admin Panel Modal Styles */
     #admin-modal-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -251,12 +251,12 @@
         padding: 20px; animation: overlayFadeIn 0.3s ease-out;
     }
     @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
-    #admin-panel { 
+
+    #admin-panel {
         /* Inherits card styles, add specifics */
         margin-top: 0; /* Override margin */
         width: 100%; max-width: 500px;
-        background: linear-gradient(180deg, var(--danger), #a13030); 
+        background: linear-gradient(180deg, var(--danger), #a13030);
         border-color: #ff6060;
         position: relative; /* For close button */
         animation: panelSlideIn 0.4s ease-out;
@@ -268,7 +268,7 @@
     #admin-panel .input-group input { background: var(--input-bg); }
     #admin-results { margin-top: 15px; background: var(--bg); padding: 10px; border-radius: 8px; display:none; color: var(--text); line-height: 1.6; }
     #admin-results strong { color: var(--accent-2); }
-    
+
     #admin-close-btn {
         position: absolute; top: 10px; right: 10px;
         background: rgba(255,255,255,0.2); color: #fff; border: none;
@@ -285,7 +285,7 @@
     .advance-grid .input-group.amount-group { flex: 0 1 150px; } /* Amount field smaller */
     .advance-grid .input-group.note-group { flex: 2; } /* Note field larger */
     .btn.advance-btn { background: var(--advance-color); color: #fff; }
-    
+
     /* Style for advances table */
     #advances-table { min-width: 500px; } /* Adjust min-width as needed */
     #advances-table td:nth-child(2) { color: var(--advance-color); font-weight: 700; } /* Amount column style */
@@ -296,21 +296,21 @@
       .entry-grid, .advance-grid {flex-direction:column; align-items:stretch;} /* Make grids stack on mobile */
       .controls-top{flex-direction:column; align-items:stretch; gap: 8px;}
       .controls-top > div { flex-wrap: nowrap !important; }
-      
-      .total-card { order: 1; margin-bottom: 5px; } 
-      .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;} 
+
+      .total-card { order: 1; margin-bottom: 5px; }
+      .controls-top .earnings-wrapper { order: 2; margin-left: 0; margin-bottom: 5px; width: 100%;}
       .controls-top div:last-child { order: 3; margin-left: 0 !important; }
 
       input[type=date],input[type=time],input[type=text],input[type=number],.btn,.total-card, #earnings-display{width:100%; min-width: unset;}
       .input-group { width: 100%; }
       table{min-width:600px}
       #advances-table { min-width: 400px; } /* Adjust advances table for mobile */
-      
+
       /* MOBILE HEADER FIX */
       header.app-head { padding-top: 50px; }
       #signedState { position: fixed; top: 0; left: 0; width: 100%; border-radius: 0; border-bottom: 1px solid var(--table-border);
           box-shadow: 0 1px 5px rgba(0,0,0,0.2); justify-content: flex-end; }
-      
+
       /* Admin Modal on mobile */
        #admin-panel { max-width: 95%; }
     }
@@ -330,7 +330,7 @@
 </head>
 <body>
   <div class="wrap">
-    
+
 <div class="auth-area" id="auth-area" style="display:none;">
     <div class="auth-card">
         <h1 class="auth-title">TheVann Tracker</h1>
@@ -369,9 +369,9 @@
     </div>
 
     <div class="card" id="app-content" style="display:none;" role="application" aria-labelledby="app-title">
-      
+
       <header class="app-head">
-        
+
         <div id="signedState" style="display:none;">
             <div class="signed-as" id="signedText"></div>
             <button id="signOut" class="auth-btn secondary"></button>
@@ -432,14 +432,14 @@
           <button id="next-month" class="ghost btn">▶</button>
           <button id="today-month" class="ghost btn">🗓️ Today</button>
         </div>
-        
+
         <div class="total-card" id="total-header">Total Rounded Hours: <span id="total">0.00</span></div>
-        
+
         <div class="earnings-wrapper">
             <div id="earnings-display">
                 </div>
         </div>
-        
+
         <div style="margin-left:auto;display:flex;gap:8px">
           <button id="export-csv" class="ghost btn">💾 Export CSV</button>
           <button id="print-btn" class="ghost btn">🖨️ Print</button>
@@ -469,7 +469,7 @@
           <button id="dayoff-btn" class="ghost btn">🏖️ Day Off</button>
         </div>
       </div>
-      
+
       <div class="table-wrap">
         <table id="entries-table" aria-describedby="month-label">
           <thead>
@@ -486,7 +486,7 @@
           <tbody id="entries-body"></tbody>
         </table>
       </div>
-      
+
       <div class="footer" style="display:none;">
         <div class="total-card">Total Rounded Hours: <span id="total-footer">0.00</span></div>
       </div>
@@ -510,7 +510,7 @@
   import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
 
   // --- Firebase config ---
-  const firebaseConfig = { /* ... Your config ... */ 
+  const firebaseConfig = { /* ... Your config ... */
     apiKey: "AIzaSyBPt8cZMMW6gs8TLV-7EEvpJJVZ33DH23k",
     authDomain: "thevanntrackduration-81ee0.firebaseapp.com",
     projectId: "thevanntrackduration-81ee0",
@@ -528,7 +528,7 @@
   const db = getFirestore(app);
 
   // --- CONSTANTS ---
-  const HOURLY_RATE = 40.00; 
+  const HOURLY_RATE = 40.00;
   const ADMIN_UID = 'h1OJyFLAFDRWgwiZxf2G1rbIapl1'; // Your Admin UID
 
   // --- DOM Elements ---
@@ -555,14 +555,14 @@
   const registerPasswordEl = document.getElementById('register-password');
   const registerBtn = document.getElementById('register-btn');
   const authMessageEl = document.getElementById('auth-message');
-  
+
   // Admin Modal related
   const adminMenuBtn = document.getElementById('admin-menu-btn');
   const adminModalOverlay = document.getElementById('admin-modal-overlay');
   const adminPanel = document.getElementById('admin-panel'); // Panel inside the modal
   const adminCloseBtn = document.getElementById('admin-close-btn');
   const adminSearchBtn = document.getElementById('admin-search-btn'); // Search button inside modal
-  const adminSearchInput = document.getElementById('admin-search-uid'); 
+  const adminSearchInput = document.getElementById('admin-search-uid');
   const adminResultsEl = document.getElementById('admin-results');
 
   // App Main UI (Entries)
@@ -574,13 +574,13 @@
   const addBtn = document.getElementById('add-btn');
   const dayOffBtn = document.getElementById('dayoff-btn');
   const entriesBody = document.getElementById('entries-body');
-  const totalHeaderEl = document.getElementById('total-header'); 
-  const totalEl = totalHeaderEl.querySelector('#total'); 
-  
+  const totalHeaderEl = document.getElementById('total-header');
+  const totalEl = totalHeaderEl.querySelector('#total');
+
   // App Main UI (Earnings Display)
   const earningsDisplay = document.getElementById('earnings-display');
-  // Individual elements inside earningsDisplay will be accessed dynamically later
-  
+  // Individual elements inside earningsDisplay accessed dynamically in updateEarningsDisplay
+
   // App Main UI (Controls & Meta)
   const exportBtn = document.getElementById('export-csv');
   const printBtn = document.getElementById('print-btn');
@@ -607,7 +607,7 @@
   const advanceDateLabel = document.getElementById('advance-date-label');
   const advanceAmountLabel = document.getElementById('advance-amount-label');
   const advanceNoteLabel = document.getElementById('advance-note-label');
-  
+
   // Table Header IDs for translation
   const thDate = document.getElementById('th-date'); const thStart = document.getElementById('th-start');
   const thEnd = document.getElementById('th-end'); const thDuration = document.getElementById('th-duration');
@@ -617,59 +617,29 @@
   const thAdvanceNote = document.getElementById('th-advance-note'); const thAdvanceActions = document.getElementById('th-advance-actions');
 
   // --- Keys for Local Storage ---
-  const STORAGE_ENTRIES = 'vann_v8_entries'; const STORAGE_ADVANCES = 'vann_v8_advances'; 
+  const STORAGE_ENTRIES = 'vann_v8_entries'; const STORAGE_ADVANCES = 'vann_v8_advances';
   const THEME = 'vann_v8_theme'; const LANG = 'vann_v8_lang'; const MONTH = 'vann_v8_month';
-  const EARNINGS_HIDDEN = 'vann_v8_earnings_hidden'; 
+  const EARNINGS_HIDDEN = 'vann_v8_earnings_hidden';
 
-  // --- Translations (Ensure all keys from HTML/JS are present) ---
+  // --- Translations ---
   const translations = {
-    en: { 
-      app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', 
-      edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off', date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)',
-      csv_user_label: 'User Name', modal_title: 'Set Your Display Name', modal_subtitle: 'This name will be used in reports.', save_name: 'Save Name', sign_out_btn: 'Sign out',
-      earnings_label: 'Total Earnings', currency: '฿', 
-      th_date: 'Date', th_start: 'Start', th_end: 'End', th_duration: 'Duration', th_rounded: 'Rounded (hrs)', th_task: 'Task', th_actions: 'Actions',
-      advance_title: 'Salary Advances', advance_date_label: 'Date', advance_amount_label: 'Amount', advance_note_label: 'Note (optional)', advance_note_placeholder: 'Reason for advance...', add_advance: 'Add Advance', 
-      th_advance_date: 'Date', th_advance_amount: 'Amount', th_advance_note: 'Note', th_advance_actions: 'Actions',
-      alert_advance_fill: 'Please fill Date and Amount for advance.', alert_advance_amount: 'Advance amount must be a positive number.',
-      gross_earnings: 'Gross Earnings', total_advance: 'Total Advance', net_earnings: 'Net Earnings'
-    },
-    my: { 
-      app_title:'Thevann အချိန်မှတ်တမ်း', sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', add_entry:'မှတ်တမ်းထည့်မည်', add_dayoff:'နားရက်', export_csv:'CSV ထုတ်ယူမည်', print:'ပုံနှိပ်', duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', total_label:'စုစုပေါင်း ပတ်လည်နာရီ', alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။',
-      edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်', date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)',
-      csv_user_label: 'အသုံးပြုသူအမည်', modal_title: 'မိမိအမည် သတ်မှတ်ပါ', modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။', save_name: 'အမည်သိမ်းမည်', sign_out_btn: 'ထွက်မည်',
-      earnings_label: 'စုစုပေါင်းရငွေ', currency: '฿', 
-      th_date: 'ရက်စွဲ', th_start: 'ဝင်ချိန်', th_end: 'ထွက်ချိန်', th_duration: 'ကြာချိန်', th_rounded: 'နာရီ', th_task: 'အလုပ်', th_actions: 'လုပ်ဆောင်ချက်',
-      advance_title: 'ကြိုတင်ထုတ်ငွေများ', advance_date_label: 'ရက်စွဲ', advance_amount_label: 'ပမာဏ', advance_note_label: 'မှတ်စု (ထည့်ရန်မလိုပါ)', advance_note_placeholder: 'ထုတ်ယူသည့်အကြောင်းရင်း...', add_advance: 'ကြိုတင်ငွေထည့်မည်', 
-      th_advance_date: 'ရက်စွဲ', th_advance_amount: 'ပမာဏ', th_advance_note: 'မှတ်စု', th_advance_actions: 'လုပ်ဆောင်ချက်',
-      alert_advance_fill: 'ရက်စွဲ နှင့် ကြိုတင်ထုတ် ပမာဏ ထည့်ပါ။', alert_advance_amount: 'ကြိုတင်ထုတ် ပမာဏသည် အပေါင်းကိန်း ဖြစ်ရပါမည်။',
-      gross_earnings: 'စုစုပေါင်းဝင်ငွေ', total_advance: 'စုစုပေါင်း ကြိုထုတ်ငွေ', net_earnings: 'လက်ကျန်ရငွေ'
-    },
-    th: { 
-      app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก',
-      edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด', date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)',
-      csv_user_label: 'ชื่อผู้ใช้', modal_title: 'กำหนดชื่อแสดงผล', modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน', save_name: 'บันทึกชื่อ', sign_out_btn: 'ออกจากระบบ',
-      earnings_label: 'รายได้รวม', currency: '฿', 
-      th_date: 'วันที่', th_start: 'เริ่ม', th_end: 'สิ้นสุด', th_duration: 'ระยะเวลา', th_rounded: 'ชม. (ปัดเศษ)', th_task: 'งาน', th_actions: 'การกระทำ',
-      advance_title: 'เบิกล่วงหน้า', advance_date_label: 'วันที่', advance_amount_label: 'จำนวนเงิน', advance_note_label: 'หมายเหตุ (ไม่บังคับ)', advance_note_placeholder: 'เหตุผลในการเบิก...', add_advance: 'เพิ่มรายการเบิก', 
-      th_advance_date: 'วันที่', th_advance_amount: 'จำนวนเงิน', th_advance_note: 'หมายเหตุ', th_advance_actions: 'การกระทำ',
-      alert_advance_fill: 'กรุณากรอก วันที่ และ จำนวนเงิน ที่เบิก', alert_advance_amount: 'จำนวนเงินที่เบิกต้องเป็นค่าบวก',
-      gross_earnings: 'รายได้รวม', total_advance: 'ยอดเบิกล่วงหน้า', net_earnings: 'รายรับสุทธิ'
-    }
+    en: { app_title:'TheVann Track Duration', sub:'Auto rounding, monthly view, multi-language', add_entry:'Add Entry', add_dayoff:'Day Off', export_csv:'Export CSV', print:'Print', duration_default:'Duration: 00:00 (0.00h)', total_label:'Total Rounded Hours', alert_fill:'Please fill Date, Start and End.', edit: '✏️ Edit', del: '🗑️ Delete', day_off_text: 'Day Off', date_label: 'Date', in_label: 'IN', out_label: 'OUT', task_placeholder: 'Task / notes (optional)', csv_user_label: 'User Name', modal_title: 'Set Your Display Name', modal_subtitle: 'This name will be used in reports.', save_name: 'Save Name', sign_out_btn: 'Sign out', earnings_label: 'Total Earnings', currency: '฿', th_date: 'Date', th_start: 'Start', th_end: 'End', th_duration: 'Duration', th_rounded: 'Rounded (hrs)', th_task: 'Task', th_actions: 'Actions', advance_title: 'Salary Advances', advance_date_label: 'Date', advance_amount_label: 'Amount', advance_note_label: 'Note (optional)', advance_note_placeholder: 'Reason for advance...', add_advance: 'Add Advance', th_advance_date: 'Date', th_advance_amount: 'Amount', th_advance_note: 'Note', th_advance_actions: 'Actions', alert_advance_fill: 'Please fill Date and Amount for advance.', alert_advance_amount: 'Advance amount must be a positive number.', gross_earnings: 'Gross Earnings', total_advance: 'Total Advance', net_earnings: 'Net Earnings' },
+    my: { app_title:'Thevann အချိန်မှတ်တမ်း', sub:'အလိုအလျောက် ပတ်လည်စီစစ်ခြင်း၊ လစဉ် ကြည့်ရှုမှု၊ ဘာသာစကားများ', add_entry:'မှတ်တမ်းထည့်မည်', add_dayoff:'နားရက်', export_csv:'CSV ထုတ်ယူမည်', print:'ပုံနှိပ်', duration_default:'ကြာချိန်: 00:00 (0.00နာရီ)', total_label:'စုစုပေါင်း ပတ်လည်နာရီ', alert_fill:'ရက်စွဲ၊ စတင်နှင့် အဆုံးချိန်ထည့်ပါ။', edit: '✏️ ပြင်ဆင်', del: '🗑️ ဖျက်မည်', day_off_text: 'နားရက်', date_label: 'ရက်စွဲ', in_label: 'ဝင်ချိန်', out_label: 'ထွက်ချိန်', task_placeholder: 'မှတ်စု (ထည့်ရန်မလိုပါ)', csv_user_label: 'အသုံးပြုသူအမည်', modal_title: 'မိမိအမည် သတ်မှတ်ပါ', modal_subtitle: 'ဤအမည်ကို အစီရင်ခံစာများတွင် အသုံးပြုမည်။', save_name: 'အမည်သိမ်းမည်', sign_out_btn: 'ထွက်မည်', earnings_label: 'စုစုပေါင်းရငွေ', currency: '฿', th_date: 'ရက်စွဲ', th_start: 'ဝင်ချိန်', th_end: 'ထွက်ချိန်', th_duration: 'ကြာချိန်', th_rounded: 'နာရီ', th_task: 'အလုပ်', th_actions: 'လုပ်ဆောင်ချက်', advance_title: 'ကြိုတင်ထုတ်ငွေများ', advance_date_label: 'ရက်စွဲ', advance_amount_label: 'ပမာဏ', advance_note_label: 'မှတ်စု (ထည့်ရန်မလိုပါ)', advance_note_placeholder: 'ထုတ်ယူသည့်အကြောင်းရင်း...', add_advance: 'ကြိုတင်ငွေထည့်မည်', th_advance_date: 'ရက်စွဲ', th_advance_amount: 'ပမာဏ', th_advance_note: 'မှတ်စု', th_advance_actions: 'လုပ်ဆောင်ချက်', alert_advance_fill: 'ရက်စွဲ နှင့် ကြိုတင်ထုတ် ပမာဏ ထည့်ပါ။', alert_advance_amount: 'ကြိုတင်ထုတ် ပမာဏသည် အပေါင်းကိန်း ဖြစ်ရပါမည်။', gross_earnings: 'စုစုပေါင်းဝင်ငွေ', total_advance: 'စုစုပေါင်း ကြိုထုတ်ငွေ', net_earnings: 'လက်ကျန်ရငွေ' },
+    th: { app_title:'ตัวจับเวลาทำงานของแวน', sub:'การปัดเวลาอัตโนมัติ ดูตามเดือน รองรับหลายภาษา', add_entry:'เพิ่มรายการ', add_dayoff:'วันหยุด', export_csv:'ส่งออก CSV', print:'พิมพ์', duration_default:'ระยะเวลา: 00:00 (0.00 ชม.)', total_label:'รวมระยะเวลาปัดเศษ', alert_fill:'กรุณากรอกวันที่ เวลาเริ่ม และ เวลาออก', edit: '✏️ แก้ไข', del: '🗑️ ลบ', day_off_text: 'วันหยุด', date_label: 'วันที่', in_label: 'เข้า', out_label: 'ออก', task_placeholder: 'งาน / หมายเหตุ (ไม่บังคับ)', csv_user_label: 'ชื่อผู้ใช้', modal_title: 'กำหนดชื่อแสดงผล', modal_subtitle: 'ชื่อนี้จะถูกใช้ในรายงาน', save_name: 'บันทึกชื่อ', sign_out_btn: 'ออกจากระบบ', earnings_label: 'รายได้รวม', currency: '฿', th_date: 'วันที่', th_start: 'เริ่ม', th_end: 'สิ้นสุด', th_duration: 'ระยะเวลา', th_rounded: 'ชม. (ปัดเศษ)', th_task: 'งาน', th_actions: 'การกระทำ', advance_title: 'เบิกล่วงหน้า', advance_date_label: 'วันที่', advance_amount_label: 'จำนวนเงิน', advance_note_label: 'หมายเหตุ (ไม่บังคับ)', advance_note_placeholder: 'เหตุผลในการเบิก...', add_advance: 'เพิ่มรายการเบิก', th_advance_date: 'วันที่', th_advance_amount: 'จำนวนเงิน', th_advance_note: 'หมายเหตุ', th_advance_actions: 'การกระทำ', alert_advance_fill: 'กรุณากรอก วันที่ และ จำนวนเงิน ที่เบิก', alert_advance_amount: 'จำนวนเงินที่เบิกต้องเป็นค่าบวก', gross_earnings: 'รายได้รวม', total_advance: 'ยอดเบิกล่วงหน้า', net_earnings: 'รายรับสุทธิ' }
   };
   // -------------------------
 
   // --- Application State ---
   let entries = []; let advances = []; let editId = null;
   let selectedYear, selectedMonth; let currentLang = localStorage.getItem(LANG) || 'en';
-  let currentUser = null; let isEarningsHidden = false; 
+  let currentUser = null; let isEarningsHidden = false;
 
   // --- Helper Functions ---
   function parseHM(t){ if(!t) return null; const [h,m]=t.split(':').map(Number); if(Number.isNaN(h)||Number.isNaN(m)) return null; return h*60+m; }
   function fmtHM(min){ const h=Math.floor(min/60); const m=min%60; return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}` }
   function computeRounded(raw){ if(raw<=0) return 0.00; const h=Math.floor(raw/60); const m=raw%60; let H=h; if(m>=0 && m<=29) { return +(H).toFixed(2); } else if(m>=30 && m<=39) { return +(H + 0.5).toFixed(2); } else if(m>=40 && m<=59){ return +(H + 1).toFixed(2); } return +(H).toFixed(2); }
   async function isUsernameTaken(username) { const usernameRef = doc(db, 'usernames', username.toLowerCase()); const docSnap = await getDoc(usernameRef); return docSnap.exists(); }
-  
+
   // --- Update Earnings Display (Gross, Advance, Net) ---
   function updateEarningsDisplay() {
       const t = translations[currentLang]; const currency = t.currency || '฿';
@@ -680,7 +650,7 @@
       filteredAdvances.forEach(a => totalAdvance += a.amount);
       const netEarnings = grossEarnings - totalAdvance;
       const hiddenValue = `******** ${currency}`;
-      
+
       earningsDisplay.innerHTML = `
           <div>
               <span>${t.gross_earnings}:</span>
@@ -703,12 +673,12 @@
   function toggleEarningsVisibility() { isEarningsHidden = !isEarningsHidden; localStorage.setItem(EARNINGS_HIDDEN, isEarningsHidden); updateEarningsDisplay(); }
   // ----------------------------------------------------
 
-  // --- Local Storage & Firestore (Handles both entries & advances) ---
+  // --- Local Storage & Firestore ---
   function saveLocal(){ localStorage.setItem(STORAGE_ENTRIES, JSON.stringify(entries)); localStorage.setItem(STORAGE_ADVANCES, JSON.stringify(advances)); render(); }
   function loadLocal(){ const re = localStorage.getItem(STORAGE_ENTRIES); entries = re ? JSON.parse(re) : []; const ra = localStorage.getItem(STORAGE_ADVANCES); advances = ra ? JSON.parse(ra) : [];}
   async function saveToFirestore(uid){ if(!uid) return; try{ const d = doc(db, 'users', uid); await setDoc(d, { entries, advances }, { merge: true }); }catch(err){ console.error('saveToFirestore error:', err); }}
   async function loadFromFirestore(uid){ if(!uid) return null; try{ const d = doc(db, 'users', uid); const snap = await getDoc(d); if(snap.exists()){ const data = snap.data(); return { entries: (Array.isArray(data.entries) ? data.entries : []), advances: (Array.isArray(data.advances) ? data.advances : []) }; } else { return { entries: [], advances: [] }; } }catch(err){ console.error('loadFromFirestore error:', err); return null; }}
-  // ------------------------------------------------------------------
+  // -----------------------------
 
   // --- Username Setup ---
   async function handleUsernameSetup(user) { usernameModal.style.display = 'flex'; usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name'); const t = translations[currentLang]; document.getElementById('modal-title').textContent = t.modal_title; document.getElementById('modal-subtitle').textContent = t.modal_subtitle; document.getElementById('save-username-btn').textContent = t.save_name; }
@@ -719,40 +689,40 @@
   function showLoadingState(){ authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none'; usernameModal.style.display = 'none'; loadingScreen.style.display = 'block'; loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...'; loadingScreen.querySelector('p').textContent = 'Checking authentication status...'; }
   // ------------------------
 
-  // --- Handle User Signed In (UPDATED) ---
+  // --- Handle User Signed In ---
   async function handleUserSignedIn(user){
     currentUser = user; const uid = user.uid;
     // Check verification
     if (!user.emailVerified && !user.providerData.some(p => p.providerId === 'google.com')) { showLoadingState(); loadingScreen.querySelector('h2').innerHTML = 'Email Verification Required'; loadingScreen.querySelector('p').textContent = `Verification link sent to ${user.email}. Please verify.`; authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none'; try { await signOut(auth); } catch(e) { console.error("Sign out error", e); } return; }
     // Check display name
     if (!user.displayName || user.displayName === '' || user.displayName.includes('@')) { await handleUsernameSetup(user); return; }
-    
+
     // Proceed
-    signedText.textContent = `Signed in: ${user.displayName}`; signedState.style.display = 'flex'; authArea.style.display = 'none';    
-    appContent.style.display = 'block'; loadingScreen.style.display = 'none'; 
-    
+    signedText.textContent = `Signed in: ${user.displayName}`; signedState.style.display = 'flex'; authArea.style.display = 'none';
+    appContent.style.display = 'block'; loadingScreen.style.display = 'none';
+
     // Show Admin Menu Button
-    adminMenuBtn.style.display = (user.uid === ADMIN_UID) ? 'inline-block' : 'none'; 
-    
+    adminMenuBtn.style.display = (user.uid === ADMIN_UID) ? 'inline-block' : 'none';
+
     // Load data
     const cloudData = await loadFromFirestore(uid);
-    if(cloudData === null){ console.warn('Firestore error, using local'); loadLocal(); } 
-    else { 
+    if(cloudData === null){ console.warn('Firestore error, using local'); loadLocal(); }
+    else {
       entries = cloudData.entries; advances = cloudData.advances;
       if (cloudData.entries.length === 0 && cloudData.advances.length === 0) { const le = localStorage.getItem(STORAGE_ENTRIES); const la = localStorage.getItem(STORAGE_ADVANCES); const localEntries = le ? JSON.parse(le) : []; const localAdvances = la ? JSON.parse(la) : []; if (localEntries.length > 0 || localAdvances.length > 0) { entries = localEntries; advances = localAdvances; await saveToFirestore(uid); } }
-      saveLocal(); 
-    } 
+      saveLocal(); // Calls render() internally
+    }
   }
 
-  // --- Handle User Signed Out (UPDATED) ---
+  // --- Handle User Signed Out ---
   function handleUserSignedOut(){
-    currentUser = null; signedState.style.display = 'none'; usernameModal.style.display = 'none'; authArea.style.display = 'flex';   
-    appContent.style.display = 'none'; loadingScreen.style.display = 'none'; 
+    currentUser = null; signedState.style.display = 'none'; usernameModal.style.display = 'none'; authArea.style.display = 'flex';
+    appContent.style.display = 'none'; loadingScreen.style.display = 'none';
     adminMenuBtn.style.display = 'none'; adminModalOverlay.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = '';
     localStorage.removeItem(STORAGE_ENTRIES); localStorage.removeItem(STORAGE_ADVANCES);
-    loadLocal(); 
+    loadLocal();
     if (tabSigninBtn) { tabSigninBtn.classList.add('active'); tabRegisterBtn.classList.remove('active'); signinPane.style.display = 'block'; registerPane.style.display = 'none'; authMessageEl.textContent = ''; }
-    render(); 
+    render(); // Render will likely just show auth screen
   }
 
   // --- Auth State Listener ---
@@ -771,19 +741,27 @@
 
   // --- Render the main UI ---
   function render(){
-    if (!currentUser) { authArea.style.display = 'flex'; appContent.style.display = 'none'; return; }
+    if (!currentUser) { authArea.style.display = 'flex'; appContent.style.display = 'none'; return; } // Guard clause
+
+    // Render Entries
     entriesBody.innerHTML = ''; let totalHours = 0;
     const filteredEntries = entries.filter(r=>{ const d = new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; });
     filteredEntries.sort((a,b)=> a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
     const t = translations[currentLang]; const dayOffText = t.day_off_text || 'Day Off';
     for(const row of filteredEntries){ const tr = document.createElement('tr'); if(row.isDayOff) tr.classList.add('day-off'); const start = row.isDayOff? dayOffText : row.start; const end = row.isDayOff? dayOffText : row.end; const duration = row.isDayOff? dayOffText : row.duration; const rounded = row.isDayOff? 0 : row.rounded; const taskDisplay = row.isDayOff ? dayOffText : row.task || ''; tr.innerHTML = `<td>${row.date}</td><td>${start}</td><td>${end}</td><td>${duration}</td><td>${rounded.toFixed(2)}</td><td class="${row.isDayOff? 'day-off-task':''}">${taskDisplay}</td><td class="actions">${row.isDayOff? `<button class="chip del" data-type="entry" data-id="${row.id}">${t.del}</button>` : `<button class="chip edit" data-id="${row.id}">${t.edit}</button><button class="chip del" data-type="entry" data-id="${row.id}">${t.del}</button>`}</td>`; entriesBody.appendChild(tr); totalHours += rounded; }
-    totalEl.textContent = totalHours.toFixed(2); 
+    totalEl.textContent = totalHours.toFixed(2);
+
+    // Render Advances
     advancesBody.innerHTML = '';
     const filteredAdvances = advances.filter(a => { const d = new Date(a.date); return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth; });
     filteredAdvances.sort((a, b) => a.date < b.date ? 1 : a.date > b.date ? -1 : b.id - a.id);
     for (const row of filteredAdvances) { const tr = document.createElement('tr'); tr.innerHTML = `<td>${row.date}</td><td>${row.amount.toFixed(2)} ${t.currency}</td><td>${row.note || ''}</td><td class="actions"><button class="chip del" data-type="advance" data-id="${row.id}">${t.del}</button></td>`; advancesBody.appendChild(tr); }
+
+    // Update Month Label
     const localeCode = { en: 'en-US', my: 'my-MM', th: 'th-TH' }[currentLang]; monthLabel.textContent = new Date(selectedYear, selectedMonth, 1).toLocaleString(localeCode, { month: 'long', year: 'numeric' });
-    applyLanguageTexts(); 
+
+    // Apply Translations & Update Earnings (which depends on totals)
+    applyLanguageTexts();
   }
   // ------------------------
 
@@ -808,7 +786,7 @@
   // ---------------------------------
 
   // --- Export CSV ---
-  exportBtn.addEventListener('click', ()=>{ /* ... same ... */ });
+  exportBtn.addEventListener('click', ()=>{ const filtered = entries.filter(r=>{ const d=new Date(r.date); return d.getFullYear()===selectedYear && d.getMonth()===selectedMonth; }); if(filtered.length===0) return alert('No entry data to export for this month'); const t = translations['en']; const userName = currentUser ? currentUser.displayName || 'Unknown User' : 'Guest'; const userLabel = translations[currentLang].csv_user_label || 'User Name'; const grossEarnings = (parseFloat(totalEl.textContent) * HOURLY_RATE).toFixed(2); const currency = translations[currentLang].currency || '฿'; const header=['Date','Start','End','Duration','Rounded Hours','Task']; let csv = `${userLabel}:,${userName}\n\nEntries:\n`; csv += header.join(',') + '\n'; filtered.forEach(r=> csv += [r.date, r.isDayOff? 'Day Off': r.start, r.isDayOff? 'Day Off': r.end, r.isDayOff? 'Day Off': r.duration, r.isDayOff? '0.00': r.rounded.toFixed(2), `"${(r.task||'').replace(/"/g,'""')}"`].join(',') + '\n'); csv += `\n${translations[currentLang].total_label},,,,${totalEl.textContent}\n`; csv += `${translations[currentLang].gross_earnings},,,,${grossEarnings} ${currency}\n`; /* Add Advances too? Maybe later */ const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `VannTrack_${userName.replace(/\s/g, '_')}_${selectedYear}-${String(selectedMonth+1).padStart(2,'0')}.csv`; document.body.appendChild(a); a.click(); a.remove(); });
   // ------------------
 
   // --- Print Button ---
@@ -826,7 +804,7 @@
   themeToggle.addEventListener('click', ()=>{ const now = document.body.classList.toggle('light-mode')? 'light':'dark'; localStorage.setItem(THEME, now); applyTheme(); });
   // -------------------
 
-  // --- Apply Language Texts (UPDATED) ---
+  // --- Apply Language Texts ---
   function applyLanguageTexts(){
     const t = translations[currentLang]; const currency = t.currency || '฿';
     document.getElementById('app-title').textContent = t.app_title; document.getElementById('app-sub').textContent = t.sub;
@@ -841,53 +819,53 @@
     totalHeaderEl.innerHTML = `${t.total_label}: <span id="total">${totalEl.textContent}</span>`;
     advanceTitle.textContent = t.advance_title; advanceDateLabel.textContent = t.advance_date_label; advanceAmountLabel.textContent = t.advance_amount_label; advanceNoteLabel.textContent = t.advance_note_label; advanceNoteEl.placeholder = t.advance_note_placeholder; addAdvanceBtn.textContent = '➕ ' + t.add_advance;
     thDate.textContent = t.th_date; thStart.textContent = t.th_start; thEnd.textContent = t.th_end; thDuration.textContent = t.th_duration; thRounded.textContent = t.th_rounded; thTask.textContent = t.th_task; thActions.textContent = t.th_actions; thAdvanceDate.textContent = t.th_advance_date; thAdvanceAmount.textContent = t.th_advance_amount; thAdvanceNote.textContent = t.th_advance_note; thAdvanceActions.textContent = t.th_advance_actions;
-    updateEarningsDisplay(); 
+    updateEarningsDisplay();
   }
   langButtons.addEventListener('click', (ev)=>{ const b=ev.target; const lang=b.getAttribute('data-lang'); if(!lang) return; currentLang = lang; localStorage.setItem(LANG,currentLang); render(); });
-  // -------------------------------
+  // --------------------------
 
   // --- Auth Tab Listeners ---
   tabSigninBtn.addEventListener('click', () => { tabSigninBtn.classList.add('active'); tabRegisterBtn.classList.remove('active'); signinPane.style.display = 'block'; registerPane.style.display = 'none'; authMessageEl.textContent = ''; });
   tabRegisterBtn.addEventListener('click', () => { tabSigninBtn.classList.remove('active'); tabRegisterBtn.classList.add('active'); signinPane.style.display = 'none'; registerPane.style.display = 'block'; authMessageEl.textContent = ''; });
   // -------------------------
 
-  // --- Email/Password Login Logic ---
+  // --- Email/Password Login ---
   loginBtn.addEventListener('click', async () => { const email = loginEmailEl.value.trim(); const password = loginPasswordEl.value; authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Signing in...'; if (!email || !password) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Please enter email and password.'; return; } try { await signInWithEmailAndPassword(auth, email, password); authMessageEl.textContent = 'Sign in successful! Loading...'; } catch (error) { authMessageEl.style.color = 'var(--danger)'; if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') { authMessageEl.textContent = 'Invalid email or password.'; } else { console.error('Login Error:', error); authMessageEl.textContent = 'Error: ' + error.message; } } });
-  // -------------------------------
+  // --------------------------
 
-  // --- Email/Password Registration Logic ---
-  registerBtn.addEventListener('click', async () => { const username = registerUsernameEl.value.trim(); const email = registerEmailEl.value.trim(); const password = registerPasswordEl.value; authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Checking...'; if (!username || !email || !password) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Please fill all fields.'; return; } if (password.length < 6) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Password must be at least 6 characters.'; return; } if (username.length < 3) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Username must be at least 3 characters.'; return; } try { if (await isUsernameTaken(username)) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'This username is already taken.'; return; } authMessageEl.textContent = 'Creating account...'; const { user } = await createUserWithEmailAndPassword(auth, email, password); await updateProfile(user, { displayName: username }); await sendEmailVerification(user); const usernameRef = doc(db, 'usernames', username.toLowerCase()); await setDoc(usernameRef, { uid: user.uid }); const userDocRef = doc(db, 'users', user.uid); await setDoc(userDocRef, { username: username, email: email, entries: [], advances: [] }, { merge: true }); authMessageEl.style.color = 'var(--success)'; authMessageEl.textContent = `Verification email sent to ${email}. Please check inbox!`; tabSigninBtn.click(); registerUsernameEl.value = ''; registerEmailEl.value = ''; registerPasswordEl.value = ''; } catch (error) { authMessageEl.style.color = 'var(--danger)'; if (error.code === 'auth/email-already-in-use') { authMessageEl.textContent = 'Email already registered.'; } else if (error.code === 'auth/weak-password') { authMessageEl.textContent = 'Password is too weak.'; } else { console.error('Registration Error:', error); authMessageEl.textContent = 'Error: ' + error.message; } } });
-  // ----------------------------------------
-  
-  // --- Admin Panel Search Logic (UID) ---
+  // --- Email/Password Registration ---
+  registerBtn.addEventListener('click', async () => { const username = registerUsernameEl.value.trim(); const email = registerEmailEl.value.trim(); const password = registerPasswordEl.value; authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Checking...'; if (!username || !email || !password) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Please fill all fields.'; return; } if (password.length < 6) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Password must be >= 6 characters.'; return; } if (username.length < 3) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Username must be >= 3 characters.'; return; } try { if (await isUsernameTaken(username)) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = 'Username taken.'; return; } authMessageEl.textContent = 'Creating account...'; const { user } = await createUserWithEmailAndPassword(auth, email, password); await updateProfile(user, { displayName: username }); await sendEmailVerification(user); const usernameRef = doc(db, 'usernames', username.toLowerCase()); await setDoc(usernameRef, { uid: user.uid }); const userDocRef = doc(db, 'users', user.uid); await setDoc(userDocRef, { username: username, email: email, entries: [], advances: [] }, { merge: true }); authMessageEl.style.color = 'var(--success)'; authMessageEl.textContent = `Verification email sent to ${email}. Check inbox!`; tabSigninBtn.click(); registerUsernameEl.value = ''; registerEmailEl.value = ''; registerPasswordEl.value = ''; } catch (error) { authMessageEl.style.color = 'var(--danger)'; if (error.code === 'auth/email-already-in-use') { authMessageEl.textContent = 'Email already registered.'; } else if (error.code === 'auth/weak-password') { authMessageEl.textContent = 'Password too weak.'; } else { console.error('Registration Error:', error); authMessageEl.textContent = 'Error: ' + error.message; } } });
+  // ---------------------------------
+
+  // --- Admin Panel Search (UID) ---
   adminSearchBtn.addEventListener('click', async () => { const searchUid = adminSearchInput.value.trim(); if (!searchUid) return; adminResultsEl.style.display = 'block'; adminResultsEl.innerHTML = 'Searching...'; try { const userRef = doc(db, 'users', searchUid); const userSnap = await getDoc(userRef); if (!userSnap.exists()) { adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`; return; } const userData = userSnap.data(); const userEntries = userData.entries || []; let totalAllTimeHours = 0; userEntries.forEach(entry => { totalAllTimeHours += entry.rounded || 0; }); adminResultsEl.innerHTML = `<strong>User:</strong> ${userData.username || 'N/A'}<br> <strong>Email:</strong> ${userData.email || 'N/A'}<br> <strong>Total Entries:</strong> ${userEntries.length}<br> <strong style="color: var(--earnings-color);">Total All-Time Rounded Hours:</strong> ${totalAllTimeHours.toFixed(2)}`; } catch (error) { console.error('Admin search error:', error); adminResultsEl.innerHTML = `Error: ${error.message}.`; } });
-  // ------------------------------------
+  // --------------------------------
 
-  // --- Add Advance Payment Button Listener ---
+  // --- Add Advance Payment ---
   addAdvanceBtn.addEventListener('click', async () => { const date = advanceDateEl.value; const amountStr = advanceAmountEl.value; const note = advanceNoteEl.value.trim(); const t = translations[currentLang]; if (!date || !amountStr) { return alert(t.alert_advance_fill); } const amount = parseFloat(amountStr); if (isNaN(amount) || amount <= 0) { return alert(t.alert_advance_amount); } advances.push({ id: Date.now(), date: date, amount: amount, note: note }); advanceDateEl.valueAsDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(), 28)); advanceAmountEl.value = ''; advanceNoteEl.value = ''; await saveAll(); });
-  // ------------------------------------------
-  
+  // -------------------------
+
   // --- Admin Modal Listeners ---
   adminMenuBtn.addEventListener('click', () => { adminModalOverlay.style.display = 'flex'; });
   adminCloseBtn.addEventListener('click', () => { adminModalOverlay.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = ''; });
   adminModalOverlay.addEventListener('click', (e) => { if (e.target === adminModalOverlay) { adminModalOverlay.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = ''; } });
   // ---------------------------
 
-  // --- Initialize the application ---
+  // --- Initialize App ---
   function init(){
-    showLoadingState(); 
+    showLoadingState();
     loadLocal(); // Load entries AND advances
     const savedMonth = localStorage.getItem(MONTH);
     if(savedMonth){ try{ const o=JSON.parse(savedMonth); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
     if(typeof selectedYear==='undefined'){ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); }
     const initialDate = new Date(selectedYear, selectedMonth, Math.min(new Date().getDate(),28));
-    dateEl.valueAsDate = initialDate; advanceDateEl.valueAsDate = initialDate; 
+    dateEl.valueAsDate = initialDate; advanceDateEl.valueAsDate = initialDate;
     currentLang = localStorage.getItem(LANG) || currentLang;
-    applyTheme(); isEarningsHidden = localStorage.getItem(EARNINGS_HIDDEN) === 'true'; 
-    // Auth check will trigger data loading and rendering via onAuthStateChanged
+    applyTheme(); isEarningsHidden = localStorage.getItem(EARNINGS_HIDDEN) === 'true';
+    // onAuthStateChanged will handle the rest
   }
-  init(); 
-  // ----------------------------------
+  init();
+  // ----------------------
 
   </script>
 </body>
