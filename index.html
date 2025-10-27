@@ -217,7 +217,123 @@
       #admin-panel { max-width: 95%; } .auth-controls { flex-wrap: wrap; justify-content: center;}
       #admin-results strong { min-width: 130px;}
     }
-    @media print{ /* ... Print styles ... */ }
+    @media print{ /* =================================
+       NEW: Clean Print Design
+    ================================= */
+    @media print{
+      @page {
+        size: A4 landscape;
+        margin: 12mm;
+      }
+      
+      body, html {
+        background: #fff;
+        color: #000;
+        /* Use a cleaner font for printing */
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+        font-size: 10pt; /* Standard print size */
+      }
+      
+      /* Hide all interactive/unnecessary elements */
+      .right-controls, .entry-grid, .advance-grid, button, [class*="chip"], 
+      #auth-area, #loading-screen, #admin-modal-overlay, #signedState,
+      #username-modal, .preview, .auth-controls, .google-icon,
+      .visibility-toggle, #toggle-total-hours, #toggle-earnings-visibility,
+      .export-print-controls, .month-nav-controls button, #app-logo, #auth-logo,
+      .auth-area-title, .auth-card {
+        display: none !important; /* Force hide */
+      }
+
+      /* Reset card and layout elements for printing */
+      .card, #app-content {
+        background: #fff;
+        box-shadow: none;
+        border: none;
+        padding: 0;
+      }
+      header.app-head {
+        display: block;
+        padding-top: 0;
+        margin-bottom: 10px;
+        border-bottom: 2px solid #000;
+        padding-bottom: 10px;
+      }
+      .title-wrap, h1.title, .subtitle, .controls-top, .month-nav-controls, .totals-controls {
+        display: block; /* Ensure they are visible */
+        color: #000 !important;
+      }
+      h1.title { font-size: 20pt; }
+      .subtitle { font-size: 11pt; color: #555; }
+      
+      /* Style the month header */
+      #month-label {
+        display: block;
+        text-align: center;
+        font-size: 16pt;
+        font-weight: bold;
+        color: #000;
+        margin: 20px 0;
+      }
+
+      /* Tables - Clean design */
+      .table-wrap { overflow: visible; margin-top: 10px; }
+      table { width: 100%; min-width: 0; border-collapse: collapse; }
+      thead th {
+        background: #fff;
+        color: #333;
+        font-weight: 600;
+        border-bottom: 2px solid #333; /* Strong header line */
+        padding: 10px 8px;
+        font-size: 9pt;
+      }
+      tbody td {
+        border: 1px solid #ddd; /* Lighter grid lines */
+        padding: 6px 8px;
+        vertical-align: top;
+      }
+      tbody tr:nth-child(odd) { background: #fdfdfd; } /* Very subtle striping */
+
+      /* Day Off styling for print */
+      tr.day-off {
+        background: #f5f5f5 !important;
+        color: #555 !important;
+        font-style: italic;
+      }
+      tr.day-off td { border-color: #ddd !important; }
+
+      /* Advances Table styling */
+      .advance-section { margin-top: 25px; page-break-before: auto; }
+      .advance-section h3 { color: #000; border-bottom: 1px solid #ccc; padding-bottom: 5px; }
+      #advances-table td:nth-child(2) { color: #000; font-weight: normal; } /* Remove pink color */
+      
+      /* Totals & Earnings Display */
+      .controls-top { margin-top: 0; }
+      .totals-controls {
+        display: flex;
+        flex-direction: row; /* Keep horizontal */
+        justify-content: flex-end; /* Align to the right */
+        gap: 15px;
+        margin-top: 20px;
+        padding-top: 10px;
+        border-top: 2px solid #333;
+        page-break-inside: avoid; /* Don't split this block */
+      }
+      #total-header, #earnings-display {
+        background: #f9f9f9;
+        border: 1px solid #ccc;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 11pt;
+        color: #000;
+      }
+      #earnings-display div { display: block; }
+      /* Force all text to black for readability */
+      #total-label, #total, #earnings-display span {
+        color: #000 !important; 
+        font-weight: 600;
+      }
+      #earnings-amount-net { font-size: 13pt; }
+    } }
   </style>
 </head>
 <body>
