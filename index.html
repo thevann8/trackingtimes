@@ -107,8 +107,21 @@
     /* Signed State */
     #signedState { display: none; position: absolute; top: 0px; right: 0px; padding: 8px 12px; background: var(--card); border-bottom-left-radius: 12px; box-shadow: 0 1px 5px rgba(0,0,0,0.2); flex-direction: row; align-items: center; gap: 8px; z-index: 1000; }
     .signed-as{color:var(--success);font-weight:700;font-size:13px; white-space: nowrap;}
-    .auth-btn.secondary{ background: var(--danger); color: #fff; border: 1px solid var(--danger); padding: 4px 8px; font-size: 12px; margin-bottom: 0; }
-    .auth-btn.secondary:hover { background: #cc3333; border-color: #cc3333; }
+    /* NEW: Cool Ghost/Glass Sign Out Button */
+    .auth-btn.secondary{
+      background: var(--input-bg); /* Subtle glassy background */
+      color: var(--muted);        /* Muted text color */
+      border: 1px solid var(--table-border); /* Subtle border */
+      padding: 4px 10px;
+      font-size: 12px;
+      margin-bottom: 0;
+      box-shadow: none;             /* Remove original shadow */
+    }
+    .auth-btn.secondary:hover {
+        background: var(--glass); /* Brighter glass effect on hover */
+        color: var(--text);       /* Brighter text on hover */
+        border-color: var(--accent-2); /* Accent border on hover */
+    }
 
     /* Right Controls (App Header) & Auth Controls */
     .right-controls, .auth-controls {display:flex;align-items:center;gap:8px}
@@ -239,7 +252,6 @@
              <div class="input-group"> <label for="register-email">Email</label> <input id="register-email" type="email" placeholder="you@example.com" required/> </div>
              <div class="input-group"> <label for="register-password">Password</label> <input id="register-password" type="password" placeholder="Min. 6 characters" required/> </div>
              <button id="register-btn" type="submit" class="auth-btn primary">Register Account</button>
-             <p class="auth-terms-footer">By signing up, you accept our<br><a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.</p>
              <a class="auth-switch-link" id="show-signin">Already have an account? Sign In</a>
         </form>
 
