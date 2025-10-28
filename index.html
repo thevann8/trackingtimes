@@ -460,7 +460,7 @@
   addBtn.addEventListener('click', async ()=>{ const date = dateEl.value; const s = startEl.value; const e = endEl.value; const task = taskEl.value.trim(); if(!date || !s || !e) return alert(translations[currentLang].alert_fill); const sM = parseHM(s), eM = parseHM(e); if(sM==null||eM==null) return alert('Invalid time'); let diff = eM - sM; if(diff<0) diff += 24*60; const formatted = fmtHM(diff); const rounded = computeRounded(diff); if(editId){ const idx = entries.findIndex(x=>x.id===editId); if(idx>-1){ entries[idx] = { id: editId, date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }; editId = null; addBtn.textContent = '➕ ' + translations[currentLang].add_entry; } } else { entries.push({ id: Date.now(), date, start: s, end: e, duration: formatted, rounded, task, isDayOff:false }); } formReset(); await saveAll(); });
   // --- Reset Entry Form ---
   function formReset(){ 
-    // dateEl.valueAsDate = new Date(selectedYear, selectedMonth, 1); // FIXED: Don't reset to today
+    // Date input is NOT reset, so you can add multiple entries for the same day
     startEl.value=''; endEl.value=''; taskEl.value=''; 
     taskEl.placeholder = translations[currentLang].task_placeholder; 
     previewEl.textContent = translations[currentLang].duration_default; 
@@ -615,10 +615,13 @@
   function init(){
     showLoadingState(); loadLocal();
     const savedMonth = localStorage.getItem(MONTH);
+    // This part now ONLY sets the month for the NEXT/PREV buttons
     if(savedMonth){ try{ const o=JSON.parse(savedMonth); selectedYear=o.y; selectedMonth=o.m; }catch(e){} }
     if(typeof selectedYear==='undefined'){ const now=new Date(); selectedYear=now.getFullYear(); selectedMonth=now.getMonth(); }
-    // FIXED: Default date to 1st of the selected month
-    const initialDate = new Date(selectedYear, selectedMonth, 1); 
+    
+    // FIXED: This line ALWAYS sets the date inputs to TODAY
+    const initialDate = new Date(); 
+    
     dateEl.valueAsDate = initialDate; advanceDateEl.valueAsDate = initialDate;
     currentLang = localStorage.getItem(LANG) || 'en';
     isEarningsHidden = localStorage.getItem(EARNINGS_HIDDEN) === 'true';
@@ -628,7 +631,6 @@
     setupRecaptcha(); // Setup invisible reCAPTCHA
   }
   init(); // Run initialization
-
   </script>
 </body>
 </html>
