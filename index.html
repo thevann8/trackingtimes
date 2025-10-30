@@ -234,6 +234,30 @@
       #total-label, #total, #earnings-display span { color: #000 !important; font-weight: 600; }
       #earnings-amount-net { font-size: 13pt; }
     }
+    /* =================================
+       NEW: Loading Spinner Screen
+    ================================= */
+    #loading-screen {
+        /* This uses the auth-area's centering styles */
+        gap: 20px; /* Add gap for spinner */
+    }
+    .loader {
+        border: 5px solid var(--input-bg); /* Light circle */
+        border-top: 5px solid var(--accent); /* Blue spinning part */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    #loading-text {
+        color: var(--muted);
+        font-size: 14px;
+        margin-top: 10px; /* Space from spinner */
+    }
   </style>
 </head>
 <body>
@@ -301,7 +325,10 @@
 </div>
 
     <div id="username-modal" style="display:none;"> <div id="username-form-card" class="card"> <h3 id="modal-title">...</h3> <p id="modal-subtitle">...</p> <input id="username-input-field" type="text"/> <button id="save-username-btn" class="primary btn">...</button> </div> </div>
-    <div id="loading-screen" class="card" style="display:none;"> <h2>...</h2> <p>...</p> </div>
+    <div class="auth-area" id="loading-screen" style="display:none;"> <div class="card" style="align-items: center; padding: 30px;"> <div class="loader"></div> 
+            <p id="loading-text">Checking authentication status...</p>
+        </div>
+    </div>
 
     <div class="card" id="app-content" style="display:none;">
       
@@ -414,7 +441,13 @@
   async function handleUsernameSetup(user) { usernameModal.style.display = 'flex'; usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name'); const t = translations[currentLang]; document.getElementById('modal-title').textContent = t.modal_title; document.getElementById('modal-subtitle').textContent = t.modal_subtitle; document.getElementById('save-username-btn').textContent = t.save_name; }
   saveUsernameBtn.addEventListener('click', async () => { const newName = usernameInputField.value.trim(); if (!newName) { alert('Please enter a name.'); return; } if (currentUser) { try { await updateProfile(currentUser, { displayName: newName }); currentUser.displayName = newName; usernameModal.style.display = 'none'; handleUserSignedIn(currentUser); } catch (error) { console.error('Error updating profile:', error); alert('Failed to save name: ' + error.message); } } });
   // --- UI State Control ---
-  function showLoadingState(){ authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none'; usernameModal.style.display = 'none'; loadingScreen.style.display = 'block'; loadingScreen.querySelector('h2').innerHTML = '⏳ Loading...'; loadingScreen.querySelector('p').textContent = 'Checking authentication status...'; }
+  function showLoadingState(){ 
+    authArea.style.display = 'none'; appContent.style.display = 'none'; signedState.style.display = 'none'; 
+    usernameModal.style.display = 'none'; loadingScreen.style.display = 'flex'; // Use flex to activate centering
+    
+    const loadingTextEl = document.getElementById('loading-text');
+    if (loadingTextEl) loadingTextEl.textContent = 'Checking authentication status...';
+  }
   
   // --- Handle User Signed In (REMOVED "Signed in:") ---
   async function handleUserSignedIn(user){
