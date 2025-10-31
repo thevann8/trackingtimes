@@ -319,8 +319,145 @@
       #admin-panel { max-width: 95%; } .auth-controls { flex-wrap: wrap; justify-content: center;}
       #admin-results strong { min-width: 130px;}
     }
-    /* Clean Print Design */
-    @media print{ /* ... (Print styles remain the same) ... */ }
+    /* =================================
+       NEW: Clean Print Design (Simple)
+    ================================= */
+    @media print{
+      @page {
+        size: A4 portrait; /* Portrait mode is cleaner */
+        margin: 15mm;
+      }
+      
+      body, html, .card {
+        background: #fff !important;
+        color: #000 !important;
+        font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; 
+        font-size: 10pt;
+        box-shadow: none !important;
+        border: none !important;
+      }
+
+      /* Hide ALL unnecessary elements */
+      .header-message, #auth-area, #loading-screen, #username-modal,
+      .right-controls, .entry-grid, .advance-grid, 
+      button, .btn, .chip, .actions, /* Hides all actions columns/buttons */
+      .social-icons, .auth-btn.secondary,
+      .preview, .visibility-toggle, #toggle-total-hours, #toggle-earnings-visibility,
+      .export-print-controls, /* Hide Export/Print buttons */
+      #app-logo, .subtitle, #admin-menu-btn, .lang-select, .toggle,
+      #admin-modal-overlay {
+        display: none !important; /* Force hide */
+      }
+
+      /* --- Show Only Important Info --- */
+
+      /* 1. Show the Fixed Header Bar (#signedState) but clean it up */
+      #signedState {
+        display: flex !important;
+        position: static !important; /* Un-fix it */
+        background: #fff !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        border-bottom: 2px solid #000 !important;
+        padding: 0 !important;
+        margin-bottom: 10px;
+      }
+      /* Show the display name (centered) */
+      .signed-as {
+        color: #000 !important;
+        font-weight: 700;
+        font-size: 14pt;
+        text-align: center;
+        flex-grow: 1;
+      }
+
+      /* 2. Show App Title */
+      header.app-head {
+        padding-top: 0 !important;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+      }
+      h1.title {
+        font-size: 16pt;
+        font-weight: 700;
+        color: #000 !important;
+      }
+      
+      /* 3. Show Month Navigator (Cleaned) */
+      .controls-top { display: block !important; margin-top: 0; }
+      .month-nav-controls { display: flex !important; justify-content: center !important; margin-bottom: 15px; }
+      #month-label {
+        display: block;
+        text-align: center;
+        font-size: 16pt;
+        font-weight: bold;
+        color: #000;
+      }
+
+      /* 4. Show Tables (Cleaned) */
+      .table-wrap { overflow: visible; margin-top: 10px; }
+      table { width: 100%; min-width: 0; border-collapse: collapse; page-break-inside: auto; }
+      tr { page-break-inside: avoid; }
+      thead th {
+        background: #eee !important;
+        color: #000 !important;
+        font-weight: 600;
+        border: 1px solid #999;
+        padding: 8px;
+        font-size: 10pt;
+      }
+      tbody td {
+        border: 1px solid #ccc;
+        padding: 6px 8px;
+        vertical-align: top;
+      }
+      tbody tr:nth-child(odd) { background: #f9f9f9 !important; }
+
+      /* 5. Show Salary Advances Title */
+      .advance-section { margin-top: 25px; page-break-before: auto; }
+      .advance-section h3 { 
+        color: #000; 
+        font-size: 14pt;
+        border-bottom: 1px solid #ccc; 
+        padding-bottom: 5px; 
+      }
+      #advances-table td:nth-child(2) { color: #000; font-weight: normal; } /* Remove pink color */
+
+      /* 6. Show Totals & Earnings (Cleaned up) */
+      .totals-controls {
+        display: block !important;
+        margin-top: 20px;
+        page-break-inside: avoid;
+      }
+      #total-header, #earnings-display {
+        display: block !important;
+        background: #f9f9f9 !important;
+        border: 1px solid #ccc;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 11pt;
+        color: #000 !important;
+        margin-top: 10px; /* Space them out */
+      }
+      #earnings-display div { display: block; }
+      #total-label, #total, #earnings-display span {
+        color: #000 !important; 
+        font-weight: 600;
+      }
+      #earnings-amount-net { font-size: 13pt; }
+
+      /* 7. Day Off (Black row) */
+      tr.day-off {
+        background: #222 !important;
+        color: #fff !important;
+        font-style: normal;
+        font-weight: 700;
+      }
+      tr.day-off td { 
+        border-color: #555 !important;
+      }
+    }
   </style>
 </head>
 <body>
