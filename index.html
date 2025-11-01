@@ -799,79 +799,81 @@
   
   // --- Phone Auth Logic (REMOVED) ---
   
-    // --- Admin Panel Search (UID) ---
+  // --- Admin Panel Search (UID) --- MODIFIED
   adminSearchBtn.addEventListener('click', async () => {
     const searchUid = adminSearchInput.value.trim();
-    const searchMonth = document.getElementById('admin-search-month').value; // Get YYYY-MM value
+    const monthInput = document.getElementById('admin-month-search').value; // Get month
+    const t = translations[currentLang];
+    const currency = t.currency || '฿';
 
-    if (!searchUid || !searchMonth) {
+    if (!searchUid || !monthInput) {
         adminResultsEl.style.display = 'block';
-        adminResultsEl.innerHTML = `Error: Please enter both User UID and Select Month.`;
+        adminResultsEl.innerHTML = 'Please enter both UID and Month.';
         return;
     }
 
-    const [reportYear, reportMonth] = searchMonth.split('-').map(Number);
-    const reportMonthIndex = reportMonth - 1; // JS month is 0-11
+    const [searchYear, searchMonth] = monthInput.split('-').map(Number);
+    const selectedSearchMonth = searchMonth - 1; // JS months are 0-indexed
 
     adminResultsEl.style.display = 'block';
     adminResultsEl.innerHTML = 'Searching...';
-    const t = translations[currentLang];
-    const currency = t.currency || '฿';
     
     try {
         const userRef = doc(db, 'users', searchUid);
         const userSnap = await getDoc(userRef);
-        
+
         if (!userSnap.exists()) {
             adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`;
             return;
         }
-        
+
         const userData = userSnap.data();
         const userEntries = userData.entries || [];
         const userAdvances = userData.advances || [];
 
-        // --- FIX IS HERE ---
-        // We now search for 'username' which we saved, not 'displayName'
-        const displayName = userData.username || 'N/A';
-        const displayEmail = userData.email || (userData.phoneNumber || 'N/A');
-        // --- End of Fix ---
-
-        // Filter data for the selected month
-        const monthEntries = userEntries.filter(r => {
+        // --- NEW FILTERING LOGIC ---
+        const filteredEntries = userEntries.filter(r => {
+            if (!r.date) return false;
             const d = new Date(r.date);
-            return d.getFullYear() === reportYear && d.getMonth() === reportMonthIndex;
+            return d.getFullYear() === searchYear && d.getMonth() === selectedSearchMonth;
         });
-        const monthAdvances = userAdvances.filter(a => {
+        const filteredAdvances = userAdvances.filter(a => {
+            if (!a.date) return false;
             const d = new Date(a.date);
-            return d.getFullYear() === reportYear && d.getMonth() === reportMonthIndex;
+            return d.getFullYear() === searchYear && d.getMonth() === selectedSearchMonth;
+        });
+        // --- END NEW FILTERING LOGIC ---
+
+        let totalAllTimeHours = 0;
+        // Use filteredEntries
+        filteredEntries.forEach(entry => { 
+            totalAllTimeHours += entry.rounded || 0; 
+        });
+        
+        let totalAllTimeAdvance = 0;
+        // Use filteredAdvances
+        filteredAdvances.forEach(adv => { 
+            totalAllTimeAdvance += adv.amount || 0; 
         });
 
-        let totalMonthHours = 0;
-        monthEntries.forEach(entry => { totalMonthHours += entry.rounded || 0; });
+        const totalGrossEarnings = totalAllTimeHours * HOURLY_RATE;
+        const totalNetEarnings = totalAllTimeHours - totalAllTimeAdvance;
         
-        let totalMonthAdvance = 0;
-        monthAdvances.forEach(adv => { totalMonthAdvance += adv.amount || 0; });
+        // Format the selected month for display
+        const displayMonth = new Date(searchYear, selectedSearchMonth, 1).toLocaleString(currentLang, { month: 'long', year: 'numeric' });
 
-        const totalGrossEarnings = totalMonthHours * HOURLY_RATE;
-        const totalNetEarnings = totalGrossEarnings - totalMonthAdvance;
-        
-        const monthLabelText = new Date(reportYear, reportMonthIndex, 1).toLocaleString(currentLang, { month: 'long', year: 'numeric' });
-
+        // Update innerHTML to include Name (it's already there) and the Month.
         adminResultsEl.innerHTML = `
-            <div style="text-align: left; padding: 10px; background: var(--bg); border-radius: 10px;">
-                <strong>User:</strong> <span class="value">${displayName} (${searchUid})</span><br>
-                <strong>Email/Phone:</strong> <span class="value">${displayEmail}</span><br>
-                <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">
-                <strong>Report for:</strong> <span class="value">${monthLabelText}</span><br>
-                <strong>Total Entries:</strong> <span class="value">${monthEntries.length}</span><br>
-                <strong>Total Advances:</strong> <span class="value">${monthAdvances.length}</span><br>
-                <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">
-                <strong>Total Hours:</strong> <span class="value">${totalMonthHours.toFixed(2)}</span><br>
-                <strong>Gross Earnings:</strong> <span class="gross value">${totalGrossEarnings.toFixed(2)} ${currency}</span><br>
-                <strong>Total Advance:</strong> <span class="advance value">${totalMonthAdvance.toFixed(2)} ${currency}</span><br>
-                <strong>Net Earnings:</strong> <span class="net value">${totalNetEarnings.toFixed(2)} ${currency}</span>
-            </div>
+            <strong>User:</strong> <span class="value">${userData.username || 'N/A'} (${searchUid})</span><br>
+            <strong>Month:</strong> <span class="value">${displayMonth}</span><br>
+            <strong>Email/Phone:</strong> <span class="value">${userData.email || (userData.phoneNumber || 'N/A')}</span><br>
+            <strong>Total Entries:</strong> <span class="value">${filteredEntries.length}</span><br>
+            <strong>Total Advances:</strong> <span class="value">${filteredAdvances.length}</span><br>
+            <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">
+            <strong>Total Hours:</strong> <span class="value">${totalAllTimeHours.toFixed(2)}</span><br>
+            <strong>Gross Earnings:</strong> <span class="gross value">${totalGrossEarnings.toFixed(2)} ${currency}</span><br>
+            <strong>Total Advance:</strong> <span class="advance value">${totalAllTimeAdvance.toFixed(2)} ${currency}</span><br>
+            <strong>Net Earnings:</strong> <span class="net value">${totalNetEarnings.toFixed(2)} ${currency}</span>
         `;
 
     } catch (error) {
@@ -879,7 +881,6 @@
         adminResultsEl.innerHTML = `Error: ${error.message}.`;
     }
   });
-
   // --- Add Advance Payment ---
   addAdvanceBtn.addEventListener('click', async () => { const date = advanceDateEl.value; const amountStr = advanceAmountEl.value; const note = advanceNoteEl.value.trim(); const t = translations[currentLang]; if (!date || !amountStr) { return alert(t.alert_advance_fill); } const amount = parseFloat(amountStr); if (isNaN(amount) || amount <= 0) { return alert(t.alert_advance_amount); } advances.push({ id: Date.now(), date: date, amount: amount, note: note }); advanceDateEl.valueAsDate = new Date(); advanceAmountEl.value = ''; advanceNoteEl.value = ''; await saveAll(); });
   
