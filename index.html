@@ -625,7 +625,27 @@
   async function loadFromFirestore(uid){ if(!uid) return null; try{ const dRef = doc(db, 'users', uid); const snap = await getDoc(dRef); if(snap.exists()){ const data = snap.data(); return { entries: (Array.isArray(data.entries) ? data.entries : []), advances: (Array.isArray(data.advances) ? data.advances : []) }; } else { return { entries: [], advances: [] }; } }catch(err){ console.error('loadFromFirestore error:', err); return null; }}
   // --- Username Setup ---
   async function handleUsernameSetup(user) { usernameModal.style.display = 'flex'; usernameInputField.value = user.displayName || (user.email ? user.email.split('@')[0] : 'Your Name'); const t = translations[currentLang]; document.getElementById('modal-title').textContent = t.modal_title; document.getElementById('modal-subtitle').textContent = t.modal_subtitle; document.getElementById('save-username-btn').textContent = t.save_name; }
-  saveUsernameBtn.addEventListener('click', async () => { const newName = usernameInputField.value.trim(); if (!newName) { alert('Please enter a name.'); return; } if (currentUser) { try { await updateProfile(currentUser, { displayName: newName }); currentUser.displayName = newName; usernameModal.style.display = 'none'; handleUserSignedIn(currentUser); } catch (error) { console.error('Error updating profile:', error); alert('Failed to save name: ' + error.message); } } });
+  saveUsernameBtn.addEventListener('click', async () => { 
+      const newName = usernameInputField.value.trim(); 
+      if (!newName) { alert('Please enter a name.'); return; } 
+      if (currentUser) { 
+          try { 
+              await updateProfile(currentUser, { displayName: newName }); 
+              
+              // --- FIXED: Also save username to Firestore document ---
+              const userDocRef = doc(db, 'users', currentUser.uid);
+              await setDoc(userDocRef, { username: newName }, { merge: true });
+              // --- END FIX ---
+              
+              currentUser.displayName = newName; 
+              usernameModal.style.display = 'none'; 
+              handleUserSignedIn(currentUser); 
+          } catch (error) { 
+              console.error('Error updating profile:', error); 
+              alert('Failed to save name: ' + error.message); 
+          } 
+      } 
+  });
   
   // --- UI State Control (Updated for new loader) ---
   function showLoadingState(){ 
@@ -768,18 +788,65 @@
   // --- Password Reset Logic ---
   resetPasswordForm.addEventListener('submit', async (e) => { e.preventDefault(); const email = resetEmailEl.value.trim(); const t = translations[currentLang]; authMessageEl.textContent = ''; if (!email) { authMessageEl.style.color = 'var(--danger)'; authMessageEl.textContent = t.reset_fill_email || 'Please enter your email address.'; return; } authMessageEl.style.color = 'var(--accent)'; authMessageEl.textContent = 'Sending reset email...'; try { await sendPasswordResetEmail(auth, email); authMessageEl.style.color = 'var(--success)'; authMessageEl.textContent = t.reset_email_sent || 'Password reset email sent! Check your inbox.'; resetEmailEl.value = ''; } catch (error) { authMessageEl.style.color = 'var(--danger)'; console.error('Password Reset Error:', error); if (error.code === 'auth/user-not-found' || error.code === 'auth/invalid-email') { authMessageEl.textContent = 'Error: Email not found or invalid.'; } else { authMessageEl.textContent = 'Error: ' + error.message; } } });
   
-  // --- Phone Auth Logic (REMOVED) ---
-  
   // --- Admin Panel Search (UID) ---
-  adminSearchBtn.addEventListener('click', async () => { const searchUid = adminSearchInput.value.trim(); if (!searchUid) return; adminResultsEl.style.display = 'block'; adminResultsEl.innerHTML = 'Searching...'; const t = translations[currentLang]; const currency = t.currency || '฿'; try { const userRef = doc(db, 'users', searchUid); const userSnap = await getDoc(userRef); if (!userSnap.exists()) { adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`; return; } const userData = userSnap.data(); const userEntries = userData.entries || []; const userAdvances = userData.advances || []; let totalAllTimeHours = 0; userEntries.forEach(entry => { totalAllTimeHours += entry.rounded || 0; }); let totalAllTimeAdvance = 0; userAdvances.forEach(adv => { totalAllTimeAdvance += adv.amount || 0; }); const totalGrossEarnings = totalAllTimeHours * HOURLY_RATE; const totalNetEarnings = totalGrossEarnings - totalAllTimeAdvance; adminResultsEl.innerHTML = `<strong>User:</strong> <span class="value">${userData.username || 'N/A'}</span><br> <strong>Email/Phone:</strong> <span class="value">${userData.email || (userData.phoneNumber || 'N/A')}</span><br> <strong>Total Entries:</strong> <span class="value">${userEntries.length}</span><br> <strong>Total Advances:</strong> <span class="value">${userAdvances.length}</span><br> <hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;"> <strong>Total Hours:</strong> <span class="value">${totalAllTimeHours.toFixed(2)}</span><br> <strong>Gross Earnings:</strong> <span class="gross value">${totalGrossEarnings.toFixed(2)} ${currency}</span><br> <strong>Total Advance:</strong> <span class="advance value">${totalAllTimeAdvance.toFixed(2)} ${currency}</span><br> <strong>Net Earnings:</strong> <span class="net value">${totalNetEarnings.toFixed(2)} ${currency}</span>`; } catch (error) { console.error('Admin search error:', error); adminResultsEl.innerHTML = `Error: ${error.message}.`; } });
-  // --- Add Advance Payment ---
-  addAdvanceBtn.addEventListener('click', async () => { const date = advanceDateEl.value; const amountStr = advanceAmountEl.value; const note = advanceNoteEl.value.trim(); const t = translations[currentLang]; if (!date || !amountStr) { return alert(t.alert_advance_fill); } const amount = parseFloat(amountStr); if (isNaN(amount) || amount <= 0) { return alert(t.alert_advance_amount); } advances.push({ id: Date.now(), date: date, amount: amount, note: note }); advanceDateEl.valueAsDate = new Date(); advanceAmountEl.value = ''; advanceNoteEl.value = ''; await saveAll(); });
-  // --- Admin Modal Listeners ---
-  adminMenuBtn.addEventListener('click', () => { adminModalOverlay.style.display = 'flex'; });
-  adminCloseBtn.addEventListener('click', () => { adminModalOverlay.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = ''; });
-  adminModalOverlay.addEventListener('click', (e) => { if (e.target === adminModalOverlay) { adminModalOverlay.style.display = 'none'; adminResultsEl.style.display = 'none'; adminSearchInput.value = ''; } });
-  // --- Total Hours Visibility Toggle Listener ---
-  toggleTotalHoursBtn.addEventListener('click', () => { isTotalHoursHidden = !isTotalHoursHidden; localStorage.setItem(TOTAL_HOURS_HIDDEN, isTotalHoursHidden); updateTotalHoursVisibility(); });
+  adminSearchBtn.addEventListener('click', async () => { 
+      const searchUid = adminSearchInput.value.trim(); 
+      if (!searchUid) return; 
+      adminResultsEl.style.display = 'block'; 
+      adminResultsEl.innerHTML = 'Searching...'; 
+      const t = translations[currentLang]; 
+      const currency = t.currency || '฿'; 
+      try { 
+          const userRef = doc(db, 'users', searchUid); 
+          const userSnap = await getDoc(userRef); 
+          if (!userSnap.exists()) { 
+              adminResultsEl.innerHTML = `Error: User data not found for UID: ${searchUid}`; 
+              return; 
+          } 
+          const userData = userSnap.data();
+          
+          // --- FIXED: Filter data by current selected month ---
+          const allEntries = userData.entries || [];
+          const allAdvances = userData.advances || [];
+
+          // Filter by the *currently selected month* (from the main page)
+          const filteredEntries = allEntries.filter(r => {
+              const d = new Date(r.date);
+              return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
+          });
+          const filteredAdvances = allAdvances.filter(a => {
+              const d = new Date(a.date);
+              return d.getFullYear() === selectedYear && d.getMonth() === selectedMonth;
+          });
+
+          // Calculate totals based on the *filtered* data
+          let totalMonthHours = 0; 
+          filteredEntries.forEach(entry => { totalMonthHours += entry.rounded || 0; });
+          let totalMonthAdvance = 0;
+          filteredAdvances.forEach(adv => { totalMonthAdvance += adv.amount || 0; });
+          // --- END FIX ---
+
+          const totalGrossEarnings = totalMonthHours * HOURLY_RATE; 
+          const totalNetEarnings = totalMonthHours - totalMonthAdvance; 
+          
+          // --- UPDATED: HTML Output ---
+          const currentMonthName = new Date(selectedYear, selectedMonth, 1).toLocaleString(currentLang, { month: 'long', year: 'numeric' });
+          
+          adminResultsEl.innerHTML = `<strong>User:</strong> <span class="value">${userData.username || 'N/A'}</span><br>` +
+                                      `<strong>Email/Phone:</strong> <span class="value">${userData.email || 'N/A'}</span><br>` +
+                                      `<strong>Month:</strong> <span class="value">${currentMonthName}</span><br>` +
+                                      `<strong>Entries (This Month):</strong> <span class="value">${filteredEntries.length}</span><br>` +
+                                      `<strong>Advances (This Month):</strong> <span class="value">${filteredAdvances.length}</span><br>` +
+                                      `<hr style="border-color: rgba(255,255,255,0.1); margin: 8px 0;">` +
+                                      `<strong>Total Hours:</strong> <span class="value">${totalMonthHours.toFixed(2)}</span><br>` +
+                                      `<strong>Gross Earnings:</strong> <span class="gross value">${totalGrossEarnings.toFixed(2)} ${currency}</span><br>` +
+                                      `<strong>Total Advance:</strong> <span class="advance value">${totalMonthAdvance.toFixed(2)} ${currency}</span><br>` +
+                                      `<strong>Net Earnings:</strong> <span class="net value">${totalNetEarnings.toFixed(2)} ${currency}</span>`; 
+      } catch (error) { 
+          console.error('Admin search error:', error); 
+          adminResultsEl.innerHTML = `Error: ${error.message}.`; 
+      } 
+  });
   
   // --- Initialize App (FIXED Date) ---
   function init(){
